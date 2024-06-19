@@ -1,0 +1,98 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "shorten-service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "DemoService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/example/echo": {
+      "post": {
+        "operationId": "DemoService_sendMess",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/onlineDemoReturn"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/onlineDemoRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DemoService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "onlineDemoRequest": {
+      "type": "object",
+      "properties": {
+        "mes": {
+          "type": "string"
+        }
+      }
+    },
+    "onlineDemoReturn": {
+      "type": "object",
+      "properties": {
+        "mes": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
