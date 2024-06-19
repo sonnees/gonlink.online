@@ -1,0 +1,26 @@
+syntax = "proto3";
+option go_package = "grpc-gateway/gen/go/proto";
+
+package rutlink.online;
+
+import "google/api/annotations.proto";
+
+message DemoRequest{
+  string mes = 1;
+}
+
+message DemoReturn{
+  string mes = 1;
+}
+
+service DemoService {
+  rpc sendMess(DemoRequest) returns(DemoReturn){
+    option (google.api.http) = {
+      post: "/v1/example/echo"
+      body: "*"
+    };
+  }
+}
+
+
+
