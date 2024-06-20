@@ -28,7 +28,7 @@ func run() error {
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := gw.RegisterDemoServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := gw.RegisterUrlShortenerServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}

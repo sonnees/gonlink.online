@@ -9,11 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import rutlink.online.shortenservice.entity.ShortUrl;
 import rutlink.online.shortenservice.repository.ShortUrlRepository;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -25,8 +24,7 @@ class UrlShortenerServiceTest {
     @InjectMocks UrlShortenerService urlShortenerService;
     @Mock ShortCodeGenerator shortCodeGenerator;
     @Mock ShortUrlRepository shortUrlRepository;
-    @Mock StringRedisTemplate redisTemplate;
-    @Mock ValueOperations<String, String> valueOperationsMock;
+    @Mock CheckURL checkURL;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -37,13 +35,17 @@ class UrlShortenerServiceTest {
     }
 
     @Test
-    void generateShortCode_NotExits() {
+    void generateShortCode_NotExits(){
         String originalUrl = "https://www.youtube.com/sonnees";
         String shortCodeE = "12abCD";
         ShortUrl shortUrl = new ShortUrl(shortCodeE, originalUrl);
 
-        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
-        when(redisTemplate.opsForValue().get(originalUrl)).thenReturn(null);
+        try {
+            when(checkURL.isExits(originalUrl)).thenReturn(true);
+        } catch (IOException e){
+            fail("IOException should not be thrown");
+        }
+        when(checkURL.isNotForbidden(originalUrl)).thenReturn(true);
         when(shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl)).thenReturn(Optional.empty());
         when(shortCodeGenerator.generateShortCode()).thenReturn(shortCodeE);
         when(shortUrlRepository.save(shortUrl)).thenReturn(shortUrl);
@@ -56,26 +58,17 @@ class UrlShortenerServiceTest {
     }
 
     @Test
-    void generateShortCode_ExitsInRedis() {
-        String originalUrl = "https://www.youtube.com/sonnees";
-        String shortCodeE = "12abCD";
-
-        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
-        when(redisTemplate.opsForValue().get(originalUrl)).thenReturn(shortCodeE);
-
-        String shortCodeA = urlShortenerService.generateShortCode(originalUrl);
-
-        assertEquals(shortCodeE, shortCodeA);
-    }
-
-    @Test
-    void generateShortCode_ExitsInRepository() {
+    void generateShortCode_Exits() {
         String originalUrl = "https://www.youtube.com/sonnees";
         String shortCodeE = "12abCD";
         ShortUrl shortUrl = new ShortUrl(shortCodeE, originalUrl);
 
-        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
-        when(redisTemplate.opsForValue().get(originalUrl)).thenReturn(null);
+        try {
+            when(checkURL.isExits(originalUrl)).thenReturn(true);
+        } catch (IOException e){
+            fail("IOException should not be thrown");
+        }
+        when(checkURL.isNotForbidden(originalUrl)).thenReturn(true);
         when(shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl)).thenReturn(Optional.of(shortUrl));
 
         String shortCodeA = urlShortenerService.generateShortCode(originalUrl);
@@ -84,26 +77,11 @@ class UrlShortenerServiceTest {
     }
 
     @Test
-    void getOriginalUrl_ExitsInRedis() {
-        String originalUrlE = "https://www.youtube.com/sonnees";
-        String shortCode = "12abCD";
-
-        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
-        when(redisTemplate.opsForValue().get(shortCode)).thenReturn(originalUrlE);
-
-        String originalUrlA = urlShortenerService.getOriginalUrl(shortCode);
-
-        assertEquals(originalUrlE, originalUrlA);
-    }
-
-    @Test
-    void getOriginalUrl_ExitsInRepository() {
+    void getOriginalUrl_Exits() {
         String originalUrlE = "https://www.youtube.com/sonnees";
         String shortCode = "12abCD";
         ShortUrl shortUrl = new ShortUrl(shortCode, originalUrlE);
 
-        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
-        when(redisTemplate.opsForValue().get(shortCode)).thenReturn(null);
         when(shortUrlRepository.findById(shortCode)).thenReturn(Optional.of(shortUrl));
 
         String originalUrlA = urlShortenerService.getOriginalUrl(shortCode);
@@ -117,8 +95,6 @@ class UrlShortenerServiceTest {
     void getOriginalUrl_NotExits() {
         String shortCode = "12abCD";
 
-        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
-        when(redisTemplate.opsForValue().get(shortCode)).thenReturn(null);
         when(shortUrlRepository.findById(shortCode)).thenReturn(Optional.empty());
 
         StatusRuntimeException exceptionE = assertThrows(StatusRuntimeException.class, () -> {
