@@ -19,90 +19,128 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	DemoService_SendMess_FullMethodName = "/rutlink.online.DemoService/sendMess"
+	UrlShortenerService_GenerateShortCode_FullMethodName = "/rutlink.online.UrlShortenerService/generateShortCode"
+	UrlShortenerService_GetOriginalUrl_FullMethodName    = "/rutlink.online.UrlShortenerService/getOriginalUrl"
 )
 
-// DemoServiceClient is the client API for DemoService service.
+// UrlShortenerServiceClient is the client API for UrlShortenerService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type DemoServiceClient interface {
-	SendMess(ctx context.Context, in *DemoRequest, opts ...grpc.CallOption) (*DemoReturn, error)
+type UrlShortenerServiceClient interface {
+	GenerateShortCode(ctx context.Context, in *GenerateShortCodeRequest, opts ...grpc.CallOption) (*GenerateShortCodeResponse, error)
+	GetOriginalUrl(ctx context.Context, in *GetOriginalUrlRequest, opts ...grpc.CallOption) (*GetOriginalUrlResponse, error)
 }
 
-type demoServiceClient struct {
+type urlShortenerServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewDemoServiceClient(cc grpc.ClientConnInterface) DemoServiceClient {
-	return &demoServiceClient{cc}
+func NewUrlShortenerServiceClient(cc grpc.ClientConnInterface) UrlShortenerServiceClient {
+	return &urlShortenerServiceClient{cc}
 }
 
-func (c *demoServiceClient) SendMess(ctx context.Context, in *DemoRequest, opts ...grpc.CallOption) (*DemoReturn, error) {
+func (c *urlShortenerServiceClient) GenerateShortCode(ctx context.Context, in *GenerateShortCodeRequest, opts ...grpc.CallOption) (*GenerateShortCodeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DemoReturn)
-	err := c.cc.Invoke(ctx, DemoService_SendMess_FullMethodName, in, out, cOpts...)
+	out := new(GenerateShortCodeResponse)
+	err := c.cc.Invoke(ctx, UrlShortenerService_GenerateShortCode_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// DemoServiceServer is the server API for DemoService service.
-// All implementations must embed UnimplementedDemoServiceServer
+func (c *urlShortenerServiceClient) GetOriginalUrl(ctx context.Context, in *GetOriginalUrlRequest, opts ...grpc.CallOption) (*GetOriginalUrlResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetOriginalUrlResponse)
+	err := c.cc.Invoke(ctx, UrlShortenerService_GetOriginalUrl_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// UrlShortenerServiceServer is the server API for UrlShortenerService service.
+// All implementations must embed UnimplementedUrlShortenerServiceServer
 // for forward compatibility
-type DemoServiceServer interface {
-	SendMess(context.Context, *DemoRequest) (*DemoReturn, error)
-	mustEmbedUnimplementedDemoServiceServer()
+type UrlShortenerServiceServer interface {
+	GenerateShortCode(context.Context, *GenerateShortCodeRequest) (*GenerateShortCodeResponse, error)
+	GetOriginalUrl(context.Context, *GetOriginalUrlRequest) (*GetOriginalUrlResponse, error)
+	mustEmbedUnimplementedUrlShortenerServiceServer()
 }
 
-// UnimplementedDemoServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedDemoServiceServer struct {
+// UnimplementedUrlShortenerServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedUrlShortenerServiceServer struct {
 }
 
-func (UnimplementedDemoServiceServer) SendMess(context.Context, *DemoRequest) (*DemoReturn, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendMess not implemented")
+func (UnimplementedUrlShortenerServiceServer) GenerateShortCode(context.Context, *GenerateShortCodeRequest) (*GenerateShortCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateShortCode not implemented")
 }
-func (UnimplementedDemoServiceServer) mustEmbedUnimplementedDemoServiceServer() {}
+func (UnimplementedUrlShortenerServiceServer) GetOriginalUrl(context.Context, *GetOriginalUrlRequest) (*GetOriginalUrlResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOriginalUrl not implemented")
+}
+func (UnimplementedUrlShortenerServiceServer) mustEmbedUnimplementedUrlShortenerServiceServer() {}
 
-// UnsafeDemoServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to DemoServiceServer will
+// UnsafeUrlShortenerServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UrlShortenerServiceServer will
 // result in compilation errors.
-type UnsafeDemoServiceServer interface {
-	mustEmbedUnimplementedDemoServiceServer()
+type UnsafeUrlShortenerServiceServer interface {
+	mustEmbedUnimplementedUrlShortenerServiceServer()
 }
 
-func RegisterDemoServiceServer(s grpc.ServiceRegistrar, srv DemoServiceServer) {
-	s.RegisterService(&DemoService_ServiceDesc, srv)
+func RegisterUrlShortenerServiceServer(s grpc.ServiceRegistrar, srv UrlShortenerServiceServer) {
+	s.RegisterService(&UrlShortenerService_ServiceDesc, srv)
 }
 
-func _DemoService_SendMess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DemoRequest)
+func _UrlShortenerService_GenerateShortCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateShortCodeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemoServiceServer).SendMess(ctx, in)
+		return srv.(UrlShortenerServiceServer).GenerateShortCode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DemoService_SendMess_FullMethodName,
+		FullMethod: UrlShortenerService_GenerateShortCode_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemoServiceServer).SendMess(ctx, req.(*DemoRequest))
+		return srv.(UrlShortenerServiceServer).GenerateShortCode(ctx, req.(*GenerateShortCodeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// DemoService_ServiceDesc is the grpc.ServiceDesc for DemoService service.
+func _UrlShortenerService_GetOriginalUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOriginalUrlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UrlShortenerServiceServer).GetOriginalUrl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UrlShortenerService_GetOriginalUrl_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UrlShortenerServiceServer).GetOriginalUrl(ctx, req.(*GetOriginalUrlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// UrlShortenerService_ServiceDesc is the grpc.ServiceDesc for UrlShortenerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var DemoService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "rutlink.online.DemoService",
-	HandlerType: (*DemoServiceServer)(nil),
+var UrlShortenerService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "rutlink.online.UrlShortenerService",
+	HandlerType: (*UrlShortenerServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "sendMess",
-			Handler:    _DemoService_SendMess_Handler,
+			MethodName: "generateShortCode",
+			Handler:    _UrlShortenerService_GenerateShortCode_Handler,
+		},
+		{
+			MethodName: "getOriginalUrl",
+			Handler:    _UrlShortenerService_GetOriginalUrl_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

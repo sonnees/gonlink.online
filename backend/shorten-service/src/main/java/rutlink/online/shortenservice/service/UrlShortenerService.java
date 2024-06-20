@@ -2,69 +2,84 @@ package rutlink.online.shortenservice.service;
 
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import rutlink.online.shortenservice.dto.LogObj;
 import rutlink.online.shortenservice.entity.ShortUrl;
 import rutlink.online.shortenservice.repository.ShortUrlRepository;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UrlShortenerService {
     private final ShortCodeGenerator shortCodeGenerator;
     private final ShortUrlRepository shortUrlRepository;
-    private final StringRedisTemplate redisTemplate;
+    private final JsonConverter jsonConverter;
+    private final CheckURL checkURL;
 
-    public UrlShortenerService(ShortCodeGenerator shortCodeGenerator, ShortUrlRepository shortUrlRepository, StringRedisTemplate redisTemplate) {
+    public UrlShortenerService(ShortCodeGenerator shortCodeGenerator, ShortUrlRepository shortUrlRepository, JsonConverter jsonConverter, CheckURL checkURL) {
         this.shortCodeGenerator = shortCodeGenerator;
         this.shortUrlRepository = shortUrlRepository;
-        this.redisTemplate = redisTemplate;
+        this.jsonConverter = jsonConverter;
+        this.checkURL = checkURL;
     }
 
     public String generateShortCode(String originalUrl) {
-        String shortCode = redisTemplate.opsForValue().get(originalUrl);
 
-        if (shortCode != null) return shortCode;
+        try {
+            if(!checkURL.isNotForbidden(originalUrl))
+                throw new StatusRuntimeException(
+                        Status.UNAUTHENTICATED.withDescription("URL Is Forbidden")
+                );
 
-        Optional<ShortUrl> existingShortUrl = shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl);
-        if (existingShortUrl.isPresent()) {
-            shortCode = existingShortUrl.get().getShortCode();
-            setOpsForValue(redisTemplate, originalUrl, shortCode);
-            return shortCode;
+            if(!checkURL.isExits(originalUrl))
+                throw new StatusRuntimeException(
+                        Status.UNKNOWN.withDescription("URL Not Exits")
+                );
+
+        } catch (IOException e ){
+            log.error("@ {}", jsonConverter.objToString(e));
+            throw new StatusRuntimeException(
+                    Status.INTERNAL.withDescription("URL Error")
+            );
         }
 
-        shortCode = shortCodeGenerator.generateShortCode();
+        Optional<ShortUrl> existingShortUrl = shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl);
+        if (existingShortUrl.isPresent())
+            return existingShortUrl.get().getShortCode();
+
+        String shortCode = shortCodeGenerator.generateShortCode();
 
         ShortUrl shortUrl = new ShortUrl();
         shortUrl.setShortCode(shortCode);
         shortUrl.setOriginalUrl(originalUrl);
 
-        shortUrlRepository.save(shortUrl);
-        setOpsForValue(redisTemplate, originalUrl, shortCode);
-        return shortCode;
+        ShortUrl save = shortUrlRepository.save(shortUrl);
+        if(save.getShortCode()!=null)
+            return save.getShortCode();
+
+        LogObj<? extends UrlShortenerService, ShortUrl> logObj = new LogObj<>(
+                this.getClass(),
+                "generateShortCode",
+                shortUrl
+        );
+        log.error("@ {}", jsonConverter.objToString(logObj));
+        throw new StatusRuntimeException(
+                Status.INTERNAL.withDescription("Internal Server Error")
+        );
     }
 
     public String getOriginalUrl(String shortCode) {
-        String originalUrl = redisTemplate.opsForValue().get(shortCode);
-        if (originalUrl != null) {
-            return originalUrl;
-        }
-
         Optional<ShortUrl> shortUrlOpt = shortUrlRepository.findById(shortCode);
-        if (shortUrlOpt.isPresent()) {
-            originalUrl = shortUrlOpt.get().getOriginalUrl();
-            redisTemplate.opsForValue().set(shortCode, originalUrl);
-            return originalUrl;
-        }
+
+        if (shortUrlOpt.isPresent())
+            return shortUrlOpt.get().getOriginalUrl();
 
         throw new StatusRuntimeException(
                 Status.NOT_FOUND.withDescription("Short URL not found for code: " + shortCode)
         );
     }
 
-
-    private void setOpsForValue(StringRedisTemplate redisTemplate, String originalUrl, String shortCode) {
-        redisTemplate.opsForValue().set(shortCode, shortCode);
-        redisTemplate.opsForValue().set(originalUrl, shortCode);
-    }
 }

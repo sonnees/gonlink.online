@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "DemoService"
+      "name": "UrlShortenerService"
     }
   ],
   "consumes": [
@@ -16,14 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/example/echo": {
+    "/shorten-service/api/v1/generate-shortcode": {
       "post": {
-        "operationId": "DemoService_sendMess",
+        "operationId": "UrlShortenerService_generateShortCode",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/onlineDemoReturn"
+              "$ref": "#/definitions/onlineGenerateShortCodeResponse"
             }
           },
           "default": {
@@ -39,29 +39,79 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/onlineDemoRequest"
+              "$ref": "#/definitions/onlineGenerateShortCodeRequest"
             }
           }
         ],
         "tags": [
-          "DemoService"
+          "UrlShortenerService"
+        ]
+      }
+    },
+    "/shorten-service/api/v1/get-original-url": {
+      "post": {
+        "operationId": "UrlShortenerService_getOriginalUrl",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/onlineGetOriginalUrlResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/onlineGetOriginalUrlRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UrlShortenerService"
         ]
       }
     }
   },
   "definitions": {
-    "onlineDemoRequest": {
+    "onlineGenerateShortCodeRequest": {
       "type": "object",
       "properties": {
-        "mes": {
+        "originalUrl": {
+          "type": "string"
+        }
+      },
+      "title": "=== GenerateShortCode ==="
+    },
+    "onlineGenerateShortCodeResponse": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
           "type": "string"
         }
       }
     },
-    "onlineDemoReturn": {
+    "onlineGetOriginalUrlRequest": {
       "type": "object",
       "properties": {
-        "mes": {
+        "shortCode": {
+          "type": "string"
+        }
+      },
+      "title": "=== GetOriginalUrl ==="
+    },
+    "onlineGetOriginalUrlResponse": {
+      "type": "object",
+      "properties": {
+        "originalUrl": {
           "type": "string"
         }
       }

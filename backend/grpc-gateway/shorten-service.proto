@@ -5,18 +5,36 @@ package rutlink.online;
 
 import "google/api/annotations.proto";
 
-message DemoRequest{
-  string mes = 1;
+// === GenerateShortCode ===
+message GenerateShortCodeRequest{
+  string originalUrl = 1;
 }
 
-message DemoReturn{
-  string mes = 1;
+message GenerateShortCodeResponse{
+  string shortCode = 1;
 }
 
-service DemoService {
-  rpc sendMess(DemoRequest) returns(DemoReturn){
+// === GetOriginalUrl ===
+message GetOriginalUrlRequest{
+  string shortCode = 1;
+}
+
+message GetOriginalUrlResponse{
+  string originalUrl = 1;
+}
+
+
+service UrlShortenerService {
+  rpc generateShortCode(GenerateShortCodeRequest) returns(GenerateShortCodeResponse){
     option (google.api.http) = {
-      post: "/v1/example/echo"
+      post: "/shorten-service/api/v1/generate-shortcode"
+      body: "*"
+    };
+  }
+
+  rpc getOriginalUrl(GetOriginalUrlRequest) returns(GetOriginalUrlResponse){
+    option (google.api.http) = {
+      post: "/shorten-service/api/v1/get-original-url"
       body: "*"
     };
   }
