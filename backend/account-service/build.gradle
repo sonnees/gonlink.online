@@ -5,7 +5,7 @@ plugins {
     id 'com.google.protobuf' version '0.8.17'
 }
 
-group = 'rutlink.online'
+group = 'gonlink.online'
 version = '1.0.0'
 
 java {

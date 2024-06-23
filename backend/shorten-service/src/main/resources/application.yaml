@@ -1,0 +1,23 @@
+project:
+  name:shorten-service
+
+spring:
+  application:
+    name: shorten-service
+  data:
+    mongodb:
+      uri: mongodb+srv://sonnees:8ymAG8ia1s88DwXO@cluster0.m0vbmbu.mongodb.net/ShortenService
+
+# grpc
+grpc:
+  server:
+    port: 9090
+
+# global value
+shorten-service:
+  ALLOWED_CHARACTERS: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+  LENGTH_SHORT_CODE: 6
+  URL_FORBIDDEN: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
+
+
+

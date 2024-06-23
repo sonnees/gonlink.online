@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	UrlShortenerService_GenerateShortCode_FullMethodName = "/rutlink.online.UrlShortenerService/generateShortCode"
-	UrlShortenerService_GetOriginalUrl_FullMethodName    = "/rutlink.online.UrlShortenerService/getOriginalUrl"
+	UrlShortenerService_GenerateShortCode_FullMethodName = "/gonlink.online.UrlShortenerService/generateShortCode"
+	UrlShortenerService_GetOriginalUrl_FullMethodName    = "/gonlink.online.UrlShortenerService/getOriginalUrl"
 )
 
 // UrlShortenerServiceClient is the client API for UrlShortenerService service.
@@ -131,7 +131,7 @@ func _UrlShortenerService_GetOriginalUrl_Handler(srv interface{}, ctx context.Co
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UrlShortenerService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "rutlink.online.UrlShortenerService",
+	ServiceName: "gonlink.online.UrlShortenerService",
 	HandlerType: (*UrlShortenerServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
