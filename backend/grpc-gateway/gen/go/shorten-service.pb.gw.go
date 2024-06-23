@@ -97,7 +97,7 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/rutlink.online.UrlShortenerService/GenerateShortCode", runtime.WithHTTPPathPattern("/shorten-service/api/v1/generate-shortcode"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gonlink.online.UrlShortenerService/GenerateShortCode", runtime.WithHTTPPathPattern("/shorten-service/api/v1/generate-shortcode"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -122,7 +122,7 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/rutlink.online.UrlShortenerService/GetOriginalUrl", runtime.WithHTTPPathPattern("/shorten-service/api/v1/get-original-url"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gonlink.online.UrlShortenerService/GetOriginalUrl", runtime.WithHTTPPathPattern("/shorten-service/api/v1/get-original-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -186,7 +186,7 @@ func RegisterUrlShortenerServiceHandlerClient(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/rutlink.online.UrlShortenerService/GenerateShortCode", runtime.WithHTTPPathPattern("/shorten-service/api/v1/generate-shortcode"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gonlink.online.UrlShortenerService/GenerateShortCode", runtime.WithHTTPPathPattern("/shorten-service/api/v1/generate-shortcode"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -208,7 +208,7 @@ func RegisterUrlShortenerServiceHandlerClient(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/rutlink.online.UrlShortenerService/GetOriginalUrl", runtime.WithHTTPPathPattern("/shorten-service/api/v1/get-original-url"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gonlink.online.UrlShortenerService/GetOriginalUrl", runtime.WithHTTPPathPattern("/shorten-service/api/v1/get-original-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
