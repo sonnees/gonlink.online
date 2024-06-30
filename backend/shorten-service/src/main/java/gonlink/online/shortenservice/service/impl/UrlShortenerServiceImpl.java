@@ -6,6 +6,7 @@ import gonlink.online.shortenservice.exception.GrpcStatusException;
 import gonlink.online.shortenservice.service.CheckURL;
 import gonlink.online.shortenservice.service.ShortCodeGenerator;
 import gonlink.online.shortenservice.service.UrlShortenerService;
+import gonlink.online.shortenservice.service.base.ProducerService;
 import gonlink.online.shortenservice.util.FormatLogMessage;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -23,6 +24,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     private final ShortCodeGenerator shortCodeGenerator;
     private final ShortUrlRepository shortUrlRepository;
     private final CheckURL checkURL;
+    private final ProducerService producerService;
 
     @Override
     public String generateShortCode(String originalUrl) {
@@ -48,29 +50,29 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
         Optional<ShortUrl> existingShortUrl = shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl);
         if (existingShortUrl.isPresent()) return existingShortUrl.get().getShortCode();
 
-        String shortCode = shortCodeGenerator.generateShortCode();
-
-        ShortUrl shortUrl = new ShortUrl(shortCode,originalUrl);
-        try{
-            shortUrlRepository.insert(shortUrl);
-            return shortCode;
-        } catch (DuplicateKeyException e){
-            throw new StatusRuntimeException( Status.ALREADY_EXISTS.withDescription("Duplicate Key Error"));
-        } catch (Exception e){
-            log.error(FormatLogMessage.formatLogMessage(
-                    this.getClass().getSimpleName(),
-                    "generateShortCode",
-                    "Unexpected error: {}",
-                    e
-            ));
-            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+        while (true){
+            String shortCode = shortCodeGenerator.generateShortCode();
+            ShortUrl shortUrl = new ShortUrl(shortCode,originalUrl);
+            try{
+                shortUrlRepository.insert(shortUrl);
+                return shortCode;
+            } catch (DuplicateKeyException ignored){
+            } catch (Exception e){
+                log.error(FormatLogMessage.formatLogMessage(
+                        this.getClass().getSimpleName(),
+                        "generateShortCode",
+                        "Unexpected error: {}",
+                        e
+                ));
+                throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+            }
         }
     }
 
     @Override
     public String getOriginalUrl(String shortCode) {
         Optional<ShortUrl> shortUrlOpt = shortUrlRepository.findById(shortCode);
-        if (shortUrlOpt.isPresent())return shortUrlOpt.get().getOriginalUrl();
+        if (shortUrlOpt.isPresent()) return shortUrlOpt.get().getOriginalUrl();
         throw new StatusRuntimeException(Status.NOT_FOUND.withDescription("Short URL not found for code: " + shortCode));
     }
 

@@ -85,6 +85,9 @@
     "onlineGenerateShortCodeRequest": {
       "type": "object",
       "properties": {
+        "email": {
+          "type": "string"
+        },
         "originalUrl": {
           "type": "string"
         }
