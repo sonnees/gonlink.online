@@ -7,6 +7,24 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://sonnees:8ymAG8ia1s88DwXO@cluster0.m0vbmbu.mongodb.net/ShortenService
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  kafka:
+    bootstrap-servers: 0.0.0.0:9092
+    consumer:
+      group-id: shorten-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    template:
+      default-topic: shorten-service
+
 
 # grpc
 grpc:
@@ -18,6 +36,7 @@ shorten-service:
   ALLOWED_CHARACTERS: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
   LENGTH_SHORT_CODE: 6
   URL_FORBIDDEN: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
-
+  kafka:
+    topic: shorten-service
 
 
