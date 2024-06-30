@@ -1,11 +1,45 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 export default function Home() {
+  const navigate = useNavigate();
+
+
+
+
+  //===========================================================================
+  const location = useLocation();
+  const { authenticated, setAuthenticated, email, setEmail, name, setName, avatar, setAvatar} = useUser();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+
+    const authenticatedParams = searchParams.get('authenticated');
+    const nameParams = searchParams.get('name');
+    const emailParams = searchParams.get('email');
+    const avatarParams = searchParams.get('avatar');
+
+    if (authenticatedParams!=null&&nameParams!=null&&emailParams!=null&&avatarParams!=null) {
+      // Lưu các giá trị vào localStorage hoặc state
+      localStorage.setItem('authenticated', authenticatedParams);
+      localStorage.setItem('name', nameParams);
+      localStorage.setItem('email', emailParams);
+      localStorage.setItem('avatar', avatarParams);
+
+      setName(nameParams)
+    }
+    // Chuyển hướng đến URL mới mà không chứa các tham số
+    // history.replace('/page/home');
+    navigate("/page/home");
+  }, [location.search]);
+  //===========================================================================
+  
+
 
   const [link, setLink] = useState("");
 
-  const navigate = useNavigate();
+  
 
   const handleGenerateShortLink = async () => {
     console.log(link);

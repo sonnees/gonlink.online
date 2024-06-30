@@ -6,6 +6,7 @@ import ContactPage from '../Pages/ContactPage'
 import About from '../Pages/About'
 import PageNotFound from '../Pages/PageNotFound'
 import DynamicPage from '../Pages/DynamicPage'
+import Login from '../Login/Login'
 
 export default function Router() {
     return useRoutes([
@@ -23,6 +24,10 @@ export default function Router() {
                 { path: "notfound", element: <PageNotFound/> },
                 { path: "*", element: <Navigate to="/page/notfound" /> }
             ],
+        },
+        {
+            path: "/login",
+            element: <Login/>,
         }, 
         // {
         //     path: "/fnf",

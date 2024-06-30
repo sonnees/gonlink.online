@@ -12,21 +12,25 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import online.gonlink.shortenservice.service.impl.UrlShortenerServiceImpl;
 import online.gonlink.UrlShortenerServiceGrpc.*;
+import online.gonlink.shortenservice.util.HtmlSanitizer;
 
 @GrpcService
 @Slf4j
 public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
 
     private final UrlShortenerServiceImpl urlShortenerServiceImpl;
+    private final HtmlSanitizer htmlSanitizer;
 
-    public UrlShortenerServiceGrpc(UrlShortenerServiceImpl urlShortenerServiceImpl) {
+    public UrlShortenerServiceGrpc(UrlShortenerServiceImpl urlShortenerServiceImpl, HtmlSanitizer htmlSanitizer) {
         this.urlShortenerServiceImpl = urlShortenerServiceImpl;
+        this.htmlSanitizer = htmlSanitizer;
     }
 
     @Override
     public void generateShortCode(GenerateShortCodeRequest request, StreamObserver<GenerateShortCodeResponse> responseObserver) {
         try {
-            String shortCode = urlShortenerServiceImpl.generateShortCode(request.getOriginalUrl());
+            String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
+            String shortCode = urlShortenerServiceImpl.generateShortCode(originalUrl);
 
             GenerateShortCodeResponse response = GenerateShortCodeResponse
                     .newBuilder()
@@ -54,12 +58,12 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
     public void generateShortCodeAccount(GenerateShortCodeAccountRequest request, StreamObserver<GenerateShortCodeResponse> responseObserver) {
         Context context = Context.current();
         try {
-            String shortCode = urlShortenerServiceImpl.generateShortCode(AuthConstants.USER_EMAIL.get(context), request.getOriginalUrl());
+            String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
+            String shortCode = urlShortenerServiceImpl.generateShortCode(AuthConstants.USER_EMAIL.get(context), originalUrl);
             GenerateShortCodeResponse response = GenerateShortCodeResponse
                     .newBuilder()
                     .setShortCode(shortCode)
                     .build();
-
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
