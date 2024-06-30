@@ -2,14 +2,16 @@ package auth
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
+
 	"github.com/sonnees/grpc-gateway/internal/session"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
-	"io"
-	"net/http"
-	"os"
-	"net/url"
-	"fmt"
 )
 
 var (
@@ -29,7 +31,8 @@ func HandleGithubLogin() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
         sess, _ := session.Store.Get(r, sessionName)
-        sess.Values["original_url"] = r.Header.Get("Referer")
+        sess.Values["original_url"] = r.Referer()
+		log.Println(r)
         if err := sess.Save(r, w); err != nil {
             http.Error(w, "Không thể lưu session", http.StatusInternalServerError)
             return
@@ -122,12 +125,14 @@ func HandleGithubCallback() http.HandlerFunc {
 
         originalURL, ok := sess.Values["original_url"].(string)
         if !ok || originalURL == "" {
-            originalURL = "http://localhost:5173" // Mặc định quay về trang chủ của frontend
+			
+            originalURL = "http://localhost:5173/page/home" // Mặc định quay về trang chủ của frontend
         }
+		log.Println(originalURL, ok)
 
         // Chuyển hướng về trang frontend với thông tin xác thực
         redirectURL := fmt.Sprintf("%s?authenticated=true&name=%s&email=%s&avatar=%s",
-            originalURL,
+            "http://localhost:5173/page/home",
             url.QueryEscape(sess.Values["name"].(string)),
             url.QueryEscape(sess.Values["email"].(string)),
             url.QueryEscape(sess.Values["avatar"].(string)))

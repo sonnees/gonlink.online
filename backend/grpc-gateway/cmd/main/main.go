@@ -53,8 +53,6 @@ func run() error {
 	httpMux.HandleFunc("/auth/github/login", auth.HandleGithubLogin())
 	httpMux.HandleFunc("/auth/github/login/callback", auth.HandleGithubCallback())
 
-	httpMux.Handle("/", auth.AuthMiddleware(httpMux))
-
 	return http.ListenAndServe(":8080", cors.SetupCORS(httpMux))
 }
 
