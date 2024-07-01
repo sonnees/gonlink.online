@@ -16,14 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/shorten-service/api/v1/generate-shortcode": {
+    "/shorten-service/api/v1/account-generate-shortcode": {
       "post": {
-        "operationId": "UrlShortenerService_generateShortCode",
+        "operationId": "UrlShortenerService_generateShortCodeAccount",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/onlineGenerateShortCodeResponse"
+              "$ref": "#/definitions/gonlinkGenerateShortCodeResponse"
             }
           },
           "default": {
@@ -39,7 +39,39 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/onlineGenerateShortCodeRequest"
+              "$ref": "#/definitions/gonlinkGenerateShortCodeAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UrlShortenerService"
+        ]
+      }
+    },
+    "/shorten-service/api/v1/generate-shortcode": {
+      "post": {
+        "operationId": "UrlShortenerService_generateShortCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkGenerateShortCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkGenerateShortCodeRequest"
             }
           }
         ],
@@ -55,7 +87,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/onlineGetOriginalUrlResponse"
+              "$ref": "#/definitions/gonlinkGetOriginalUrlResponse"
             }
           },
           "default": {
@@ -71,7 +103,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/onlineGetOriginalUrlRequest"
+              "$ref": "#/definitions/gonlinkGetOriginalUrlRequest"
             }
           }
         ],
@@ -82,19 +114,24 @@
     }
   },
   "definitions": {
-    "onlineGenerateShortCodeRequest": {
+    "gonlinkGenerateShortCodeAccountRequest": {
       "type": "object",
       "properties": {
-        "email": {
+        "originalUrl": {
           "type": "string"
-        },
+        }
+      }
+    },
+    "gonlinkGenerateShortCodeRequest": {
+      "type": "object",
+      "properties": {
         "originalUrl": {
           "type": "string"
         }
       },
       "title": "=== GenerateShortCode ==="
     },
-    "onlineGenerateShortCodeResponse": {
+    "gonlinkGenerateShortCodeResponse": {
       "type": "object",
       "properties": {
         "shortCode": {
@@ -102,7 +139,7 @@
         }
       }
     },
-    "onlineGetOriginalUrlRequest": {
+    "gonlinkGetOriginalUrlRequest": {
       "type": "object",
       "properties": {
         "shortCode": {
@@ -111,7 +148,7 @@
       },
       "title": "=== GetOriginalUrl ==="
     },
-    "onlineGetOriginalUrlResponse": {
+    "gonlinkGetOriginalUrlResponse": {
       "type": "object",
       "properties": {
         "originalUrl": {

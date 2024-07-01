@@ -1,5 +1,5 @@
 project:
-  name:shorten-service
+  name: shorten-service
 
 spring:
   application:
@@ -13,18 +13,17 @@ spring:
   kafka:
     bootstrap-servers: 0.0.0.0:9092
     consumer:
-      group-id: shorten-service
-      auto-offset-reset: earliest
+      group-id: gonlink
+      auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
     template:
       default-topic: shorten-service
-
 
 # grpc
 grpc:
@@ -37,6 +36,9 @@ shorten-service:
   LENGTH_SHORT_CODE: 6
   URL_FORBIDDEN: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
   kafka:
-    topic: shorten-service
+    default-topic: shorten-service
+    topic: gonlink
+  jwt:
+    JWT_SECRET: 7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
 
 

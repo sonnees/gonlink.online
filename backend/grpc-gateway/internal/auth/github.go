@@ -2,13 +2,15 @@ package auth
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/sonnees/grpc-gateway/internal/session"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
@@ -20,7 +22,6 @@ var (
 
 func HandleGithubLogin() http.HandlerFunc {
 	sessionName := os.Getenv("SESSION_NAME_AUTH")
-
 	githubOauthConfig = &oauth2.Config{
 		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
 		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
@@ -28,11 +29,9 @@ func HandleGithubLogin() http.HandlerFunc {
 		Scopes:       []string{"user:email", "read:user"},
 		Endpoint:     github.Endpoint,
 	}
-
 	return func(w http.ResponseWriter, r *http.Request) {
         sess, _ := session.Store.Get(r, sessionName)
         sess.Values["original_url"] = r.Referer()
-		log.Println(r)
         if err := sess.Save(r, w); err != nil {
             http.Error(w, "Không thể lưu session", http.StatusInternalServerError)
             return
@@ -44,7 +43,7 @@ func HandleGithubLogin() http.HandlerFunc {
 
 func HandleGithubCallback() http.HandlerFunc {
 	sessionName := os.Getenv("SESSION_NAME_AUTH")
-
+	
 	return func(w http.ResponseWriter, r *http.Request) {
 		state := r.URL.Query().Get("state")
 		if state != "state" {
@@ -113,30 +112,44 @@ func HandleGithubCallback() http.HandlerFunc {
 		}
 
 		sess, _ := session.Store.Get(r, sessionName)
-        sess.Values["authenticated"] = true
-        sess.Values["name"] = userInfo["login"]
-        sess.Values["email"] = primaryEmail
-        sess.Values["avatar"] = userInfo["avatar_url"]
-
-        if err := sess.Save(r, w); err != nil {
-            http.Error(w, "Không thể lưu session", http.StatusInternalServerError)
-            return
-        }
+		tokenJWT, e:=createToken(primaryEmail, userInfo["login"].(string), userInfo["avatar_url"].(string))
+		if e!=nil{
+			http.Error(w, "Failed to create token: "+e.Error(), http.StatusInternalServerError)
+			return
+		}
 
         originalURL, ok := sess.Values["original_url"].(string)
         if !ok || originalURL == "" {
-			
             originalURL = "http://localhost:5173/page/home" // Mặc định quay về trang chủ của frontend
         }
-		log.Println(originalURL, ok)
 
         // Chuyển hướng về trang frontend với thông tin xác thực
-        redirectURL := fmt.Sprintf("%s?authenticated=true&name=%s&email=%s&avatar=%s",
+        redirectURL := fmt.Sprintf("%s?token=%s",
             "http://localhost:5173/page/home",
-            url.QueryEscape(sess.Values["name"].(string)),
-            url.QueryEscape(sess.Values["email"].(string)),
-            url.QueryEscape(sess.Values["avatar"].(string)))
-
+			tokenJWT,
+		)
+		log.Println("tokenJWT:", tokenJWT)
         http.Redirect(w, r, redirectURL, http.StatusFound)
 	}
+}
+
+func createToken(email, name, avatar string) (string, error) {
+    jwtSecret := os.Getenv("JWT_SECRET")
+    if jwtSecret == "" {
+        return "", errors.New("JWT_SECRET is not set")
+    }
+	role := "user"
+
+    claims := jwt.MapClaims{
+        "email":  email,
+        "name":   name,
+        "avatar": avatar,
+		"role":   role,
+        "iat":    time.Now().Unix(),
+        "exp":    time.Now().Add(time.Hour * 24).Unix(),
+    }
+
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+    return token.SignedString([]byte(jwtSecret))
 }

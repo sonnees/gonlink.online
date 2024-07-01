@@ -1,13 +1,16 @@
 syntax = "proto3";
 option java_multiple_files = true;
 
-package gonlink.online;
+package online.gonlink;
 import "google/protobuf/empty.proto";
 
 // === GenerateShortCode ===
 message GenerateShortCodeRequest{
-  string email = 1;
-  string originalUrl = 2;
+  string originalUrl = 1;
+}
+
+message GenerateShortCodeAccountRequest{
+  string originalUrl = 1;
 }
 
 message GenerateShortCodeResponse{
@@ -25,6 +28,7 @@ message GetOriginalUrlResponse{
 
 service UrlShortenerService {
   rpc generateShortCode(GenerateShortCodeRequest) returns(GenerateShortCodeResponse){}
+  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(GenerateShortCodeResponse){}
   rpc getOriginalUrl(GetOriginalUrlRequest) returns(GetOriginalUrlResponse){}
 }
 
