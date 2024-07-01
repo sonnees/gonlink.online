@@ -3,6 +3,7 @@ module github.com/sonnees/grpc-gateway
 go 1.22.4
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/gorilla/sessions v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0
 	github.com/joho/godotenv v1.5.1

@@ -21,7 +21,8 @@ import (
 )
 
 var (
-	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
+    grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
+    grpcServer2Endpoint = flag.String("grpc-server2-endpoint", "localhost:9091", "Second gRPC server endpoint")
 )
 
 func run() error {
@@ -44,14 +45,21 @@ func run() error {
 
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+
 	err := gw.RegisterUrlShortenerServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}
+	err = gw.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, *grpcServer2Endpoint, opts)
+    if err != nil {
+        return err
+    }
 
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/auth/github/login", auth.HandleGithubLogin())
 	httpMux.HandleFunc("/auth/github/login/callback", auth.HandleGithubCallback())
+
+	httpMux.Handle("/", auth.AuthMiddleware(cors.SetupCORS(mux)))
 
 	return http.ListenAndServe(":8080", cors.SetupCORS(httpMux))
 }

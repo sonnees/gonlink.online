@@ -1,0 +1,29 @@
+syntax = "proto3";
+option go_package = "grpc-gateway/api/proto";
+
+package online.gonlink;
+
+import "google/api/annotations.proto";
+
+// === GetInfoAccount ===
+message GetInfoAccountRequest{
+}
+
+message GetInfoAccountResponse{
+  string email = 1;
+  string name = 2;
+  string avatar = 3;
+  string role = 4;
+  string create = 5;
+  repeated string urls = 6;
+}
+
+service AccountService {
+  rpc getInfoAccount(GetInfoAccountRequest) returns(GetInfoAccountResponse){
+    option (google.api.http) = {
+      post: "/account-service/api/v1/get-info-account"
+      body: "*"
+    };
+  }
+}
+

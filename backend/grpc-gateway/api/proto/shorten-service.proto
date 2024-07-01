@@ -1,20 +1,22 @@
 syntax = "proto3";
 option go_package = "grpc-gateway/api/proto";
 
-package gonlink.online;
+package online.gonlink;
 
 import "google/api/annotations.proto";
 
 // === GenerateShortCode ===
 message GenerateShortCodeRequest{
-  string email = 1; 
-  string originalUrl = 2;
+  string originalUrl = 1;
+}
+
+message GenerateShortCodeAccountRequest{
+  string originalUrl = 1;
 }
 
 message GenerateShortCodeResponse{
   string shortCode = 1;
 }
-
 // === GetOriginalUrl ===
 message GetOriginalUrlRequest{
   string shortCode = 1;
@@ -24,11 +26,17 @@ message GetOriginalUrlResponse{
   string originalUrl = 1;
 }
 
-
 service UrlShortenerService {
   rpc generateShortCode(GenerateShortCodeRequest) returns(GenerateShortCodeResponse){
     option (google.api.http) = {
       post: "/shorten-service/api/v1/generate-shortcode"
+      body: "*"
+    };
+  }
+
+  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(GenerateShortCodeResponse){
+    option (google.api.http) = {
+      post: "/shorten-service/api/v1/account-generate-shortcode"
       body: "*"
     };
   }
@@ -41,5 +49,6 @@ service UrlShortenerService {
   }
 }
 
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdmF0YXIiOiJodHRwczovL2F2YXRhcnMuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3UvMTEwOTg3NzYzP3Y9NCIsImVtYWlsIjoic3NvbjEyMTMxNDE1QGdtYWlsLmNvbSIsImV4cCI6MTcxOTg0NDQ3OSwiaWF0IjoxNzE5NzU4MDc5LCJuYW1lIjoic29ubmVlcyIsInJvbGUiOiJ1c2VyIn0.8pOImLTTwDdC2FwCLisQ1_0_tBAew1_bEaRYaWRhwp8
 
 

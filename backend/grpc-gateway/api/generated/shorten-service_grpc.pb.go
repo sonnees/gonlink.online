@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	UrlShortenerService_GenerateShortCode_FullMethodName = "/gonlink.online.UrlShortenerService/generateShortCode"
-	UrlShortenerService_GetOriginalUrl_FullMethodName    = "/gonlink.online.UrlShortenerService/getOriginalUrl"
+	UrlShortenerService_GenerateShortCode_FullMethodName        = "/online.gonlink.UrlShortenerService/generateShortCode"
+	UrlShortenerService_GenerateShortCodeAccount_FullMethodName = "/online.gonlink.UrlShortenerService/generateShortCodeAccount"
+	UrlShortenerService_GetOriginalUrl_FullMethodName           = "/online.gonlink.UrlShortenerService/getOriginalUrl"
 )
 
 // UrlShortenerServiceClient is the client API for UrlShortenerService service.
@@ -28,6 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UrlShortenerServiceClient interface {
 	GenerateShortCode(ctx context.Context, in *GenerateShortCodeRequest, opts ...grpc.CallOption) (*GenerateShortCodeResponse, error)
+	GenerateShortCodeAccount(ctx context.Context, in *GenerateShortCodeAccountRequest, opts ...grpc.CallOption) (*GenerateShortCodeResponse, error)
 	GetOriginalUrl(ctx context.Context, in *GetOriginalUrlRequest, opts ...grpc.CallOption) (*GetOriginalUrlResponse, error)
 }
 
@@ -49,6 +51,16 @@ func (c *urlShortenerServiceClient) GenerateShortCode(ctx context.Context, in *G
 	return out, nil
 }
 
+func (c *urlShortenerServiceClient) GenerateShortCodeAccount(ctx context.Context, in *GenerateShortCodeAccountRequest, opts ...grpc.CallOption) (*GenerateShortCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateShortCodeResponse)
+	err := c.cc.Invoke(ctx, UrlShortenerService_GenerateShortCodeAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *urlShortenerServiceClient) GetOriginalUrl(ctx context.Context, in *GetOriginalUrlRequest, opts ...grpc.CallOption) (*GetOriginalUrlResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetOriginalUrlResponse)
@@ -64,6 +76,7 @@ func (c *urlShortenerServiceClient) GetOriginalUrl(ctx context.Context, in *GetO
 // for forward compatibility
 type UrlShortenerServiceServer interface {
 	GenerateShortCode(context.Context, *GenerateShortCodeRequest) (*GenerateShortCodeResponse, error)
+	GenerateShortCodeAccount(context.Context, *GenerateShortCodeAccountRequest) (*GenerateShortCodeResponse, error)
 	GetOriginalUrl(context.Context, *GetOriginalUrlRequest) (*GetOriginalUrlResponse, error)
 	mustEmbedUnimplementedUrlShortenerServiceServer()
 }
@@ -74,6 +87,9 @@ type UnimplementedUrlShortenerServiceServer struct {
 
 func (UnimplementedUrlShortenerServiceServer) GenerateShortCode(context.Context, *GenerateShortCodeRequest) (*GenerateShortCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateShortCode not implemented")
+}
+func (UnimplementedUrlShortenerServiceServer) GenerateShortCodeAccount(context.Context, *GenerateShortCodeAccountRequest) (*GenerateShortCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateShortCodeAccount not implemented")
 }
 func (UnimplementedUrlShortenerServiceServer) GetOriginalUrl(context.Context, *GetOriginalUrlRequest) (*GetOriginalUrlResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOriginalUrl not implemented")
@@ -109,6 +125,24 @@ func _UrlShortenerService_GenerateShortCode_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UrlShortenerService_GenerateShortCodeAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateShortCodeAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UrlShortenerServiceServer).GenerateShortCodeAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UrlShortenerService_GenerateShortCodeAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UrlShortenerServiceServer).GenerateShortCodeAccount(ctx, req.(*GenerateShortCodeAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UrlShortenerService_GetOriginalUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetOriginalUrlRequest)
 	if err := dec(in); err != nil {
@@ -131,12 +165,16 @@ func _UrlShortenerService_GetOriginalUrl_Handler(srv interface{}, ctx context.Co
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UrlShortenerService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "gonlink.online.UrlShortenerService",
+	ServiceName: "online.gonlink.UrlShortenerService",
 	HandlerType: (*UrlShortenerServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "generateShortCode",
 			Handler:    _UrlShortenerService_GenerateShortCode_Handler,
+		},
+		{
+			MethodName: "generateShortCodeAccount",
+			Handler:    _UrlShortenerService_GenerateShortCodeAccount_Handler,
 		},
 		{
 			MethodName: "getOriginalUrl",
