@@ -1,5 +1,6 @@
 package online.gonlink.accountservice.repository;
 
+import online.gonlink.accountservice.entity.TrafficID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,50 +24,32 @@ class TrafficRepositoryTest {
     @Test
     void insert() {
         String shortCode = "demo";
-        String date = simpleDateFormat.format(Date.from(ZonedDateTime.now().toInstant()));
-
+        String zoneID = "Asia/Saigon";
+        ZonedDateTime clientTime = ZonedDateTime.parse("2024-07-02T07:40:27.442Z").withZoneSameInstant(ZoneId.of(zoneID));
+        String date = simpleDateFormat.format(Date.from(clientTime.toInstant()));
         Traffic traffic = new Traffic(shortCode, date);
 
         Traffic insert = trafficRepository.insert(traffic);
         assertNotNull(insert);
-        trafficRepository.delete(insert);
-    }
-
-    @Test
-    void findTrafficByShortCodeAndTrafficDate() {
-        String shortCode = "demo";
-        String date = simpleDateFormat.format(Date.from(ZonedDateTime.now().toInstant()));
-        Traffic insert = insert_();
-
-        Optional<Traffic> trafficByShortCodeAndTrafficDate = trafficRepository.findTrafficByShortCodeAndTrafficDate(shortCode, date);
-        assertTrue(trafficByShortCodeAndTrafficDate.isPresent());
-
         trafficRepository.delete(insert);
     }
 
     @Test
     void increaseTraffic() {
         String shortCode = "demo";
-        String date = simpleDateFormat.format(Date.from(ZonedDateTime.now().toInstant()));
-        Traffic insert = insert_();
+        String zoneID = "Asia/Saigon";
+        ZonedDateTime clientTime = ZonedDateTime.parse("2024-07-02T07:40:27.442Z").withZoneSameInstant(ZoneId.of(zoneID));
+        String date = simpleDateFormat.format(Date.from(clientTime.toInstant()));
+        Traffic insert = trafficRepository.insert(new Traffic(shortCode, date));
 
         String dateTime = simpleDateFormatWithTime.format(Date.from(ZonedDateTime.now().toInstant()));
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dateTimeFormatter);
-        int hour = localDateTime.getHour()-1;
+        int index = localDateTime.getHour();
 
-        Long aLong = trafficRepository.increaseTraffic(shortCode, date, hour);
+        Long aLong = trafficRepository.increaseTraffic(new TrafficID(shortCode, date), index);
+
         assertTrue(aLong>0);
         trafficRepository.delete(insert);
     }
-
-    Traffic insert_() {
-        String shortCode = "demo";
-        String date = simpleDateFormat.format(Date.from(ZonedDateTime.now().toInstant()));
-        Traffic traffic = new Traffic(shortCode, date);
-        Traffic insert = trafficRepository.insert(traffic);
-        assertNotNull(insert);
-        return insert;
-    }
-
 
 }

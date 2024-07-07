@@ -2,6 +2,7 @@ package online.gonlink.shortenservice.service.impl;
 
 import com.mongodb.DuplicateKeyException;
 import online.gonlink.shortenservice.dto.KafkaAppendUrl;
+import online.gonlink.shortenservice.dto.KafkaIncreaseTraffic;
 import online.gonlink.shortenservice.dto.KafkaMessage;
 import online.gonlink.shortenservice.entity.ShortUrl;
 import online.gonlink.shortenservice.exception.GrpcStatusException;
@@ -107,7 +108,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
             ShortUrl shortUrl = new ShortUrl(shortCode,originalUrl);
             try{
                 shortUrlRepository.insert(shortUrl);
-                KafkaMessage message = new KafkaMessage("appendUrl", new KafkaAppendUrl(email, shortCode));
+                KafkaMessage message = new KafkaMessage("append-url", new KafkaAppendUrl(email, shortCode));
                 producerServiceImpl.sendMessage(message);
                 return shortCode;
             } catch (DuplicateKeyException ignored){
@@ -124,9 +125,13 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     }
 
     @Override
-    public String getOriginalUrl(String shortCode) {
+    public String getOriginalUrl(String shortCode, String clientTime, String zoneId) {
         Optional<ShortUrl> shortUrlOpt = shortUrlRepository.findById(shortCode);
-        if (shortUrlOpt.isPresent()) return shortUrlOpt.get().getOriginalUrl();
+        if (shortUrlOpt.isPresent()) {
+            KafkaMessage message = new KafkaMessage("increase-traffic", new KafkaIncreaseTraffic(shortCode, clientTime, zoneId));
+            producerServiceImpl.sendMessage(message);
+            return shortUrlOpt.get().getOriginalUrl();
+        }
         throw new StatusRuntimeException(Status.NOT_FOUND.withDescription("Short URL not found for code: " + shortCode));
     }
 

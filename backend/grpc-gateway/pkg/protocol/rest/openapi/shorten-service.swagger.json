@@ -144,6 +144,12 @@
       "properties": {
         "shortCode": {
           "type": "string"
+        },
+        "clientTime": {
+          "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
         }
       },
       "title": "=== GetOriginalUrl ==="

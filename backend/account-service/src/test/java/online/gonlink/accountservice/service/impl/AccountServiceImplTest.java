@@ -1,7 +1,7 @@
 package online.gonlink.accountservice.service.impl;
 
 import online.gonlink.accountservice.dto.UserInfo;
-import online.gonlink.accountservice.service.JsonConverter;
+import online.gonlink.accountservice.exception.GrpcStatusException;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import online.gonlink.accountservice.entity.Account;
 import online.gonlink.accountservice.repository.AccountRepository;
-
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -19,13 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceImplTest {
-
-    @InjectMocks
-    AccountServiceImpl accountServiceImpl;
-    @Mock
-    AccountRepository accountRepository;
-    @Mock
-    JsonConverter jsonConverter;
+    @InjectMocks AccountServiceImpl accountServiceImpl;
+    @Mock AccountRepository accountRepository;
 
     @Test
     void getInfoAccount_EXISTS() {
@@ -106,8 +100,8 @@ class AccountServiceImplTest {
         String url = "12abCD";
 
         when(accountRepository.appendUrl(email, url)).thenReturn(0L);
-        StatusRuntimeException exception = assertThrows(StatusRuntimeException.class, () -> accountServiceImpl.appendUrl(email, url));
-        assertEquals(Status.NOT_FOUND.getCode(), exception.getStatus().getCode());
+        GrpcStatusException exception = assertThrows(GrpcStatusException.class, () -> accountServiceImpl.appendUrl(email, url));
+        assertEquals(Status.NOT_FOUND.getCode(), exception.getStatusException().getStatus().getCode());
 
         verify(accountRepository).appendUrl(email, url);
     }
@@ -122,6 +116,5 @@ class AccountServiceImplTest {
         assertEquals(Status.INTERNAL.getCode(), exception.getStatus().getCode());
 
         verify(accountRepository).appendUrl(email, url);
-        verify(jsonConverter).objToString(any());
     }
 }

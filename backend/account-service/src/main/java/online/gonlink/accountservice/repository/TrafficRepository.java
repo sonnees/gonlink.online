@@ -1,19 +1,16 @@
 package online.gonlink.accountservice.repository;
 
 import online.gonlink.accountservice.entity.Traffic;
+import online.gonlink.accountservice.entity.TrafficID;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface TrafficRepository extends MongoRepository<Traffic, String> {
-    @Query("{ 'shortCode': ?0, 'trafficDate': ?1}")
-    Optional<Traffic> findTrafficByShortCodeAndTrafficDate(String shortCode, String trafficDate);
+public interface TrafficRepository extends MongoRepository<Traffic, TrafficID> {
+    @Query("{id: ?0}")
+    @Update("{ '$inc' : { 'trafficHours.?1' : 1 } }")
+    Long increaseTraffic(TrafficID id, int index);
 
-    @Query("{'shortCode': ?0, 'trafficDate': ?1}")
-    @Update("{ '$inc' : { 'trafficHours.?2' : 1 } }")
-    Long increaseTraffic(String shortCode, String trafficDate, int index);
 }

@@ -80,7 +80,7 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
     @Override
     public void getOriginalUrl(GetOriginalUrlRequest request, StreamObserver<GetOriginalUrlResponse> responseObserver) {
         try {
-            String originalUrl = urlShortenerServiceImpl.getOriginalUrl(request.getShortCode());
+            String originalUrl = urlShortenerServiceImpl.getOriginalUrl(request.getShortCode(), request.getClientTime(), request.getZoneId());
             GetOriginalUrlResponse response = GetOriginalUrlResponse
                     .newBuilder()
                     .setOriginalUrl(originalUrl)

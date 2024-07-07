@@ -5,6 +5,7 @@ import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import online.gonlink.accountservice.entity.Traffic;
+import online.gonlink.accountservice.entity.TrafficID;
 import online.gonlink.accountservice.repository.TrafficRepository;
 import online.gonlink.accountservice.service.TrafficService;
 import online.gonlink.accountservice.util.FormatLogMessage;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -36,17 +38,20 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     @Transactional
-    public Boolean increaseTraffic(String shortCode, String trafficDate, int index) {
-        String date = simpleDateFormat.format(Date.from(ZonedDateTime.now().toInstant()));
-        String dateTime = simpleDateFormatWithTime.format(Date.from(ZonedDateTime.now().toInstant()));
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dateTimeFormatter);
-        int hour = localDateTime.getHour()-1;
+    public Boolean increaseTraffic(String shortCode, String trafficDate, String zoneId) {
+        ZonedDateTime clientTime = ZonedDateTime.parse(trafficDate).withZoneSameInstant(ZoneId.of(zoneId));
+        String date = simpleDateFormat.format(Date.from(clientTime.toInstant()));
 
-        boolean present = findTrafficByShortCodeAndTrafficDate(shortCode, trafficDate).isPresent();
-        if(!present) insert(shortCode);
+        String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
+        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dateTimeFormatter);
+        int index = localDateTime.getHour();
+
+        TrafficID trafficID = new TrafficID(shortCode, date);
+        Optional<Traffic> byId = trafficRepository.findById(trafficID);
+        if(byId.isEmpty()) insert(shortCode, date);
 
         try {
-            Long increased = trafficRepository.increaseTraffic(shortCode, date, hour);
+            Long increased = trafficRepository.increaseTraffic(trafficID, index);
             if(increased>0) return true;
             else{
                 log.error(FormatLogMessage.formatLogMessage(
@@ -68,15 +73,9 @@ public class TrafficServiceImpl implements TrafficService {
         }
     }
 
-    public Optional<Traffic> findTrafficByShortCodeAndTrafficDate(String shortCode, String trafficDate) {
-        String date = simpleDateFormat.format(Date.from(ZonedDateTime.now().toInstant()));
-        return trafficRepository.findTrafficByShortCodeAndTrafficDate(shortCode, date);
-    }
-
     @Transactional
-    public void insert(String shortCode) {
-        String date = simpleDateFormat.format(Date.from(ZonedDateTime.now().toInstant()));
-        Traffic traffic = new Traffic(shortCode, date);
+    public void insert(String shortCode, String trafficDate) {
+        Traffic traffic = new Traffic(shortCode, trafficDate);
         try {
             trafficRepository.insert(traffic);
         } catch (DuplicateKeyException e){

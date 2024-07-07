@@ -31,7 +31,6 @@ public class ProducerServiceImpl implements ProducerService {
 
     @Override
     public void sendMessage(KafkaMessage message) {
-        log.info("send");
         CompletableFuture<SendResult<String, String>> send = null;
         try {
             String mes = objectMapper.writeValueAsString(message);
