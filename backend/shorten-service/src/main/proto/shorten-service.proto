@@ -20,6 +20,8 @@ message GenerateShortCodeResponse{
 // === GetOriginalUrl ===
 message GetOriginalUrlRequest{
   string shortCode = 1;
+  string clientTime = 2;
+  string zoneId = 3;
 }
 
 message GetOriginalUrlResponse{

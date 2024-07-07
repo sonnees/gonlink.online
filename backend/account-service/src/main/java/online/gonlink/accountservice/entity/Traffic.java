@@ -1,30 +1,24 @@
 package online.gonlink.accountservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "traffic")
 public class Traffic {
-    @Id // uni
-    private String shortCode;
-    private String trafficDate;
+    @Id
+    private TrafficID id;
     private Integer[] trafficHours;
 
     public Traffic(String shortCode, String trafficDate) {
-        this.shortCode = shortCode;
-        this.trafficDate = trafficDate;
+        this.id = new TrafficID(shortCode, trafficDate);
         this.trafficHours = new Integer[24];
         Arrays.fill(trafficHours, 0);
     }

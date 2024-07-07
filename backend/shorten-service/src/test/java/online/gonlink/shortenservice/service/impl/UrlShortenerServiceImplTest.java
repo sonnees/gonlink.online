@@ -1,12 +1,12 @@
 package online.gonlink.shortenservice.service.impl;
 
+import online.gonlink.shortenservice.dto.KafkaMessage;
 import online.gonlink.shortenservice.entity.ShortUrl;
-import online.gonlink.shortenservice.jwt.JwtUtil;
 import online.gonlink.shortenservice.service.CheckURL;
 import online.gonlink.shortenservice.service.ShortCodeGenerator;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
-import io.jsonwebtoken.Claims;
+import online.gonlink.shortenservice.service.base.impl.ProducerServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,8 +31,8 @@ class UrlShortenerServiceImplTest {
     @Mock
     CheckURL checkURL;
     @Mock
-    JwtUtil jwtUtil;
-    @Mock Claims claims;
+    ProducerServiceImpl producerService;
+
 
     @Test
     void generateShortCode_NotExits(){
@@ -49,7 +49,6 @@ class UrlShortenerServiceImplTest {
         when(shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl)).thenReturn(Optional.empty());
         when(shortCodeGenerator.generateShortCode()).thenReturn(shortCodeE);
         when(shortUrlRepository.insert(shortUrl)).thenReturn(shortUrl);
-
 
         String shortCodeA = urlShortenerServiceImpl.generateShortCode(originalUrl);
 
@@ -93,9 +92,14 @@ class UrlShortenerServiceImplTest {
         when(shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl)).thenReturn(Optional.empty());
         when(shortCodeGenerator.generateShortCode()).thenReturn(shortCodeE);
         when(shortUrlRepository.insert(shortUrl)).thenReturn(shortUrl);
+        doNothing().when(producerService).sendMessage(any(KafkaMessage.class));
 
-
-        String shortCodeA = urlShortenerServiceImpl.generateShortCode(email,originalUrl);
+        String shortCodeA = null;
+        try{
+            shortCodeA = urlShortenerServiceImpl.generateShortCode(email,originalUrl);
+        } catch (Exception e){
+            fail();
+        }
 
         assertEquals(shortCodeE, shortCodeA);
 
@@ -127,10 +131,19 @@ class UrlShortenerServiceImplTest {
         String originalUrlE = "https://www.youtube.com/sonnees";
         String shortCode = "12abCD";
         ShortUrl shortUrl = new ShortUrl(shortCode, originalUrlE);
+        String zoneID = "Asia/Saigon";
+        String trafficDate = "2024-07-02T08:52:37.442Z";
 
         when(shortUrlRepository.findById(shortCode)).thenReturn(Optional.of(shortUrl));
+        doNothing().when(producerService).sendMessage(any(KafkaMessage.class));
+        String originalUrlA = null;
 
-        String originalUrlA = urlShortenerServiceImpl.getOriginalUrl(shortCode);
+        try{
+            originalUrlA = urlShortenerServiceImpl.getOriginalUrl(shortCode, trafficDate, zoneID);
+
+        } catch (Exception e){
+            fail();
+        }
         assertEquals(originalUrlE, originalUrlA);
 
         verify(shortUrlRepository).findById(any(String.class));
@@ -139,10 +152,12 @@ class UrlShortenerServiceImplTest {
     @Test
     void getOriginalUrl_NotExits() {
         String shortCode = "12abCD";
+        String zoneID = "Asia/Saigon";
+        String trafficDate = "2024-07-02T08:52:37.442Z";
 
         when(shortUrlRepository.findById(shortCode)).thenReturn(Optional.empty());
 
-        StatusRuntimeException exceptionE = assertThrows(StatusRuntimeException.class, () -> urlShortenerServiceImpl.getOriginalUrl(shortCode));
+        StatusRuntimeException exceptionE = assertThrows(StatusRuntimeException.class, () -> urlShortenerServiceImpl.getOriginalUrl(shortCode, trafficDate, zoneID));
         assertEquals(Status.NOT_FOUND.getCode(), exceptionE.getStatus().getCode());
 
         verify(shortUrlRepository).findById(any(String.class));
