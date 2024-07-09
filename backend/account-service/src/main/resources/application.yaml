@@ -1,0 +1,43 @@
+project:
+  name: account-service
+
+spring:
+  application:
+    name: account-service
+  data:
+    mongodb:
+      uri: mongodb+srv://sonnees:8ymAG8ia1s88DwXO@cluster0.m0vbmbu.mongodb.net/AccountService
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  jackson:
+    time-zone: UTC
+  kafka:
+    bootstrap-servers: 0.0.0.0:9092
+    consumer:
+      group-id: gonlink
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    template:
+      default-topic: account-service
+
+# grpc
+grpc:
+  server:
+    port: 9091
+
+# global value
+account-service:
+  kafka:
+    default-topic: account-service
+    topic: gonlink
+  jwt:
+    JWT_SECRET: 7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
+
+

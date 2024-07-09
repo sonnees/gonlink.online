@@ -1,0 +1,38 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package online.gonlink;
+import "google/protobuf/empty.proto";
+
+// === GenerateShortCode ===
+message GenerateShortCodeRequest{
+  string originalUrl = 1;
+}
+
+message GenerateShortCodeAccountRequest{
+  string originalUrl = 1;
+}
+
+message GenerateShortCodeResponse{
+  string shortCode = 1;
+}
+
+// === GetOriginalUrl ===
+message GetOriginalUrlRequest{
+  string shortCode = 1;
+  string clientTime = 2;
+  string zoneId = 3;
+}
+
+message GetOriginalUrlResponse{
+  string originalUrl = 1;
+}
+
+service UrlShortenerService {
+  rpc generateShortCode(GenerateShortCodeRequest) returns(GenerateShortCodeResponse){}
+  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(GenerateShortCodeResponse){}
+  rpc getOriginalUrl(GetOriginalUrlRequest) returns(GetOriginalUrlResponse){}
+}
+
+
+
