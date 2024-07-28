@@ -1682,3 +1682,143 @@ org.apache.kafka.common.errors.DisconnectException: null
 2024-07-28 20:43:28.561 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.kafka.common.metrics.Metrics - Metrics reporters closed
 2024-07-28 20:43:28.565 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.kafka.common.utils.AppInfoParser - App info kafka.consumer for consumer-gonlink-1 unregistered
 2024-07-28 20:43:28.565 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - gonlink: Consumer stopped
+2024-07-28 20:45:15.115 [main] INFO  o.g.a.AccountServiceApplication - Starting AccountServiceApplication using Java 17.0.2 with PID 13668 (C:\SON.admin\ProjectFinal\gonlink.online\backend\account-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:45:15.117 [main] INFO  o.g.a.AccountServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:45:15.555 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:45:15.612 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 52 ms. Found 2 MongoDB repository interfaces.
+2024-07-28 20:45:15.990 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@3e7b65d7, com.mongodb.Jep395RecordCodecProvider@3c854752, com.mongodb.KotlinCodecProvider@3ddeaa5f]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:45:16.058 [cluster-ClusterId{value='66a64b6b83df0e4a6f5258d3', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:45:16.084 [cluster-ClusterId{value='66a64b6b83df0e4a6f5258d3', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:45:16.086 [cluster-ClusterId{value='66a64b6b83df0e4a6f5258d3', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:45:16.477 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:45:16.478 [cluster-ClusterId{value='66a64b6b83df0e4a6f5258d3', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=226840100, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:45:16 ICT 2024, lastUpdateTimeNanos=183793539648700}
+2024-07-28 20:45:16.479 [cluster-ClusterId{value='66a64b6b83df0e4a6f5258d3', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=212892200, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:45:16 ICT 2024, lastUpdateTimeNanos=183793542872300}
+2024-07-28 20:45:16.485 [cluster-ClusterId{value='66a64b6b83df0e4a6f5258d3', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=224024600, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000178, setVersion=195, topologyVersion=TopologyVersion{processId=668fced35efc8b1ba1b38626, counter=6}, lastWriteDate=Sun Jul 28 20:45:16 ICT 2024, lastUpdateTimeNanos=183793548716600}
+2024-07-28 20:45:16.487 [cluster-ClusterId{value='66a64b6b83df0e4a6f5258d3', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000178 and max set version 195
+2024-07-28 20:45:16.781 [main] INFO  o.a.k.c.consumer.ConsumerConfig - ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = latest
+	bootstrap.servers = [0.0.0.0:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-gonlink-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = gonlink
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+
+2024-07-28 20:45:16.836 [main] INFO  o.a.k.c.t.i.KafkaMetricsCollector - initializing Kafka metrics collector
+2024-07-28 20:45:16.923 [main] INFO  o.a.k.c.consumer.ConsumerConfig - These configurations '[spring.json.trusted.packages]' were supplied but are not used yet.
+2024-07-28 20:45:16.926 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.7.0
+2024-07-28 20:45:16.926 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: 2ae524ed625438c5
+2024-07-28 20:45:16.926 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1722174316924
+2024-07-28 20:45:16.929 [main] INFO  o.a.k.c.c.i.LegacyKafkaConsumer - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Subscribed to topic(s): gonlink
+2024-07-28 20:45:17.062 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: online.gonlink.AccountService, bean: accountServiceGrpc, class: online.gonlink.accountservice.grpc.AccountServiceGrpc
+2024-07-28 20:45:17.062 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.health.v1.Health, bean: grpcHealthService, class: io.grpc.protobuf.services.HealthServiceImpl
+2024-07-28 20:45:17.062 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.reflection.v1alpha.ServerReflection, bean: protoReflectionService, class: io.grpc.protobuf.services.ProtoReflectionService
+2024-07-28 20:45:17.209 [main] INFO  n.d.b.g.s.s.GrpcServerLifecycle - gRPC Server started, listening on address: *, port: 9091
+2024-07-28 20:45:17.217 [main] INFO  o.g.a.AccountServiceApplication - Started AccountServiceApplication in 2.545 seconds (process running for 3.403)
+2024-07-28 20:45:17.422 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Error while fetching metadata with correlation id 2 : {gonlink=LEADER_NOT_AVAILABLE}
+2024-07-28 20:45:17.424 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  org.apache.kafka.clients.Metadata - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Cluster ID: 9U5zJm7fRLeWVwQJjbpiow
+2024-07-28 20:45:17.573 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Error while fetching metadata with correlation id 5 : {gonlink=LEADER_NOT_AVAILABLE}
+2024-07-28 20:45:19.020 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Discovered group coordinator localhost:9092 (id: 2147483647 rack: null)
+2024-07-28 20:45:19.022 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] (Re-)joining group
+2024-07-28 20:45:19.055 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Request joining group due to: need to re-join with the given member-id: consumer-gonlink-1-07192d79-7744-417e-a212-e0e446a4156c
+2024-07-28 20:45:19.056 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] (Re-)joining group
+2024-07-28 20:45:19.081 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Successfully joined group with generation Generation{generationId=1, memberId='consumer-gonlink-1-07192d79-7744-417e-a212-e0e446a4156c', protocol='range'}
+2024-07-28 20:45:19.088 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Finished assignment for group at generation 1: {consumer-gonlink-1-07192d79-7744-417e-a212-e0e446a4156c=Assignment(partitions=[gonlink-0])}
+2024-07-28 20:45:19.153 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Successfully synced group in generation Generation{generationId=1, memberId='consumer-gonlink-1-07192d79-7744-417e-a212-e0e446a4156c', protocol='range'}
+2024-07-28 20:45:19.154 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Notifying assignor about the new Assignment(partitions=[gonlink-0])
+2024-07-28 20:45:19.158 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Adding newly assigned partitions: gonlink-0
+2024-07-28 20:45:19.168 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Found no committed offset for partition gonlink-0
+2024-07-28 20:45:19.173 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Found no committed offset for partition gonlink-0
+2024-07-28 20:45:19.185 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.SubscriptionState - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Resetting offset for partition gonlink-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 0 rack: null)], epoch=0}}.
+2024-07-28 20:45:19.204 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - gonlink: partitions assigned: [gonlink-0]
+2024-07-28 20:54:17.766 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Node -1 disconnected.
+2024-07-28 21:04:17.374 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-gonlink-1, groupId=gonlink] Node -1 disconnected.
