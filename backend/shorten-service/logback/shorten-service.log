@@ -1,647 +1,286 @@
-2024-07-07 16:21:05.334 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 17792 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
-2024-07-07 16:21:05.337 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-07-07 16:21:05.764 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
-2024-07-07 16:21:05.815 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 48 ms. Found 1 MongoDB repository interface.
-2024-07-07 16:21:06.275 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
-2024-07-07 16:21:06.291 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@470d183, com.mongodb.Jep395RecordCodecProvider@7f9fc8bd, com.mongodb.KotlinCodecProvider@ea52184]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
-2024-07-07 16:21:06.303 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
-2024-07-07 16:21:06.305 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
-2024-07-07 16:21:06.807 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
-2024-07-07 16:21:06.823 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=303419700, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000173, setVersion=189, topologyVersion=TopologyVersion{processId=6687d65b3d0f4ed0a38204c4, counter=6}, lastWriteDate=Sun Jul 07 16:21:10 ICT 2024, lastUpdateTimeNanos=926737907969500}
-2024-07-07 16:21:06.823 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=306535900, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=6687d88df9b9cd3f62194803, counter=3}, lastWriteDate=Sun Jul 07 16:21:10 ICT 2024, lastUpdateTimeNanos=926737907969500}
-2024-07-07 16:21:06.823 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=309280000, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=6687d74afb43d671ceac9a79, counter=4}, lastWriteDate=Sun Jul 07 16:21:10 ICT 2024, lastUpdateTimeNanos=926737907973700}
-2024-07-07 16:21:06.825 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000173 and max set version 189
-2024-07-07 16:21:07.110 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: online.gonlink.UrlShortenerService, bean: urlShortenerServiceGrpc, class: online.gonlink.shortenservice.grpc.UrlShortenerServiceGrpc
-2024-07-07 16:21:07.111 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.health.v1.Health, bean: grpcHealthService, class: io.grpc.protobuf.services.HealthServiceImpl
-2024-07-07 16:21:07.111 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.reflection.v1alpha.ServerReflection, bean: protoReflectionService, class: io.grpc.protobuf.services.ProtoReflectionService
-2024-07-07 16:21:07.244 [main] INFO  n.d.b.g.s.s.GrpcServerLifecycle - gRPC Server started, listening on address: *, port: 9090
-2024-07-07 16:21:07.252 [main] INFO  o.g.s.ShortenServiceApplication - Started ShortenServiceApplication in 2.299 seconds (process running for 3.004)
-2024-07-07 16:29:02.277 [grpc-default-executor-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send
-2024-07-07 16:29:02.325 [grpc-default-executor-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"YKezaC","trafficDate":"2024-07-07T09:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:29:02.376 [grpc-default-executor-1] INFO  o.a.k.c.producer.ProducerConfig - ProducerConfig values: 
-	acks = -1
-	auto.include.jmx.reporter = true
-	batch.size = 16384
-	bootstrap.servers = [0.0.0.0:9092]
-	buffer.memory = 33554432
-	client.dns.lookup = use_all_dns_ips
-	client.id = shorten-service-producer-1
-	compression.type = none
-	connections.max.idle.ms = 540000
-	delivery.timeout.ms = 120000
-	enable.idempotence = true
-	enable.metrics.push = true
-	interceptor.classes = []
-	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
-	linger.ms = 0
-	max.block.ms = 60000
-	max.in.flight.requests.per.connection = 5
-	max.request.size = 1048576
-	metadata.max.age.ms = 300000
-	metadata.max.idle.ms = 300000
-	metric.reporters = []
-	metrics.num.samples = 2
-	metrics.recording.level = INFO
-	metrics.sample.window.ms = 30000
-	partitioner.adaptive.partitioning.enable = true
-	partitioner.availability.timeout.ms = 0
-	partitioner.class = null
-	partitioner.ignore.keys = false
-	receive.buffer.bytes = 32768
-	reconnect.backoff.max.ms = 1000
-	reconnect.backoff.ms = 50
-	request.timeout.ms = 30000
-	retries = 2147483647
-	retry.backoff.max.ms = 1000
-	retry.backoff.ms = 100
-	sasl.client.callback.handler.class = null
-	sasl.jaas.config = null
-	sasl.kerberos.kinit.cmd = /usr/bin/kinit
-	sasl.kerberos.min.time.before.relogin = 60000
-	sasl.kerberos.service.name = null
-	sasl.kerberos.ticket.renew.jitter = 0.05
-	sasl.kerberos.ticket.renew.window.factor = 0.8
-	sasl.login.callback.handler.class = null
-	sasl.login.class = null
-	sasl.login.connect.timeout.ms = null
-	sasl.login.read.timeout.ms = null
-	sasl.login.refresh.buffer.seconds = 300
-	sasl.login.refresh.min.period.seconds = 60
-	sasl.login.refresh.window.factor = 0.8
-	sasl.login.refresh.window.jitter = 0.05
-	sasl.login.retry.backoff.max.ms = 10000
-	sasl.login.retry.backoff.ms = 100
-	sasl.mechanism = GSSAPI
-	sasl.oauthbearer.clock.skew.seconds = 30
-	sasl.oauthbearer.expected.audience = null
-	sasl.oauthbearer.expected.issuer = null
-	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
-	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
-	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
-	sasl.oauthbearer.jwks.endpoint.url = null
-	sasl.oauthbearer.scope.claim.name = scope
-	sasl.oauthbearer.sub.claim.name = sub
-	sasl.oauthbearer.token.endpoint.url = null
-	security.protocol = PLAINTEXT
-	security.providers = null
-	send.buffer.bytes = 131072
-	socket.connection.setup.timeout.max.ms = 30000
-	socket.connection.setup.timeout.ms = 10000
-	ssl.cipher.suites = null
-	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
-	ssl.endpoint.identification.algorithm = https
-	ssl.engine.factory.class = null
-	ssl.key.password = null
-	ssl.keymanager.algorithm = SunX509
-	ssl.keystore.certificate.chain = null
-	ssl.keystore.key = null
-	ssl.keystore.location = null
-	ssl.keystore.password = null
-	ssl.keystore.type = JKS
-	ssl.protocol = TLSv1.3
-	ssl.provider = null
-	ssl.secure.random.implementation = null
-	ssl.trustmanager.algorithm = PKIX
-	ssl.truststore.certificates = null
-	ssl.truststore.location = null
-	ssl.truststore.password = null
-	ssl.truststore.type = JKS
-	transaction.timeout.ms = 60000
-	transactional.id = null
-	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+2024-07-28 20:30:40.257 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 11720 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:30:40.265 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:30:41.116 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:30:41.277 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 137 ms. Found 1 MongoDB repository interface.
+2024-07-28 20:30:42.056 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@5634a861, com.mongodb.Jep395RecordCodecProvider@2b0dc227, com.mongodb.KotlinCodecProvider@37ad042b]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:30:42.119 [cluster-ClusterId{value='66a64802e9fa9f58b951ce55', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:30:42.165 [cluster-ClusterId{value='66a64802e9fa9f58b951ce55', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:30:42.169 [cluster-ClusterId{value='66a64802e9fa9f58b951ce55', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:30:43.089 [cluster-ClusterId{value='66a64802e9fa9f58b951ce55', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=470750800, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:30:43 ICT 2024, lastUpdateTimeNanos=182920149532100}
+2024-07-28 20:30:43.089 [cluster-ClusterId{value='66a64802e9fa9f58b951ce55', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=470749800, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:30:43 ICT 2024, lastUpdateTimeNanos=182920149532100}
+2024-07-28 20:30:43.182 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:30:43.217 [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1080/0x0000000801132210 to io.grpc.ServerInterceptor
+2024-07-28 20:30:43.300 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
 
-2024-07-07 16:29:02.437 [grpc-default-executor-1] INFO  o.a.k.c.t.i.KafkaMetricsCollector - initializing Kafka metrics collector
-2024-07-07 16:29:02.466 [grpc-default-executor-1] INFO  o.a.k.clients.producer.KafkaProducer - [Producer clientId=shorten-service-producer-1] Instantiated an idempotent producer.
-2024-07-07 16:29:02.544 [grpc-default-executor-1] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.7.0
-2024-07-07 16:29:02.545 [grpc-default-executor-1] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: 2ae524ed625438c5
-2024-07-07 16:29:02.545 [grpc-default-executor-1] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1720344542541
-2024-07-07 16:29:03.217 [kafka-producer-network-thread | shorten-service-producer-1] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=shorten-service-producer-1] Cluster ID: xS4GU_7qSDmGOh_CMr7rng
-2024-07-07 16:29:03.340 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.a.k.c.p.i.TransactionManager - [Producer clientId=shorten-service-producer-1] ProducerId set to 6000 with epoch 0
-2024-07-07 16:29:03.379 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:32:04.379 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoNodeIsRecoveringException: Command failed with error 91 (ShutdownInProgress): 'The server is in quiesce mode and will shut down' on server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017. The full response is {"topologyVersion": {"processId": {"$oid": "6687d88df9b9cd3f62194803"}, "counter": 4}, "ok": 0.0, "errmsg": "The server is in quiesce mode and will shut down", "code": 91, "codeName": "ShutdownInProgress", "remainingQuiesceTimeMillis": 59000, "$clusterTime": {"clusterTime": {"$timestamp": {"t": 1720344727, "i": 12}}, "signature": {"hash": {"$binary": {"base64": "1c0nbBnre/9vBk9S163eVviJFYw=", "subType": "00"}}, "keyId": 7329601654741794820}}, "operationTime": {"$timestamp": {"t": 1720344727, "i": 12}}}
-	at com.mongodb.internal.connection.ProtocolHelper.createSpecialException(ProtocolHelper.java:251)
-	at com.mongodb.internal.connection.ProtocolHelper.getCommandFailureException(ProtocolHelper.java:201)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:431)
-	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:381)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:221)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-2024-07-07 16:32:25.880 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
-	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:705)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:583)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:354)
-	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:92)
-	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:48)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:130)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:203)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:283)
-	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:309)
-	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
-	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
-	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:478)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:472)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
-	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1455)
-	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1059)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:176)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580)
-	... 10 common frames omitted
-2024-07-07 16:33:07.516 [grpc-default-executor-2] ERROR o.g.s.config.AuthInterceptor - io.jsonwebtoken.MalformedJwtException: Malformed JWT JSON: {"alg":"HS25|؈�������)]P�
-2024-07-07 16:33:56.179 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send
-2024-07-07 16:33:56.180 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"YKezaC","trafficDate":"2024-07-07T09:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:33:56.188 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:34:03.167 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketReadException: Prematurely reached end of stream
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:178)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:354)
-	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:92)
-	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:48)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:130)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:203)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-2024-07-07 16:34:21.554 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketOpenException: Exception opening socket
-	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:86)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:86)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:201)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.ConnectException: Connection timed out: no further information
-	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
-	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549)
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
-	at java.base/java.net.Socket.connect(Socket.java:633)
-	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:299)
-	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
-	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:105)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:80)
-	... 4 common frames omitted
-2024-07-07 16:34:46.969 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send
-2024-07-07 16:34:46.969 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"YKezaC","trafficDate":"2024-07-07T00:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:34:46.974 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:35:08.357 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send
-2024-07-07 16:35:08.357 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"YKezaC","trafficDate":"2024-07-07T01:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:35:08.359 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:36:43.281 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketWriteException: Exception sending message
-	at com.mongodb.internal.connection.InternalStreamConnection.translateWriteException(InternalStreamConnection.java:691)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:564)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendCommandMessage(InternalStreamConnection.java:396)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:346)
-	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:92)
-	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:48)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:130)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:203)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:283)
-	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:309)
-	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
-	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
-	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:478)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:472)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160)
-	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111)
-	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1500)
-	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1415)
-	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:450)
-	at java.base/sun.security.ssl.SSLSocketImpl.ensureNegotiated(SSLSocketImpl.java:915)
-	at java.base/sun.security.ssl.SSLSocketImpl$AppOutputStream.write(SSLSocketImpl.java:1285)
-	at com.mongodb.internal.connection.SocketStream.write(SocketStream.java:165)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:561)
-	... 10 common frames omitted
-2024-07-07 16:38:08.400 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.apache.kafka.clients.NetworkClient - [Producer clientId=shorten-service-producer-1] Node -1 disconnected.
-2024-07-07 16:38:31.662 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketReadException: Prematurely reached end of stream
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:178)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428)
-	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:381)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:221)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-2024-07-07 16:38:34.225 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketOpenException: Exception opening socket
-	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:86)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:86)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:201)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.ConnectException: Connection refused: no further information
-	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
-	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549)
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
-	at java.base/java.net.Socket.connect(Socket.java:633)
-	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:299)
-	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
-	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:105)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:80)
-	... 4 common frames omitted
-2024-07-07 16:38:37.416 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
-	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:705)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:583)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:354)
-	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:92)
-	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:48)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:130)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:203)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:283)
-	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:309)
-	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
-	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
-	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:478)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:472)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
-	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1455)
-	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1059)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:176)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580)
-	... 10 common frames omitted
-2024-07-07 16:38:51.796 [cluster-ClusterId{value='668a5e029463a51e7ceecaf9', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=4291523100, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=668a61612384f4e93f3f4806, counter=3}, lastWriteDate=Sun Jul 07 16:38:55 ICT 2024, lastUpdateTimeNanos=927802883142300}
-2024-07-07 16:41:49.227 [SpringApplicationShutdownHook] INFO  n.d.b.g.s.s.GrpcServerLifecycle - Completed gRPC server shutdown
-2024-07-07 16:41:49.228 [SpringApplicationShutdownHook] INFO  o.a.k.clients.producer.KafkaProducer - [Producer clientId=shorten-service-producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
-2024-07-07 16:41:49.235 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Metrics scheduler closed
-2024-07-07 16:41:49.235 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.metrics.JmxReporter
-2024-07-07 16:41:49.235 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
-2024-07-07 16:41:49.235 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Metrics reporters closed
-2024-07-07 16:41:49.237 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.utils.AppInfoParser - App info kafka.producer for shorten-service-producer-1 unregistered
-2024-07-07 16:41:53.513 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 5032 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
-2024-07-07 16:41:53.516 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-07-07 16:41:53.980 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
-2024-07-07 16:41:54.038 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 50 ms. Found 1 MongoDB repository interface.
-2024-07-07 16:41:54.578 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@43bdaa1b, com.mongodb.Jep395RecordCodecProvider@30b975ad, com.mongodb.KotlinCodecProvider@75e09567]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
-2024-07-07 16:41:54.633 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
-2024-07-07 16:41:54.655 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
-2024-07-07 16:41:54.657 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
-2024-07-07 16:41:55.110 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
-2024-07-07 16:41:55.296 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=344213000, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=668a61612384f4e93f3f4806, counter=3}, lastWriteDate=Sun Jul 07 16:41:58 ICT 2024, lastUpdateTimeNanos=927986381263600}
-2024-07-07 16:41:55.296 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=314074800, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000173, setVersion=189, topologyVersion=TopologyVersion{processId=6687d65b3d0f4ed0a38204c4, counter=6}, lastWriteDate=Sun Jul 07 16:41:58 ICT 2024, lastUpdateTimeNanos=927986381263600}
-2024-07-07 16:41:55.299 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000173 and max set version 189
-2024-07-07 16:41:55.473 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: online.gonlink.UrlShortenerService, bean: urlShortenerServiceGrpc, class: online.gonlink.shortenservice.grpc.UrlShortenerServiceGrpc
-2024-07-07 16:41:55.473 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.health.v1.Health, bean: grpcHealthService, class: io.grpc.protobuf.services.HealthServiceImpl
-2024-07-07 16:41:55.473 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.reflection.v1alpha.ServerReflection, bean: protoReflectionService, class: io.grpc.protobuf.services.ProtoReflectionService
-2024-07-07 16:41:55.638 [main] INFO  n.d.b.g.s.s.GrpcServerLifecycle - gRPC Server started, listening on address: *, port: 9090
-2024-07-07 16:41:55.646 [main] INFO  o.g.s.ShortenServiceApplication - Started ShortenServiceApplication in 2.532 seconds (process running for 3.406)
-2024-07-07 16:41:57.291 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketOpenException: Exception opening socket
-	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:86)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:86)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:201)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.ConnectException: Connection refused: no further information
-	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
-	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549)
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
-	at java.base/java.net.Socket.connect(Socket.java:633)
-	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:299)
-	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
-	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:105)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:80)
-	... 4 common frames omitted
-2024-07-07 16:42:51.318 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketReadException: Prematurely reached end of stream
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:178)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428)
-	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:381)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:221)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-2024-07-07 16:42:53.813 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketOpenException: Exception opening socket
-	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:86)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:86)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:201)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.ConnectException: Connection refused: no further information
-	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
-	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549)
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
-	at java.base/java.net.Socket.connect(Socket.java:633)
-	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:299)
-	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
-	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:105)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:80)
-	... 4 common frames omitted
-2024-07-07 16:43:17.198 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=13295513300, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=668a61612384f4e93f3f4806, counter=3}, lastWriteDate=Sun Jul 07 16:43:20 ICT 2024, lastUpdateTimeNanos=928068284307600}
-2024-07-07 16:44:30.080 [grpc-default-executor-0] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"append-url","obj":{"email":"sson12131415@gmail.com","url":"as850q"}}
-2024-07-07 16:44:30.123 [grpc-default-executor-0] INFO  o.a.k.c.producer.ProducerConfig - ProducerConfig values: 
-	acks = -1
-	auto.include.jmx.reporter = true
-	batch.size = 16384
-	bootstrap.servers = [0.0.0.0:9092]
-	buffer.memory = 33554432
-	client.dns.lookup = use_all_dns_ips
-	client.id = shorten-service-producer-1
-	compression.type = none
-	connections.max.idle.ms = 540000
-	delivery.timeout.ms = 120000
-	enable.idempotence = true
-	enable.metrics.push = true
-	interceptor.classes = []
-	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
-	linger.ms = 0
-	max.block.ms = 60000
-	max.in.flight.requests.per.connection = 5
-	max.request.size = 1048576
-	metadata.max.age.ms = 300000
-	metadata.max.idle.ms = 300000
-	metric.reporters = []
-	metrics.num.samples = 2
-	metrics.recording.level = INFO
-	metrics.sample.window.ms = 30000
-	partitioner.adaptive.partitioning.enable = true
-	partitioner.availability.timeout.ms = 0
-	partitioner.class = null
-	partitioner.ignore.keys = false
-	receive.buffer.bytes = 32768
-	reconnect.backoff.max.ms = 1000
-	reconnect.backoff.ms = 50
-	request.timeout.ms = 30000
-	retries = 2147483647
-	retry.backoff.max.ms = 1000
-	retry.backoff.ms = 100
-	sasl.client.callback.handler.class = null
-	sasl.jaas.config = null
-	sasl.kerberos.kinit.cmd = /usr/bin/kinit
-	sasl.kerberos.min.time.before.relogin = 60000
-	sasl.kerberos.service.name = null
-	sasl.kerberos.ticket.renew.jitter = 0.05
-	sasl.kerberos.ticket.renew.window.factor = 0.8
-	sasl.login.callback.handler.class = null
-	sasl.login.class = null
-	sasl.login.connect.timeout.ms = null
-	sasl.login.read.timeout.ms = null
-	sasl.login.refresh.buffer.seconds = 300
-	sasl.login.refresh.min.period.seconds = 60
-	sasl.login.refresh.window.factor = 0.8
-	sasl.login.refresh.window.jitter = 0.05
-	sasl.login.retry.backoff.max.ms = 10000
-	sasl.login.retry.backoff.ms = 100
-	sasl.mechanism = GSSAPI
-	sasl.oauthbearer.clock.skew.seconds = 30
-	sasl.oauthbearer.expected.audience = null
-	sasl.oauthbearer.expected.issuer = null
-	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
-	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
-	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
-	sasl.oauthbearer.jwks.endpoint.url = null
-	sasl.oauthbearer.scope.claim.name = scope
-	sasl.oauthbearer.sub.claim.name = sub
-	sasl.oauthbearer.token.endpoint.url = null
-	security.protocol = PLAINTEXT
-	security.providers = null
-	send.buffer.bytes = 131072
-	socket.connection.setup.timeout.max.ms = 30000
-	socket.connection.setup.timeout.ms = 10000
-	ssl.cipher.suites = null
-	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
-	ssl.endpoint.identification.algorithm = https
-	ssl.engine.factory.class = null
-	ssl.key.password = null
-	ssl.keymanager.algorithm = SunX509
-	ssl.keystore.certificate.chain = null
-	ssl.keystore.key = null
-	ssl.keystore.location = null
-	ssl.keystore.password = null
-	ssl.keystore.type = JKS
-	ssl.protocol = TLSv1.3
-	ssl.provider = null
-	ssl.secure.random.implementation = null
-	ssl.trustmanager.algorithm = PKIX
-	ssl.truststore.certificates = null
-	ssl.truststore.location = null
-	ssl.truststore.password = null
-	ssl.truststore.type = JKS
-	transaction.timeout.ms = 60000
-	transactional.id = null
-	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-07-28 20:30:43.317 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1080/0x0000000801132210 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:648)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1337)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1167)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at online.gonlink.shortenservice.ShortenServiceApplication.main(ShortenServiceApplication.java:13)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1080/0x0000000801132210 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:177)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644)
+	... 18 common frames omitted
+Caused by: java.lang.ClassCastException: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1080/0x0000000801132210 to io.grpc.ServerInterceptor
+	at java.base/java.lang.Class.cast(Class.java:3889)
+	at com.google.common.collect.Maps$9.transformEntry(Maps.java:2117)
+	at com.google.common.collect.Maps$12.getValue(Maps.java:2165)
+	at net.devh.boot.grpc.server.interceptor.AnnotationGlobalServerInterceptorConfigurer.configureServerInterceptors(AnnotationGlobalServerInterceptorConfigurer.java:65)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.initServerInterceptors(GlobalServerInterceptorRegistry.java:83)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.getServerInterceptors(GlobalServerInterceptorRegistry.java:69)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.bindInterceptors(AnnotationGrpcServiceDiscoverer.java:76)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.findGrpcServices(AnnotationGrpcServiceDiscoverer.java:64)
+	at net.devh.boot.grpc.server.autoconfigure.GrpcServerFactoryAutoConfiguration.shadedNettyGrpcServerFactory(GrpcServerFactoryAutoConfiguration.java:75)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:140)
+	... 19 common frames omitted
+2024-07-28 20:32:37.160 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 3424 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:32:37.162 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:32:37.572 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:32:37.628 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 50 ms. Found 1 MongoDB repository interface.
+2024-07-28 20:32:38.003 [cluster-ClusterId{value='66a648753a10d57a055b44a0', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:32:38.019 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@7f9fc8bd, com.mongodb.Jep395RecordCodecProvider@ea52184, com.mongodb.KotlinCodecProvider@3e7b65d7]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:32:38.025 [cluster-ClusterId{value='66a648753a10d57a055b44a0', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:32:38.028 [cluster-ClusterId{value='66a648753a10d57a055b44a0', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:32:38.442 [cluster-ClusterId{value='66a648753a10d57a055b44a0', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=253724900, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:32:38 ICT 2024, lastUpdateTimeNanos=183035503538300}
+2024-07-28 20:32:38.442 [cluster-ClusterId{value='66a648753a10d57a055b44a0', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=248949000, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000178, setVersion=195, topologyVersion=TopologyVersion{processId=668fced35efc8b1ba1b38626, counter=6}, lastWriteDate=Sun Jul 28 20:32:38 ICT 2024, lastUpdateTimeNanos=183035503538300}
+2024-07-28 20:32:38.442 [cluster-ClusterId{value='66a648753a10d57a055b44a0', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=249411500, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:32:38 ICT 2024, lastUpdateTimeNanos=183035503540000}
+2024-07-28 20:32:38.445 [cluster-ClusterId{value='66a648753a10d57a055b44a0', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000178 and max set version 195
+2024-07-28 20:32:38.487 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:32:38.526 [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1118/0x0000000801147a00 to io.grpc.ServerInterceptor
+2024-07-28 20:32:38.650 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
 
-2024-07-07 16:44:30.171 [grpc-default-executor-0] INFO  o.a.k.c.t.i.KafkaMetricsCollector - initializing Kafka metrics collector
-2024-07-07 16:44:30.189 [grpc-default-executor-0] INFO  o.a.k.clients.producer.KafkaProducer - [Producer clientId=shorten-service-producer-1] Instantiated an idempotent producer.
-2024-07-07 16:44:30.242 [grpc-default-executor-0] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.7.0
-2024-07-07 16:44:30.243 [grpc-default-executor-0] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: 2ae524ed625438c5
-2024-07-07 16:44:30.243 [grpc-default-executor-0] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1720345470241
-2024-07-07 16:44:30.673 [kafka-producer-network-thread | shorten-service-producer-1] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=shorten-service-producer-1] Cluster ID: xS4GU_7qSDmGOh_CMr7rng
-2024-07-07 16:44:30.674 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.a.k.c.p.i.TransactionManager - [Producer clientId=shorten-service-producer-1] ProducerId set to 6001 with epoch 0
-2024-07-07 16:44:30.729 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:46:01.384 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketWriteException: Exception sending message
-	at com.mongodb.internal.connection.InternalStreamConnection.translateWriteException(InternalStreamConnection.java:691)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:564)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendCommandMessage(InternalStreamConnection.java:396)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:346)
-	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:92)
-	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:48)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:130)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:203)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:283)
-	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:309)
-	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
-	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
-	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:478)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:472)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160)
-	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111)
-	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1500)
-	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1415)
-	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:450)
-	at java.base/sun.security.ssl.SSLSocketImpl.ensureNegotiated(SSLSocketImpl.java:915)
-	at java.base/sun.security.ssl.SSLSocketImpl$AppOutputStream.write(SSLSocketImpl.java:1285)
-	at com.mongodb.internal.connection.SocketStream.write(SocketStream.java:165)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:561)
-	... 10 common frames omitted
-2024-07-07 16:46:02.796 [grpc-default-executor-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"as850q","trafficDate":"2024-07-07T01:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:46:02.800 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:46:16.567 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=5072976100, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=668a62b675576261e42fdc92, counter=3}, lastWriteDate=Sun Jul 07 16:46:20 ICT 2024, lastUpdateTimeNanos=928247654332800}
-2024-07-07 16:46:47.486 [grpc-default-executor-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"append-url","obj":{"email":"sson12131415@gmail.com","url":"ezU1dR"}}
-2024-07-07 16:46:47.489 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:47:02.986 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_OTHER, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=83213884, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000173, setVersion=189, topologyVersion=TopologyVersion{processId=6687d65b3d0f4ed0a38204c4, counter=7}, lastWriteDate=Sun Jul 07 16:47:06 ICT 2024, lastUpdateTimeNanos=928294072719800}
-2024-07-07 16:47:03.030 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=83213884, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='null', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=6687d65b3d0f4ed0a38204c4, counter=8}, lastWriteDate=Sun Jul 07 16:47:06 ICT 2024, lastUpdateTimeNanos=928294117465600}
-2024-07-07 16:47:03.078 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=183937116, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000174, setVersion=189, topologyVersion=TopologyVersion{processId=668a61612384f4e93f3f4806, counter=4}, lastWriteDate=Sun Jul 07 16:47:06 ICT 2024, lastUpdateTimeNanos=928294165237200}
-2024-07-07 16:47:03.170 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=3763851697, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='null', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=668a62b675576261e42fdc92, counter=4}, lastWriteDate=Sun Jul 07 16:47:06 ICT 2024, lastUpdateTimeNanos=928294256981900}
-2024-07-07 16:47:03.270 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=183937116, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000174, setVersion=189, topologyVersion=TopologyVersion{processId=668a61612384f4e93f3f4806, counter=6}, lastWriteDate=Sun Jul 07 16:47:06 ICT 2024, lastUpdateTimeNanos=928294357666800}
-2024-07-07 16:47:03.271 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000174 and max set version 189
-2024-07-07 16:47:03.520 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoNodeIsRecoveringException: Command failed with error 91 (ShutdownInProgress): 'The server is in quiesce mode and will shut down' on server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017. The full response is {"topologyVersion": {"processId": {"$oid": "6687d65b3d0f4ed0a38204c4"}, "counter": 10}, "ok": 0.0, "errmsg": "The server is in quiesce mode and will shut down", "code": 91, "codeName": "ShutdownInProgress", "remainingQuiesceTimeMillis": 59000, "$clusterTime": {"clusterTime": {"$timestamp": {"t": 1720345626, "i": 259}}, "signature": {"hash": {"$binary": {"base64": "mwa0w6tPmXn8vJVaUUbstNSL3gk=", "subType": "00"}}, "keyId": 7329601654741794820}}, "operationTime": {"$timestamp": {"t": 1720345626, "i": 259}}}
-	at com.mongodb.internal.connection.ProtocolHelper.createSpecialException(ProtocolHelper.java:251)
-	at com.mongodb.internal.connection.ProtocolHelper.getCommandFailureException(ProtocolHelper.java:201)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:431)
-	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:381)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:221)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-2024-07-07 16:47:13.149 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=3026170397, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=668a62b675576261e42fdc92, counter=4}, lastWriteDate=Sun Jul 07 16:47:16 ICT 2024, lastUpdateTimeNanos=928304235379900}
-2024-07-07 16:47:16.492 [grpc-default-executor-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T01:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:47:16.503 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:47:25.099 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
-	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:705)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:583)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:354)
-	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:92)
-	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:48)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:130)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:203)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:283)
-	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:309)
-	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
-	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
-	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:478)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:472)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
-	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1455)
-	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1059)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:176)
-	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716)
-	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580)
-	... 10 common frames omitted
-2024-07-07 16:50:15.067 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:15.073 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:16.972 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketOpenException: Exception opening socket
-	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:86)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:86)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:201)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.SocketTimeoutException: Connect timed out
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:546)
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
-	at java.base/java.net.Socket.connect(Socket.java:633)
-	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:299)
-	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76)
-	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:105)
-	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:80)
-	... 4 common frames omitted
-2024-07-07 16:50:37.197 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:37.200 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:38.093 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:38.098 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:39.329 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:39.337 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:40.341 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:40.346 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:41.178 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:41.183 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:42.128 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-07T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:42.131 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:49.059 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-08T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:49.067 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:49.963 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-08T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:49.967 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:50:50.788 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-08T03:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:50:50.791 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:51:00.712 [grpc-default-executor-2] INFO  o.g.s.s.b.impl.ProducerServiceImpl - {"actionCode":"increase-traffic","obj":{"shortCode":"ezU1dR","trafficDate":"2024-07-08T04:28:22.819Z","zoneId":"Asia/Saigon"}}
-2024-07-07 16:51:00.717 [kafka-producer-network-thread | shorten-service-producer-1] INFO  o.g.s.s.b.impl.ProducerServiceImpl - send 1
-2024-07-07 16:51:51.680 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017
-com.mongodb.MongoSocketWriteException: Exception sending message
-	at com.mongodb.internal.connection.InternalStreamConnection.translateWriteException(InternalStreamConnection.java:691)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:564)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendCommandMessage(InternalStreamConnection.java:396)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:346)
-	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:92)
-	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:48)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:130)
-	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78)
-	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:203)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:193)
-	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:283)
-	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:309)
-	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
-	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
-	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:478)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:472)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160)
-	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111)
-	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1500)
-	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1415)
-	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:450)
-	at java.base/sun.security.ssl.SSLSocketImpl.ensureNegotiated(SSLSocketImpl.java:915)
-	at java.base/sun.security.ssl.SSLSocketImpl$AppOutputStream.write(SSLSocketImpl.java:1285)
-	at com.mongodb.internal.connection.SocketStream.write(SocketStream.java:165)
-	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:561)
-	... 10 common frames omitted
-2024-07-07 16:52:30.813 [cluster-ClusterId{value='668a62e243d835262b93a8a8', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=8930088400, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=189, topologyVersion=TopologyVersion{processId=668a64e8c4533a6046bfe313, counter=3}, lastWriteDate=Sun Jul 07 16:52:34 ICT 2024, lastUpdateTimeNanos=928621900335100}
-2024-07-07 16:53:21.795 [SpringApplicationShutdownHook] INFO  n.d.b.g.s.s.GrpcServerLifecycle - Completed gRPC server shutdown
-2024-07-07 16:53:21.796 [SpringApplicationShutdownHook] INFO  o.a.k.clients.producer.KafkaProducer - [Producer clientId=shorten-service-producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
-2024-07-07 16:53:21.807 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Metrics scheduler closed
-2024-07-07 16:53:21.807 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.metrics.JmxReporter
-2024-07-07 16:53:21.808 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
-2024-07-07 16:53:21.808 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.metrics.Metrics - Metrics reporters closed
-2024-07-07 16:53:21.808 [SpringApplicationShutdownHook] INFO  o.a.kafka.common.utils.AppInfoParser - App info kafka.producer for shorten-service-producer-1 unregistered
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-07-28 20:32:38.677 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1118/0x0000000801147a00 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:648)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1337)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1167)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at online.gonlink.shortenservice.ShortenServiceApplication.main(ShortenServiceApplication.java:13)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1118/0x0000000801147a00 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:177)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644)
+	... 18 common frames omitted
+Caused by: java.lang.ClassCastException: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1118/0x0000000801147a00 to io.grpc.ServerInterceptor
+	at java.base/java.lang.Class.cast(Class.java:3889)
+	at com.google.common.collect.Maps$9.transformEntry(Maps.java:2117)
+	at com.google.common.collect.Maps$12.getValue(Maps.java:2165)
+	at net.devh.boot.grpc.server.interceptor.AnnotationGlobalServerInterceptorConfigurer.configureServerInterceptors(AnnotationGlobalServerInterceptorConfigurer.java:65)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.initServerInterceptors(GlobalServerInterceptorRegistry.java:83)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.getServerInterceptors(GlobalServerInterceptorRegistry.java:69)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.bindInterceptors(AnnotationGrpcServiceDiscoverer.java:76)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.findGrpcServices(AnnotationGrpcServiceDiscoverer.java:64)
+	at net.devh.boot.grpc.server.autoconfigure.GrpcServerFactoryAutoConfiguration.shadedNettyGrpcServerFactory(GrpcServerFactoryAutoConfiguration.java:75)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:140)
+	... 19 common frames omitted
+2024-07-28 20:33:05.714 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 14916 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:33:05.715 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:33:06.118 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:33:06.176 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 48 ms. Found 1 MongoDB repository interface.
+2024-07-28 20:33:06.539 [cluster-ClusterId{value='66a64892c02c8f64064a275a', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:33:06.560 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@45e9b12d, com.mongodb.Jep395RecordCodecProvider@3dc95b8b, com.mongodb.KotlinCodecProvider@2d55e826]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:33:06.564 [cluster-ClusterId{value='66a64892c02c8f64064a275a', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:33:06.567 [cluster-ClusterId{value='66a64892c02c8f64064a275a', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:33:06.944 [cluster-ClusterId{value='66a64892c02c8f64064a275a', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=217517700, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:33:06 ICT 2024, lastUpdateTimeNanos=183064005044000}
+2024-07-28 20:33:06.944 [cluster-ClusterId{value='66a64892c02c8f64064a275a', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=208105700, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:33:06 ICT 2024, lastUpdateTimeNanos=183064005044000}
+2024-07-28 20:33:06.952 [cluster-ClusterId{value='66a64892c02c8f64064a275a', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=218292500, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000178, setVersion=195, topologyVersion=TopologyVersion{processId=668fced35efc8b1ba1b38626, counter=6}, lastWriteDate=Sun Jul 28 20:33:06 ICT 2024, lastUpdateTimeNanos=183064015490600}
+2024-07-28 20:33:06.953 [cluster-ClusterId{value='66a64892c02c8f64064a275a', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000178 and max set version 195
+2024-07-28 20:33:07.006 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:33:07.042 [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1107/0x00000008011454a0 to io.grpc.ServerInterceptor
+2024-07-28 20:33:07.179 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-07-28 20:33:07.199 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1107/0x00000008011454a0 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:648)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1337)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1167)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at online.gonlink.shortenservice.ShortenServiceApplication.main(ShortenServiceApplication.java:13)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1107/0x00000008011454a0 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:177)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644)
+	... 18 common frames omitted
+Caused by: java.lang.ClassCastException: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1107/0x00000008011454a0 to io.grpc.ServerInterceptor
+	at java.base/java.lang.Class.cast(Class.java:3889)
+	at com.google.common.collect.Maps$9.transformEntry(Maps.java:2117)
+	at com.google.common.collect.Maps$12.getValue(Maps.java:2165)
+	at net.devh.boot.grpc.server.interceptor.AnnotationGlobalServerInterceptorConfigurer.configureServerInterceptors(AnnotationGlobalServerInterceptorConfigurer.java:65)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.initServerInterceptors(GlobalServerInterceptorRegistry.java:83)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.getServerInterceptors(GlobalServerInterceptorRegistry.java:69)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.bindInterceptors(AnnotationGrpcServiceDiscoverer.java:76)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.findGrpcServices(AnnotationGrpcServiceDiscoverer.java:64)
+	at net.devh.boot.grpc.server.autoconfigure.GrpcServerFactoryAutoConfiguration.shadedNettyGrpcServerFactory(GrpcServerFactoryAutoConfiguration.java:75)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:140)
+	... 19 common frames omitted
+2024-07-28 20:35:37.406 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 16872 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:35:37.408 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:35:37.808 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:35:37.862 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 46 ms. Found 1 MongoDB repository interface.
+2024-07-28 20:35:38.242 [cluster-ClusterId{value='66a6492aa3f2105704a02a80', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:35:38.260 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@71b639d0, com.mongodb.Jep395RecordCodecProvider@18a25bbd, com.mongodb.KotlinCodecProvider@5d5b9ecb]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:35:38.266 [cluster-ClusterId{value='66a6492aa3f2105704a02a80', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:35:38.268 [cluster-ClusterId{value='66a6492aa3f2105704a02a80', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:35:38.654 [cluster-ClusterId{value='66a6492aa3f2105704a02a80', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=220393300, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:35:38 ICT 2024, lastUpdateTimeNanos=183215715353600}
+2024-07-28 20:35:38.654 [cluster-ClusterId{value='66a6492aa3f2105704a02a80', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=222068900, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:35:38 ICT 2024, lastUpdateTimeNanos=183215715356700}
+2024-07-28 20:35:38.654 [cluster-ClusterId{value='66a6492aa3f2105704a02a80', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=215522200, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000178, setVersion=195, topologyVersion=TopologyVersion{processId=668fced35efc8b1ba1b38626, counter=6}, lastWriteDate=Sun Jul 28 20:35:38 ICT 2024, lastUpdateTimeNanos=183215715353700}
+2024-07-28 20:35:38.657 [cluster-ClusterId{value='66a6492aa3f2105704a02a80', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000178 and max set version 195
+2024-07-28 20:35:38.700 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:35:38.736 [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1116/0x0000000801146d48 to io.grpc.ServerInterceptor
+2024-07-28 20:35:38.870 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-07-28 20:35:38.893 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'shadedNettyGrpcServerFactory' defined in class path resource [net/devh/boot/grpc/server/autoconfigure/GrpcServerFactoryAutoConfiguration.class]: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1116/0x0000000801146d48 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:648)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1337)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1167)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at online.gonlink.shortenservice.ShortenServiceApplication.main(ShortenServiceApplication.java:13)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [net.devh.boot.grpc.server.serverfactory.ShadedNettyGrpcServerFactory]: Factory method 'shadedNettyGrpcServerFactory' threw exception with message: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1116/0x0000000801146d48 to io.grpc.ServerInterceptor
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:177)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644)
+	... 18 common frames omitted
+Caused by: java.lang.ClassCastException: Cannot cast online.gonlink.shortenservice.config.GlobalInterceptorConfiguration$$Lambda$1116/0x0000000801146d48 to io.grpc.ServerInterceptor
+	at java.base/java.lang.Class.cast(Class.java:3889)
+	at com.google.common.collect.Maps$9.transformEntry(Maps.java:2117)
+	at com.google.common.collect.Maps$12.getValue(Maps.java:2165)
+	at net.devh.boot.grpc.server.interceptor.AnnotationGlobalServerInterceptorConfigurer.configureServerInterceptors(AnnotationGlobalServerInterceptorConfigurer.java:65)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.initServerInterceptors(GlobalServerInterceptorRegistry.java:83)
+	at net.devh.boot.grpc.server.interceptor.GlobalServerInterceptorRegistry.getServerInterceptors(GlobalServerInterceptorRegistry.java:69)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.bindInterceptors(AnnotationGrpcServiceDiscoverer.java:76)
+	at net.devh.boot.grpc.server.service.AnnotationGrpcServiceDiscoverer.findGrpcServices(AnnotationGrpcServiceDiscoverer.java:64)
+	at net.devh.boot.grpc.server.autoconfigure.GrpcServerFactoryAutoConfiguration.shadedNettyGrpcServerFactory(GrpcServerFactoryAutoConfiguration.java:75)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:140)
+	... 19 common frames omitted
+2024-07-28 20:36:00.338 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 3148 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:36:00.341 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:36:00.749 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:36:00.800 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 44 ms. Found 1 MongoDB repository interface.
+2024-07-28 20:36:01.175 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@6949e948, com.mongodb.Jep395RecordCodecProvider@210d2a6c, com.mongodb.KotlinCodecProvider@3bec5821]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:36:01.211 [cluster-ClusterId{value='66a64941fd318060b666e723', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:36:01.235 [cluster-ClusterId{value='66a64941fd318060b666e723', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:36:01.237 [cluster-ClusterId{value='66a64941fd318060b666e723', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:36:01.609 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:36:01.679 [cluster-ClusterId{value='66a64941fd318060b666e723', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=195483200, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:36:01 ICT 2024, lastUpdateTimeNanos=183238740144500}
+2024-07-28 20:36:01.679 [cluster-ClusterId{value='66a64941fd318060b666e723', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=210162600, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:36:01 ICT 2024, lastUpdateTimeNanos=183238740171400}
+2024-07-28 20:36:01.698 [cluster-ClusterId{value='66a64941fd318060b666e723', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=210183600, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000178, setVersion=195, topologyVersion=TopologyVersion{processId=668fced35efc8b1ba1b38626, counter=6}, lastWriteDate=Sun Jul 28 20:36:01 ICT 2024, lastUpdateTimeNanos=183238761233200}
+2024-07-28 20:36:01.699 [cluster-ClusterId{value='66a64941fd318060b666e723', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000178 and max set version 195
+2024-07-28 20:36:01.909 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: online.gonlink.UrlShortenerService, bean: urlShortenerServiceGrpc, class: online.gonlink.shortenservice.grpc.UrlShortenerServiceGrpc
+2024-07-28 20:36:01.909 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.health.v1.Health, bean: grpcHealthService, class: io.grpc.protobuf.services.HealthServiceImpl
+2024-07-28 20:36:01.909 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.reflection.v1alpha.ServerReflection, bean: protoReflectionService, class: io.grpc.protobuf.services.ProtoReflectionService
+2024-07-28 20:36:02.042 [main] INFO  n.d.b.g.s.s.GrpcServerLifecycle - gRPC Server started, listening on address: *, port: 9090
+2024-07-28 20:36:02.051 [main] INFO  o.g.s.ShortenServiceApplication - Started ShortenServiceApplication in 2.051 seconds (process running for 2.649)
+2024-07-28 20:43:28.575 [SpringApplicationShutdownHook] INFO  n.d.b.g.s.s.GrpcServerLifecycle - Completed gRPC server shutdown
+2024-07-28 20:45:12.180 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 10124 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:45:12.183 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:45:12.924 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:45:13.023 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 87 ms. Found 1 MongoDB repository interface.
+2024-07-28 20:45:13.799 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@4ed4a7e4, com.mongodb.Jep395RecordCodecProvider@1c7350b0, com.mongodb.KotlinCodecProvider@55651434]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:45:13.803 [cluster-ClusterId{value='66a64b690d4d380d36519c09', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:45:13.842 [cluster-ClusterId{value='66a64b690d4d380d36519c09', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:45:13.847 [cluster-ClusterId{value='66a64b690d4d380d36519c09', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:45:14.511 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:45:14.560 [cluster-ClusterId{value='66a64b690d4d380d36519c09', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=279121100, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000178, setVersion=195, topologyVersion=TopologyVersion{processId=668fced35efc8b1ba1b38626, counter=6}, lastWriteDate=Sun Jul 28 20:45:14 ICT 2024, lastUpdateTimeNanos=183791621140800}
+2024-07-28 20:45:14.560 [cluster-ClusterId{value='66a64b690d4d380d36519c09', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=281185800, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:45:14 ICT 2024, lastUpdateTimeNanos=183791621140800}
+2024-07-28 20:45:14.560 [cluster-ClusterId{value='66a64b690d4d380d36519c09', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=279392200, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:45:14 ICT 2024, lastUpdateTimeNanos=183791621140800}
+2024-07-28 20:45:14.565 [cluster-ClusterId{value='66a64b690d4d380d36519c09', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000178 and max set version 195
+2024-07-28 20:45:14.942 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: online.gonlink.UrlShortenerService, bean: urlShortenerServiceGrpc, class: online.gonlink.shortenservice.grpc.UrlShortenerServiceGrpc
+2024-07-28 20:45:14.942 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.health.v1.Health, bean: grpcHealthService, class: io.grpc.protobuf.services.HealthServiceImpl
+2024-07-28 20:45:14.942 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.reflection.v1alpha.ServerReflection, bean: protoReflectionService, class: io.grpc.protobuf.services.ProtoReflectionService
+2024-07-28 20:45:15.140 [main] INFO  n.d.b.g.s.s.GrpcServerLifecycle - gRPC Server started, listening on address: *, port: 9090
+2024-07-28 20:45:15.151 [main] INFO  o.g.s.ShortenServiceApplication - Started ShortenServiceApplication in 3.344 seconds (process running for 4.02)
+2024-07-28 20:56:26.384 [SpringApplicationShutdownHook] INFO  n.d.b.g.s.s.GrpcServerLifecycle - Completed gRPC server shutdown
+2024-07-28 20:56:30.591 [main] INFO  o.g.s.ShortenServiceApplication - Starting ShortenServiceApplication using Java 17.0.2 with PID 580 (C:\SON.admin\ProjectFinal\gonlink.online\backend\shorten-service\build\classes\java\main started by ADMIN in C:\SON.admin\ProjectFinal\gonlink.online\backend)
+2024-07-28 20:56:30.592 [main] INFO  o.g.s.ShortenServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-07-28 20:56:30.995 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2024-07-28 20:56:31.048 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 45 ms. Found 1 MongoDB repository interface.
+2024-07-28 20:56:31.512 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/17.0.2+8-LTS-86"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='sonnees', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@5634a861, com.mongodb.Jep395RecordCodecProvider@2b0dc227, com.mongodb.KotlinCodecProvider@37ad042b]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.m0vbmbu.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-mog6u6-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2024-07-28 20:56:31.565 [cluster-ClusterId{value='66a64e0f4328cd2a4bcaadc4', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:56:31.601 [cluster-ClusterId{value='66a64e0f4328cd2a4bcaadc4', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:56:31.603 [cluster-ClusterId{value='66a64e0f4328cd2a4bcaadc4', description='null'}-srv-cluster0.m0vbmbu.mongodb.net] INFO  org.mongodb.driver.cluster - Adding discovered server ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 to client view of cluster
+2024-07-28 20:56:32.016 [main] INFO  n.d.b.g.s.a.GrpcServerFactoryAutoConfiguration - Detected grpc-netty-shaded: Creating ShadedNettyGrpcServerFactory
+2024-07-28 20:56:32.088 [cluster-ClusterId{value='66a64e0f4328cd2a4bcaadc4', description='null'}-ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=217461300, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fcfb1716df8a23b22e194, counter=4}, lastWriteDate=Sun Jul 28 20:56:32 ICT 2024, lastUpdateTimeNanos=184469148626100}
+2024-07-28 20:56:32.088 [cluster-ClusterId{value='66a64e0f4328cd2a4bcaadc4', description='null'}-ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=212919900, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az3'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=195, topologyVersion=TopologyVersion{processId=668fd11444a03c205c505f15, counter=3}, lastWriteDate=Sun Jul 28 20:56:32 ICT 2024, lastUpdateTimeNanos=184469148626100}
+2024-07-28 20:56:32.088 [cluster-ClusterId{value='66a64e0f4328cd2a4bcaadc4', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=213916100, setName='atlas-mog6u6-shard-0', canonicalAddress=ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, hosts=[ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-00.m0vbmbu.mongodb.net:27017, ac-duaokb9-shard-00-02.m0vbmbu.mongodb.net:27017], passives=[], arbiters=[], primary='ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='apse1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='AP_SOUTHEAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000178, setVersion=195, topologyVersion=TopologyVersion{processId=668fced35efc8b1ba1b38626, counter=6}, lastWriteDate=Sun Jul 28 20:56:32 ICT 2024, lastUpdateTimeNanos=184469148626100}
+2024-07-28 20:56:32.089 [cluster-ClusterId{value='66a64e0f4328cd2a4bcaadc4', description='null'}-ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017] INFO  org.mongodb.driver.cluster - Discovered replica set primary ac-duaokb9-shard-00-01.m0vbmbu.mongodb.net:27017 with max election id 7fffffff0000000000000178 and max set version 195
+2024-07-28 20:56:32.288 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: online.gonlink.UrlShortenerService, bean: urlShortenerServiceGrpc, class: online.gonlink.shortenservice.grpc.UrlShortenerServiceGrpc
+2024-07-28 20:56:32.288 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.health.v1.Health, bean: grpcHealthService, class: io.grpc.protobuf.services.HealthServiceImpl
+2024-07-28 20:56:32.288 [main] INFO  n.d.b.g.s.s.AbstractGrpcServerFactory - Registered gRPC service: grpc.reflection.v1alpha.ServerReflection, bean: protoReflectionService, class: io.grpc.protobuf.services.ProtoReflectionService
+2024-07-28 20:56:32.423 [main] INFO  n.d.b.g.s.s.GrpcServerLifecycle - gRPC Server started, listening on address: *, port: 9090
+2024-07-28 20:56:32.431 [main] INFO  o.g.s.ShortenServiceApplication - Started ShortenServiceApplication in 2.164 seconds (process running for 2.788)
