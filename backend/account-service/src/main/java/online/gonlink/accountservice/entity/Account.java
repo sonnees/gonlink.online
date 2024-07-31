@@ -8,8 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -22,7 +21,7 @@ public class Account {
     private String avatar;
     private String role;
     private LocalDate create;
-    private Set<String> urls;
+    private List<String> urls;
 
     public Account(UserInfo userInfo) {
         this.email = userInfo.user_email();
@@ -30,7 +29,7 @@ public class Account {
         this.avatar = userInfo.user_avatar();
         this.role = userInfo.user_role();
         this.create = LocalDate.now();
-        this.urls = new HashSet<>();
+        this.urls = new ArrayList<>();
     }
 
     public String getCreate() {
