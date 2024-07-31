@@ -1,8 +1,10 @@
 package online.gonlink.shortenservice.grpc;
 
+import lombok.AllArgsConstructor;
 import online.gonlink.*;
 import online.gonlink.shortenservice.dto.AuthConstants;
 import online.gonlink.shortenservice.exception.GrpcStatusException;
+import online.gonlink.shortenservice.service.UrlShortenerService;
 import online.gonlink.shortenservice.util.FormatLogMessage;
 import io.grpc.Context;
 import io.grpc.Status;
@@ -10,27 +12,22 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
-import online.gonlink.shortenservice.service.impl.UrlShortenerServiceImpl;
 import online.gonlink.UrlShortenerServiceGrpc.*;
 import online.gonlink.shortenservice.util.HtmlSanitizer;
 
 @GrpcService
+@AllArgsConstructor
 @Slf4j
 public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
 
-    private final UrlShortenerServiceImpl urlShortenerServiceImpl;
+    private final UrlShortenerService urlShortenerService;
     private final HtmlSanitizer htmlSanitizer;
-
-    public UrlShortenerServiceGrpc(UrlShortenerServiceImpl urlShortenerServiceImpl, HtmlSanitizer htmlSanitizer) {
-        this.urlShortenerServiceImpl = urlShortenerServiceImpl;
-        this.htmlSanitizer = htmlSanitizer;
-    }
 
     @Override
     public void generateShortCode(GenerateShortCodeRequest request, StreamObserver<GenerateShortCodeResponse> responseObserver) {
         try {
             String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
-            String shortCode = urlShortenerServiceImpl.generateShortCode(originalUrl);
+            String shortCode = urlShortenerService.generateShortCode(originalUrl);
 
             GenerateShortCodeResponse response = GenerateShortCodeResponse
                     .newBuilder()
@@ -59,7 +56,7 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
         Context context = Context.current();
         try {
             String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
-            String shortCode = urlShortenerServiceImpl.generateShortCode(AuthConstants.USER_EMAIL.get(context), originalUrl);
+            String shortCode = urlShortenerService.generateShortCode(AuthConstants.USER_EMAIL.get(context), originalUrl);
             GenerateShortCodeResponse response = GenerateShortCodeResponse
                     .newBuilder()
                     .setShortCode(shortCode)
@@ -84,7 +81,7 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
     @Override
     public void getOriginalUrl(GetOriginalUrlRequest request, StreamObserver<GetOriginalUrlResponse> responseObserver) {
         try {
-            String originalUrl = urlShortenerServiceImpl.getOriginalUrl(request.getShortCode(), request.getClientTime(), request.getZoneId());
+            String originalUrl = urlShortenerService.getOriginalUrl(request.getShortCode(), request.getClientTime(), request.getZoneId());
             GetOriginalUrlResponse response = GetOriginalUrlResponse
                     .newBuilder()
                     .setOriginalUrl(originalUrl)

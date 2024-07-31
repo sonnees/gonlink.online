@@ -1,20 +1,17 @@
 package online.gonlink.accountservice.service.impl;
 
 import online.gonlink.accountservice.entity.TrafficID;
-import online.gonlink.accountservice.repository.TrafficRepository;
+import online.gonlink.accountservice.repository.DayTrafficRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 import java.util.TimeZone;
 
@@ -23,8 +20,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TrafficServiceImplTest {
-    @Mock TrafficRepository trafficRepository;
+class DayTrafficServiceImplTest {
+    @Mock
+    DayTrafficRepository dayTrafficRepository;
 
     TrafficServiceImpl trafficService;
     SimpleDateFormat simpleDateFormat;
@@ -60,16 +58,16 @@ class TrafficServiceImplTest {
             simpleDateFormatWithTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             simpleDateFormatWithTime.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-            trafficService = new TrafficServiceImpl(trafficRepository, simpleDateFormat, simpleDateFormatWithTime, dateTimeFormatter);
+            trafficService = new TrafficServiceImpl(dayTrafficRepository, simpleDateFormat, simpleDateFormatWithTime, dateTimeFormatter);
 
-            when(trafficRepository.findById(trafficID)).thenReturn(Optional.empty());
-            when(trafficRepository.increaseTraffic(trafficID, index)).thenReturn(1L);
+            when(dayTrafficRepository.findById(trafficID)).thenReturn(Optional.empty());
+            when(dayTrafficRepository.increaseTraffic(trafficID, index)).thenReturn(1L);
 
             Boolean result = trafficService.increaseTraffic(shortCode, trafficDate, zoneID);
 
             assertTrue(result);
-            verify(trafficRepository).findById(any());
-            verify(trafficRepository).increaseTraffic(any(), eq(index));
+            verify(dayTrafficRepository).findById(any());
+            verify(dayTrafficRepository).increaseTraffic(any(), eq(index));
         }catch (Exception e){
             fail();
         }
