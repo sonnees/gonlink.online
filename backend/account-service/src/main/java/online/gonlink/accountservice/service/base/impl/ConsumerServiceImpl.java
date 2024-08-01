@@ -28,7 +28,7 @@ public class ConsumerServiceImpl implements ConsumerService {
     @Override
     @KafkaListener(topics = "${account-service.kafka.topic}", groupId = "${spring.kafka.consumer.group-id}")
     public void listen(String message) {
-        KafkaMessage kafkaMessage = null;
+        KafkaMessage kafkaMessage;
         try {
             kafkaMessage = objectMapper.readValue(message, KafkaMessage.class);
         } catch (JsonProcessingException e) {
@@ -41,7 +41,6 @@ public class ConsumerServiceImpl implements ConsumerService {
             throw new StatusRuntimeException(Status.INTERNAL.withDescription("Kafka Error"));
         }
 
-        log.info(kafkaMessage.obj().toString());
         switch (kafkaMessage.actionCode()) {
             case "append-url":
                 KafkaAppendUrl appendUrl = objectMapper.convertValue(kafkaMessage.obj(), KafkaAppendUrl.class);
@@ -57,7 +56,7 @@ public class ConsumerServiceImpl implements ConsumerService {
                 break;
             case "increase-traffic":
                 KafkaIncreaseTraffic increaseTraffic = objectMapper.convertValue(kafkaMessage.obj(), KafkaIncreaseTraffic.class);
-                Boolean increased = trafficService.increaseTraffic(increaseTraffic.shortCode(), increaseTraffic.trafficDate(), increaseTraffic.zoneId());
+                boolean increased = trafficService.increaseTraffic(increaseTraffic.shortCode(), increaseTraffic.trafficDate(), increaseTraffic.zoneId());
                 if(!increased) {
                     log.error(FormatLogMessage.formatLogMessage(
                             this.getClass().getSimpleName(),

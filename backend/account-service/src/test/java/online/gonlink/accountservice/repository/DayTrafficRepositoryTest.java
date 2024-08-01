@@ -15,10 +15,9 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class DayDayTrafficRepositoryTest {
-    @Autowired
-    DayTrafficRepository dayTrafficRepository;
-    @Autowired @Qualifier("simpleDateFormat") SimpleDateFormat simpleDateFormat;
+class DayTrafficRepositoryTest {
+    @Autowired DayTrafficRepository repository;
+    @Autowired @Qualifier("simpleDateFormat_YMD") SimpleDateFormat simpleDateFormat;
     @Autowired @Qualifier("simpleDateFormatWithTime") SimpleDateFormat simpleDateFormatWithTime;
     @Autowired DateTimeFormatter dateTimeFormatter;
 
@@ -30,27 +29,28 @@ class DayDayTrafficRepositoryTest {
         String date = simpleDateFormat.format(Date.from(clientTime.toInstant()));
         DayTraffic dayTraffic = new DayTraffic(shortCode, date);
 
-        DayTraffic insert = dayTrafficRepository.insert(dayTraffic);
+        DayTraffic insert = repository.insert(dayTraffic);
         assertNotNull(insert);
-        dayTrafficRepository.delete(insert);
+        repository.delete(insert);
     }
 
     @Test
     void increaseTraffic() {
         String shortCode = "demo";
         String zoneID = "Asia/Saigon";
-        ZonedDateTime clientTime = ZonedDateTime.parse("2024-07-02T07:40:27.442Z").withZoneSameInstant(ZoneId.of(zoneID));
+        ZonedDateTime clientTime = ZonedDateTime.parse("2024-07-02T01:40:27.442Z").withZoneSameInstant(ZoneId.of(zoneID));
         String date = simpleDateFormat.format(Date.from(clientTime.toInstant()));
-        DayTraffic insert = dayTrafficRepository.insert(new DayTraffic(shortCode, date));
+        DayTraffic insert = repository.insert(new DayTraffic(shortCode, date));
+        assertNotNull(insert);
 
-        String dateTime = simpleDateFormatWithTime.format(Date.from(ZonedDateTime.now().toInstant()));
+        String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dateTimeFormatter);
         int index = localDateTime.getHour();
 
-        Long aLong = dayTrafficRepository.increaseTraffic(new TrafficID(shortCode, date), index);
+        Long aLong = repository.increaseTraffic(new TrafficID(shortCode, date), index);
 
         assertTrue(aLong>0);
-        dayTrafficRepository.delete(insert);
+        repository.delete(insert);
     }
 
 }
