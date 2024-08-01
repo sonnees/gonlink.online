@@ -7,8 +7,9 @@ export const UserProvider = ({ children }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [token, setToken] = useState("");
   return (
-    <UserContext.Provider value={{ authenticated, setAuthenticated, email, setEmail, name, setName, avatar, setAvatar}}>
+    <UserContext.Provider value={{ authenticated, setAuthenticated, email, setEmail, name, setName, avatar, setAvatar, token, setToken}}>
       {children}
     </UserContext.Provider>
   );
