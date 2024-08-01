@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Arrays;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,12 +13,11 @@ import java.util.Arrays;
 public class DayTraffic implements Traffic{
     @Id
     private TrafficID id;
-    private Integer[] trafficHours;
+    private int[] trafficHours;
 
     public DayTraffic(String shortCode, String trafficDate) {
         this.id = new TrafficID(shortCode, trafficDate);
-        this.trafficHours = new Integer[24];
-        Arrays.fill(trafficHours, 0);
+        this.trafficHours = new int[24];
     }
 
 }
