@@ -22,8 +22,15 @@ public class AccountServiceConfig {
         return new ObjectMapper();
     }
 
-    @Bean(name = "simpleDateFormat")
-    SimpleDateFormat simpleDateFormat() {
+    @Bean(name = "simpleDateFormat_YM")
+    SimpleDateFormat simpleDateFormat_YM() {
+        SimpleDateFormat sdfUTC = new SimpleDateFormat("yyyy-MM");
+        sdfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return sdfUTC;
+    }
+
+    @Bean(name = "simpleDateFormat_YMD")
+    SimpleDateFormat simpleDateFormat_YMD() {
         SimpleDateFormat sdfUTC = new SimpleDateFormat("yyyy-MM-dd");
         sdfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sdfUTC;

@@ -7,8 +7,12 @@ import org.springframework.context.annotation.Configuration;
 public class GlobalInterceptorConfiguration {
 
     @GrpcGlobalServerInterceptor
-    AuthInterceptor authInterceptor() {
+    public AuthInterceptor authInterceptor() {
         return new AuthInterceptor();
     }
 
+    @GrpcGlobalServerInterceptor
+    public RateLimitInterceptor rateLimitInterceptor() {
+        return new RateLimitInterceptor();
+    }
 }

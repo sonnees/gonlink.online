@@ -6,7 +6,7 @@ import online.gonlink.accountservice.dto.AuthConstants;
 import online.gonlink.accountservice.dto.UserInfo;
 import online.gonlink.accountservice.entity.Account;
 import online.gonlink.accountservice.exception.GrpcStatusException;
-import online.gonlink.accountservice.service.impl.AccountServiceImpl;
+import online.gonlink.accountservice.service.AccountService;
 import online.gonlink.accountservice.util.FormatLogMessage;
 import io.grpc.Context;
 import io.grpc.Status;
@@ -21,7 +21,7 @@ import online.gonlink.AccountServiceGrpc.AccountServiceImplBase;
 @Slf4j
 public class AccountServiceGrpc extends AccountServiceImplBase {
 
-    private AccountServiceImpl accountService;
+    private AccountService accountService;
 
     @Override
     public void getInfoAccount(GetInfoAccountRequest request, StreamObserver<GetInfoAccountResponse> responseObserver) {
