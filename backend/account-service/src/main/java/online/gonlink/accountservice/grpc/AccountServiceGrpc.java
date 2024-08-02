@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import online.gonlink.AccountServiceGrpc.AccountServiceImplBase;
 
+import java.util.stream.Collectors;
+
 @GrpcService
 @AllArgsConstructor
 @Slf4j
@@ -43,7 +45,16 @@ public class AccountServiceGrpc extends AccountServiceImplBase {
                     .setAvatar(account.getAvatar())
                     .setRole(account.getRole())
                     .setCreate(account.getCreate())
-                    .addAllUrls(account.getUrls())
+                    .addAllUrls(
+                            account.getUrls()
+                                    .stream()
+                                    .map(shortUrl ->
+                                        ShortUrl.newBuilder()
+                                                .setShortCode(shortUrl.getShortCode())
+                                                .setOriginalUrl(shortUrl.getOriginalUrl())
+                                                .build()
+                                    ).collect(Collectors.toList())
+                            )
                     .build();
 
             responseObserver.onNext(response);

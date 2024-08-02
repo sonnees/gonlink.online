@@ -57,8 +57,8 @@ public class RateLimitInterceptor implements ServerInterceptor {
         return Bucket.builder()
                 .addLimit(
                         Bandwidth.builder()
-                                .capacity(1)
-                                .refillGreedy(1, Duration.ofMinutes(1))
+                                .capacity(6)
+                                .refillGreedy(6, Duration.ofMinutes(1))
                                 .build()
                 ).build();
     }

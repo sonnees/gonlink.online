@@ -75,8 +75,20 @@
         "urls": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "object",
+            "$ref": "#/definitions/gonlinkShortUrl"
           }
+        }
+      }
+    },
+    "gonlinkShortUrl": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        },
+        "originalUrl": {
+          "type": "string"
         }
       }
     },

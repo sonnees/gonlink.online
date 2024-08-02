@@ -2,6 +2,7 @@ package online.gonlink.accountservice.service.impl;
 
 import online.gonlink.accountservice.dto.UserInfo;
 import online.gonlink.accountservice.entity.Account;
+import online.gonlink.accountservice.entity.ShortUrl;
 import online.gonlink.accountservice.exception.GrpcStatusException;
 import online.gonlink.accountservice.util.FormatLogMessage;
 import io.grpc.Status;
@@ -39,9 +40,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Boolean appendUrl(String email, String url) {
+    public Boolean appendUrl(String email, ShortUrl shortUrl) {
         try {
-            Long appendUrl = accountRepository.appendUrl(email, url);
+            Long appendUrl = accountRepository.appendUrl(email, shortUrl);
             if(appendUrl>0) return true;
             else throw new StatusRuntimeException(Status.NOT_FOUND.withDescription("Account Not Found"));
         }

@@ -1,5 +1,6 @@
 package online.gonlink.accountservice.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import online.gonlink.accountservice.dto.IncreaseTraffic;
 import online.gonlink.accountservice.observer.DayTrafficObserver;
@@ -24,12 +25,15 @@ public class TrafficServiceImpl implements TrafficService {
         this.dayTrafficObserver = dayTrafficObserver;
     }
 
+    @PostConstruct
+    public void initObservers() {
+        trafficSubject.addObserver(generalTrafficObserver);
+        trafficSubject.addObserver(monthTrafficObserver);
+        trafficSubject.addObserver(dayTrafficObserver);
+    }
+
     @Override
     public boolean increaseTraffic(String shortCode, String trafficDate, String zoneId) {
-        return
-                trafficSubject.addObserver(generalTrafficObserver)
-                && trafficSubject.addObserver(monthTrafficObserver)
-                && trafficSubject.addObserver(dayTrafficObserver)
-                && trafficSubject.notifyObservers(new IncreaseTraffic(shortCode, trafficDate, zoneId));
+        return trafficSubject.notifyObservers(new IncreaseTraffic(shortCode, trafficDate, zoneId));
     }
 }

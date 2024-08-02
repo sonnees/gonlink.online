@@ -8,13 +8,17 @@ import "google/protobuf/empty.proto";
 message GetInfoAccountRequest{
 }
 
+message ShortUrl {
+  string shortCode = 1;
+  string originalUrl = 2;
+}
 message GetInfoAccountResponse{
   string email = 1;
   string name = 2;
   string avatar = 3;
   string role = 4;
   string create = 5;
-  repeated string urls = 6;
+  repeated ShortUrl urls = 6;
 }
 
 service AccountService {

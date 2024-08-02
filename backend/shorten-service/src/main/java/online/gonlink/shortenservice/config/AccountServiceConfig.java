@@ -1,6 +1,8 @@
 package online.gonlink.shortenservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,8 +11,33 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
+@Getter
 @Configuration
 public class AccountServiceConfig {
+
+    @Value("${shorten-service.qr.width}")
+    private int WIDTH;
+
+    @Value("${shorten-service.qr.height}")
+    private int HEIGHT;
+
+    @Value("${shorten-service.jwt.secret-key}")
+    private String SECRET_KEY;
+
+    @Value("${shorten-service.kafka.topic}")
+    private String TOPIC_NAME;
+
+    @Value("${shorten-service.url-forbidden}")
+    private String[] URL_FORBIDDEN;
+
+    @Value("${shorten-service.allowed-characters}")
+    private String ALLOWED_CHARACTERS;
+
+    @Value("${shorten-service.length-short-code}")
+    private int LENGTH_SHORT_CODE;
+
+    @Value("${front-end.domain}")
+    private String FRONTEND_DOMAIN;
 
     @Bean
     SecureRandom secureRandom(){

@@ -15,6 +15,8 @@ message GenerateShortCodeAccountRequest{
 
 message GenerateShortCodeResponse{
   string shortCode = 1;
+  string base64Image = 2;
+  bool isOwner = 3;
 }
 
 // === GetOriginalUrl ===
@@ -32,6 +34,23 @@ service UrlShortenerService {
   rpc generateShortCode(GenerateShortCodeRequest) returns(GenerateShortCodeResponse){}
   rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(GenerateShortCodeResponse){}
   rpc getOriginalUrl(GetOriginalUrlRequest) returns(GetOriginalUrlResponse){}
+  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(GetStringBase64ImageResponse){}
+}
+
+
+// === GetStringBase64Image ===
+message GetStringBase64ImageRequest{
+  string content = 1;
+  int32 width = 2;
+  int32 height = 3;
+}
+
+message GetStringBase64ImageResponse{
+  string base64Image = 1;
+}
+
+service QRCodeService {
+  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(GetStringBase64ImageResponse){}
 }
 
 

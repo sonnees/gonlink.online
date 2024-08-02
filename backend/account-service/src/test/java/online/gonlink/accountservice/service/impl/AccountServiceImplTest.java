@@ -1,6 +1,7 @@
 package online.gonlink.accountservice.service.impl;
 
 import online.gonlink.accountservice.dto.UserInfo;
+import online.gonlink.accountservice.entity.ShortUrl;
 import online.gonlink.accountservice.exception.GrpcStatusException;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -86,35 +87,41 @@ class AccountServiceImplTest {
     void appendUrl_OKE() {
         String email = "demo@gmail.com";
         String url = "12abCD";
+        String originalUrl = "https://github.com/sonnees";
+        ShortUrl shortUrl = new ShortUrl(url, originalUrl);
 
-        when(accountRepository.appendUrl(email, url)).thenReturn(1L);
-        Boolean appendUrl = accountServiceImpl.appendUrl(email, url);
+        when(accountRepository.appendUrl(email, shortUrl)).thenReturn(1L);
+        Boolean appendUrl = accountServiceImpl.appendUrl(email, shortUrl);
         assertTrue(appendUrl);
 
-        verify(accountRepository).appendUrl(email, url);
+        verify(accountRepository).appendUrl(email, shortUrl);
     }
 
     @Test
     void appendUrl_NOT_FOUND() {
         String email = "demo@gmail.com";
         String url = "12abCD";
+        String originalUrl = "https://github.com/sonnees";
+        ShortUrl shortUrl = new ShortUrl(url, originalUrl);
 
-        when(accountRepository.appendUrl(email, url)).thenReturn(0L);
-        GrpcStatusException exception = assertThrows(GrpcStatusException.class, () -> accountServiceImpl.appendUrl(email, url));
+        when(accountRepository.appendUrl(email, shortUrl)).thenReturn(0L);
+        GrpcStatusException exception = assertThrows(GrpcStatusException.class, () -> accountServiceImpl.appendUrl(email, shortUrl));
         assertEquals(Status.NOT_FOUND.getCode(), exception.getStatusException().getStatus().getCode());
 
-        verify(accountRepository).appendUrl(email, url);
+        verify(accountRepository).appendUrl(email, shortUrl);
     }
 
     @Test
     void appendUrl_INTERNAL() {
         String email = "demo@gmail.com";
         String url = "12abCD";
+        String originalUrl = "https://github.com/sonnees";
+        ShortUrl shortUrl = new ShortUrl(url, originalUrl);
 
-        when(accountRepository.appendUrl(email, url)).thenThrow(new RuntimeException());
-        StatusRuntimeException exception = assertThrows(StatusRuntimeException.class, () -> accountServiceImpl.appendUrl(email, url));
+        when(accountRepository.appendUrl(email, shortUrl)).thenThrow(new RuntimeException());
+        StatusRuntimeException exception = assertThrows(StatusRuntimeException.class, () -> accountServiceImpl.appendUrl(email, shortUrl));
         assertEquals(Status.INTERNAL.getCode(), exception.getStatus().getCode());
 
-        verify(accountRepository).appendUrl(email, url);
+        verify(accountRepository).appendUrl(email, shortUrl);
     }
 }

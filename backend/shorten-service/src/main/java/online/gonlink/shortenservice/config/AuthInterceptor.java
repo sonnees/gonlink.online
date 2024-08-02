@@ -19,7 +19,8 @@ public class AuthInterceptor implements ServerInterceptor {
 
     private static final Set<String> PUBLIC_METHODS = Set.of(
             "online.gonlink.UrlShortenerService/generateShortCode",
-            "online.gonlink.UrlShortenerService/getOriginalUrl"
+            "online.gonlink.UrlShortenerService/getOriginalUrl",
+            "online.gonlink.UrlShortenerService/getStringBase64Image"
     );
 
     @Override

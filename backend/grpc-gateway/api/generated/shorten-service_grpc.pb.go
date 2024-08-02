@@ -184,3 +184,94 @@ var UrlShortenerService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "shorten-service.proto",
 }
+
+const (
+	QRCodeService_GetStringBase64Image_FullMethodName = "/online.gonlink.QRCodeService/getStringBase64Image"
+)
+
+// QRCodeServiceClient is the client API for QRCodeService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type QRCodeServiceClient interface {
+	GetStringBase64Image(ctx context.Context, in *GetStringBase64ImageRequest, opts ...grpc.CallOption) (*GetStringBase64ImageResponse, error)
+}
+
+type qRCodeServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewQRCodeServiceClient(cc grpc.ClientConnInterface) QRCodeServiceClient {
+	return &qRCodeServiceClient{cc}
+}
+
+func (c *qRCodeServiceClient) GetStringBase64Image(ctx context.Context, in *GetStringBase64ImageRequest, opts ...grpc.CallOption) (*GetStringBase64ImageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetStringBase64ImageResponse)
+	err := c.cc.Invoke(ctx, QRCodeService_GetStringBase64Image_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// QRCodeServiceServer is the server API for QRCodeService service.
+// All implementations must embed UnimplementedQRCodeServiceServer
+// for forward compatibility
+type QRCodeServiceServer interface {
+	GetStringBase64Image(context.Context, *GetStringBase64ImageRequest) (*GetStringBase64ImageResponse, error)
+	mustEmbedUnimplementedQRCodeServiceServer()
+}
+
+// UnimplementedQRCodeServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedQRCodeServiceServer struct {
+}
+
+func (UnimplementedQRCodeServiceServer) GetStringBase64Image(context.Context, *GetStringBase64ImageRequest) (*GetStringBase64ImageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetStringBase64Image not implemented")
+}
+func (UnimplementedQRCodeServiceServer) mustEmbedUnimplementedQRCodeServiceServer() {}
+
+// UnsafeQRCodeServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to QRCodeServiceServer will
+// result in compilation errors.
+type UnsafeQRCodeServiceServer interface {
+	mustEmbedUnimplementedQRCodeServiceServer()
+}
+
+func RegisterQRCodeServiceServer(s grpc.ServiceRegistrar, srv QRCodeServiceServer) {
+	s.RegisterService(&QRCodeService_ServiceDesc, srv)
+}
+
+func _QRCodeService_GetStringBase64Image_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStringBase64ImageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QRCodeServiceServer).GetStringBase64Image(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QRCodeService_GetStringBase64Image_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QRCodeServiceServer).GetStringBase64Image(ctx, req.(*GetStringBase64ImageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// QRCodeService_ServiceDesc is the grpc.ServiceDesc for QRCodeService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var QRCodeService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "online.gonlink.QRCodeService",
+	HandlerType: (*QRCodeServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "getStringBase64Image",
+			Handler:    _QRCodeService_GetStringBase64Image_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "shorten-service.proto",
+}
