@@ -54,6 +54,12 @@ func run() error {
     if err != nil {
         return err
     }
+	err = gw.RegisterQRCodeServiceHandlerFromEndpoint(ctx, mux, *grpcServer2Endpoint, opts)
+    if err != nil {
+        return err
+    }
+
+
 
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/auth/github/login", auth.HandleGithubLogin())

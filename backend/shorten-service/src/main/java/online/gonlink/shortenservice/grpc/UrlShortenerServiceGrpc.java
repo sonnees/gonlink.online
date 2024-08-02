@@ -2,9 +2,12 @@ package online.gonlink.shortenservice.grpc;
 
 import lombok.AllArgsConstructor;
 import online.gonlink.*;
+import online.gonlink.shortenservice.config.AccountServiceConfig;
 import online.gonlink.shortenservice.dto.AuthConstants;
+import online.gonlink.shortenservice.dto.ResponseGenerateShortCode;
 import online.gonlink.shortenservice.exception.GrpcStatusException;
 import online.gonlink.shortenservice.service.UrlShortenerService;
+import online.gonlink.shortenservice.service.base.QRCodeService;
 import online.gonlink.shortenservice.util.FormatLogMessage;
 import io.grpc.Context;
 import io.grpc.Status;
@@ -19,19 +22,23 @@ import online.gonlink.shortenservice.util.HtmlSanitizer;
 @AllArgsConstructor
 @Slf4j
 public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
-
     private final UrlShortenerService urlShortenerService;
+    private final QRCodeService qrCodeService;
     private final HtmlSanitizer htmlSanitizer;
+    private AccountServiceConfig config;
 
     @Override
     public void generateShortCode(GenerateShortCodeRequest request, StreamObserver<GenerateShortCodeResponse> responseObserver) {
         try {
             String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
-            String shortCode = urlShortenerService.generateShortCode(originalUrl);
+            ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(originalUrl);
+            String base64Image = qrCodeService.getStringBase64Image(config.getFRONTEND_DOMAIN() + responseGenerateShortCode.shortCode());
 
             GenerateShortCodeResponse response = GenerateShortCodeResponse
                     .newBuilder()
-                    .setShortCode(shortCode)
+                    .setShortCode(responseGenerateShortCode.shortCode())
+                    .setBase64Image(base64Image)
+                    .setIsOwner(responseGenerateShortCode.isOwner())
                     .build();
 
             responseObserver.onNext(response);
@@ -56,10 +63,14 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
         Context context = Context.current();
         try {
             String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
-            String shortCode = urlShortenerService.generateShortCode(AuthConstants.USER_EMAIL.get(context), originalUrl);
+            ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(AuthConstants.USER_EMAIL.get(context), originalUrl);
+            String base64Image = qrCodeService.getStringBase64Image(config.getFRONTEND_DOMAIN() + responseGenerateShortCode.shortCode());
+
             GenerateShortCodeResponse response = GenerateShortCodeResponse
                     .newBuilder()
-                    .setShortCode(shortCode)
+                    .setShortCode(responseGenerateShortCode.shortCode())
+                    .setIsOwner(responseGenerateShortCode.isOwner())
+                    .setBase64Image(base64Image)
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();

@@ -32,13 +32,18 @@ grpc:
 
 # global value
 shorten-service:
-  ALLOWED_CHARACTERS: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
-  LENGTH_SHORT_CODE: 6
-  URL_FORBIDDEN: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
+  allowed-characters: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+  length-short-code: 6
+  url-forbidden: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
   kafka:
-    default-topic: shorten-service
     topic: gonlink
   jwt:
-    JWT_SECRET: 7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
+    secret-key: 7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
+  qr:
+    width: 200
+    height: 200
+
+front-end:
+  domain: http://localhost:5173/
 
 

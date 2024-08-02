@@ -5,9 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import online.gonlink.accountservice.dto.KafkaAppendUrl;
 import online.gonlink.accountservice.dto.KafkaIncreaseTraffic;
 import online.gonlink.accountservice.dto.KafkaMessage;
+import online.gonlink.accountservice.entity.ShortUrl;
+import online.gonlink.accountservice.service.AccountService;
 import online.gonlink.accountservice.service.TrafficService;
 import online.gonlink.accountservice.service.base.ConsumerService;
-import online.gonlink.accountservice.service.impl.AccountServiceImpl;
 import online.gonlink.accountservice.util.FormatLogMessage;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ConsumerServiceImpl implements ConsumerService {
 
-    private final AccountServiceImpl accountService;
+    private final AccountService accountService;
     private final TrafficService trafficService;
     private final ObjectMapper objectMapper;
 
@@ -44,13 +45,13 @@ public class ConsumerServiceImpl implements ConsumerService {
         switch (kafkaMessage.actionCode()) {
             case "append-url":
                 KafkaAppendUrl appendUrl = objectMapper.convertValue(kafkaMessage.obj(), KafkaAppendUrl.class);
-                Boolean appended = accountService.appendUrl(appendUrl.email(), appendUrl.url());
+                Boolean appended = accountService.appendUrl(appendUrl.email(), new ShortUrl(appendUrl.shortCode(), appendUrl.originalUrl()));
                 if(!appended) {
                     log.error(FormatLogMessage.formatLogMessage(
                             this.getClass().getSimpleName(),
                             "kafkaMessage < appendUrl",
                             "Unexpected error: ",
-                            "Email: "+appendUrl.email(), "Url: "+appendUrl.url()
+                            "Email: "+appendUrl.email(), "Url: "+appendUrl.shortCode()
                     ));
                 }
                 break;

@@ -7,6 +7,9 @@
   "tags": [
     {
       "name": "UrlShortenerService"
+    },
+    {
+      "name": "QRCodeService"
     }
   ],
   "consumes": [
@@ -45,6 +48,38 @@
         ],
         "tags": [
           "UrlShortenerService"
+        ]
+      }
+    },
+    "/shorten-service/api/v1/gen-qr": {
+      "post": {
+        "operationId": "QRCodeService_getStringBase64Image",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkGetStringBase64ImageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkGetStringBase64ImageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QRCodeService"
         ]
       }
     },
@@ -136,6 +171,12 @@
       "properties": {
         "shortCode": {
           "type": "string"
+        },
+        "base64Image": {
+          "type": "string"
+        },
+        "isOwner": {
+          "type": "boolean"
         }
       }
     },
@@ -158,6 +199,31 @@
       "type": "object",
       "properties": {
         "originalUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "gonlinkGetStringBase64ImageRequest": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "=== GetStringBase64Image ==="
+    },
+    "gonlinkGetStringBase64ImageResponse": {
+      "type": "object",
+      "properties": {
+        "base64Image": {
           "type": "string"
         }
       }
