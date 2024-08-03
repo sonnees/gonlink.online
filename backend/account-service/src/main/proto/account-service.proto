@@ -5,8 +5,7 @@ package online.gonlink;
 import "google/protobuf/empty.proto";
 
 // === GetInfoAccount ===
-message GetInfoAccountRequest{
-}
+message GetInfoAccountRequest{}
 
 message ShortUrl {
   string shortCode = 1;
@@ -21,8 +20,15 @@ message GetInfoAccountResponse{
   repeated ShortUrl urls = 6;
 }
 
+// === RemoveUrl ===
+message RemoveUrlRequest{
+  string shortCode = 1;
+}
+message RemoveUrlResponse{}
+
 service AccountService {
   rpc getInfoAccount(GetInfoAccountRequest) returns(GetInfoAccountResponse){}
+  rpc removeUrl(RemoveUrlRequest) returns(RemoveUrlResponse){}
 }
 
 

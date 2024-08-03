@@ -47,6 +47,38 @@
           "AccountService"
         ]
       }
+    },
+    "/account-service/api/v1/remove-url": {
+      "post": {
+        "operationId": "AccountService_removeUrl",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkRemoveUrlResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkRemoveUrlRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -80,6 +112,18 @@
           }
         }
       }
+    },
+    "gonlinkRemoveUrlRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        }
+      },
+      "title": "=== RemoveUrl ==="
+    },
+    "gonlinkRemoveUrlResponse": {
+      "type": "object"
     },
     "gonlinkShortUrl": {
       "type": "object",

@@ -91,7 +91,7 @@ class AccountServiceImplTest {
         ShortUrl shortUrl = new ShortUrl(url, originalUrl);
 
         when(accountRepository.appendUrl(email, shortUrl)).thenReturn(1L);
-        Boolean appendUrl = accountServiceImpl.appendUrl(email, shortUrl);
+        boolean appendUrl = accountServiceImpl.appendUrl(email, shortUrl);
         assertTrue(appendUrl);
 
         verify(accountRepository).appendUrl(email, shortUrl);
@@ -124,4 +124,31 @@ class AccountServiceImplTest {
 
         verify(accountRepository).appendUrl(email, shortUrl);
     }
+
+    @Test
+    void removeUrl_OKE() {
+        String email = "demo@gmail.com";
+        String url = "12abCD";
+
+        when(accountRepository.removeUrl(email, url)).thenReturn(1L);
+
+        boolean removeUrl = accountServiceImpl.removeUrl(email, url);
+        assertTrue(removeUrl);
+
+        verify(accountRepository).removeUrl(email, url);
+    }
+
+    @Test
+    void removeUrl_NOT_FOUND() {
+        String email = "demo@gmail.com";
+        String urlTemp = "34abCD";
+
+        when(accountRepository.removeUrl(email, urlTemp)).thenReturn(0L);
+
+        GrpcStatusException exception = assertThrows(GrpcStatusException.class, () -> accountServiceImpl.removeUrl(email, urlTemp));
+        assertEquals(Status.NOT_FOUND.getCode(), exception.getStatusException().getStatus().getCode());
+
+        verify(accountRepository).removeUrl(email, urlTemp);
+    }
+
 }
