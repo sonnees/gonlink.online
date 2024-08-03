@@ -21,10 +21,25 @@ message GetInfoAccountResponse{
   string create = 5;
   repeated ShortUrl urls = 6;
 }
+
+// === RemoveUrl ===
+message RemoveUrlRequest{
+  string shortCode = 1;
+}
+message RemoveUrlResponse{}
+
+
 service AccountService {
   rpc getInfoAccount(GetInfoAccountRequest) returns(GetInfoAccountResponse){
     option (google.api.http) = {
       post: "/account-service/api/v1/get-info-account"
+      body: "*"
+    };
+  }
+
+  rpc removeUrl(RemoveUrlRequest) returns(RemoveUrlResponse){
+    option (google.api.http) = {
+      post: "/account-service/api/v1/remove-url"
       body: "*"
     };
   }

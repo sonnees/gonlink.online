@@ -35,9 +35,8 @@ grpc:
 # global value
 account-service:
   kafka:
-    default-topic: account-service
     topic: gonlink
   jwt:
-    JWT_SECRET: 7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
+    secret-key: 7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
 
 

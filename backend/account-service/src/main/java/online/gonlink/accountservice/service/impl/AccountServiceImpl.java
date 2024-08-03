@@ -40,9 +40,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Boolean appendUrl(String email, ShortUrl shortUrl) {
+    public boolean appendUrl(String email, ShortUrl shortUrl) {
         try {
-            Long appendUrl = accountRepository.appendUrl(email, shortUrl);
+            long appendUrl = accountRepository.appendUrl(email, shortUrl);
             if(appendUrl>0) return true;
             else throw new StatusRuntimeException(Status.NOT_FOUND.withDescription("Account Not Found"));
         }
@@ -53,6 +53,27 @@ public class AccountServiceImpl implements AccountService {
             log.error(FormatLogMessage.formatLogMessage(
                     this.getClass().getSimpleName(),
                     "appendUrl",
+                    "Unexpected error: {}",
+                    e
+            ));
+            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+        }
+    }
+
+    @Override
+    public boolean removeUrl(String email, String shortCode) {
+        try {
+            long appendUrl = accountRepository.removeUrl(email, shortCode);
+            if(appendUrl>0) return true;
+            else throw new StatusRuntimeException(Status.NOT_FOUND.withDescription("ShortCode Not Found"));
+        }
+        catch (StatusRuntimeException e){
+            throw new GrpcStatusException(e);
+        }
+        catch (Exception e){
+            log.error(FormatLogMessage.formatLogMessage(
+                    this.getClass().getSimpleName(),
+                    "removeUrl",
                     "Unexpected error: {}",
                     e
             ));

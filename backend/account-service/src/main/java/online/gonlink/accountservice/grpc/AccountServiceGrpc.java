@@ -73,4 +73,30 @@ public class AccountServiceGrpc extends AccountServiceImplBase {
             responseObserver.onError(new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error")));
         }
     }
+
+    @Override
+    public void removeUrl(RemoveUrlRequest request, StreamObserver<RemoveUrlResponse> responseObserver) {
+        Context context = Context.current();
+
+        try {
+            accountService.removeUrl(AuthConstants.USER_EMAIL.get(context), request.getShortCode());
+
+            RemoveUrlResponse response = RemoveUrlResponse.newBuilder().build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
+        catch (GrpcStatusException e){
+            responseObserver.onError(e.getStatusException());
+        }
+        catch (Exception e){
+            log.error(FormatLogMessage.formatLogMessage(
+                    this.getClass().getSimpleName(),
+                    "getInfoAccount",
+                    "Unexpected error: {}",
+                    e
+            ));
+            responseObserver.onError(new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error")));
+        }
+    }
 }

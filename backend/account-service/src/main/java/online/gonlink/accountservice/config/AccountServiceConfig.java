@@ -1,6 +1,8 @@
 package online.gonlink.accountservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 @Configuration
+@Getter
 public class AccountServiceConfig {
+
+    @Value("${account-service.jwt.secret-key}")
+    private String SECRET_KEY;
+
+    @Value("${account-service.kafka.topic}")
+    private String topicName;
 
     @Bean
     SecureRandom secureRandom(){

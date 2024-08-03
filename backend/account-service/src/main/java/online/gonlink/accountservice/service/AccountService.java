@@ -6,5 +6,6 @@ import online.gonlink.accountservice.entity.ShortUrl;
 
 public interface AccountService {
     Account getInfoAccount(UserInfo userInfo);
-    Boolean appendUrl(String email, ShortUrl url);
+    boolean appendUrl(String email, ShortUrl url);
+    boolean removeUrl(String email, String shortCode);
 }
