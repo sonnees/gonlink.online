@@ -31,7 +31,11 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
     public void generateShortCode(GenerateShortCodeRequest request, StreamObserver<GenerateShortCodeResponse> responseObserver) {
         try {
             String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
-            ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(originalUrl);
+            ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(
+                    originalUrl,
+                    request.getTrafficDate(),
+                    request.getZoneId()
+            );
             String base64Image = qrCodeService.getStringBase64Image(config.getFRONTEND_DOMAIN() + responseGenerateShortCode.shortCode());
 
             GenerateShortCodeResponse response = GenerateShortCodeResponse
@@ -63,7 +67,12 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
         Context context = Context.current();
         try {
             String originalUrl = htmlSanitizer.sanitizeStrict(request.getOriginalUrl());
-            ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(AuthConstants.USER_EMAIL.get(context), originalUrl);
+            ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(
+                    AuthConstants.USER_EMAIL.get(context),
+                    originalUrl,
+                    request.getTrafficDate(),
+                    request.getZoneId()
+            );
             String base64Image = qrCodeService.getStringBase64Image(config.getFRONTEND_DOMAIN() + responseGenerateShortCode.shortCode());
 
             GenerateShortCodeResponse response = GenerateShortCodeResponse

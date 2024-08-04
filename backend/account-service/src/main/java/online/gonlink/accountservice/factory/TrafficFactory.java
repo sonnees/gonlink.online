@@ -1,9 +1,6 @@
 package online.gonlink.accountservice.factory;
 
-import online.gonlink.accountservice.entity.DayTraffic;
-import online.gonlink.accountservice.entity.GeneralTraffic;
-import online.gonlink.accountservice.entity.MonthTraffic;
-import online.gonlink.accountservice.entity.Traffic;
+import online.gonlink.accountservice.entity.*;
 import online.gonlink.accountservice.factory.type.TrafficType;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +49,23 @@ public class TrafficFactory {
                                     && params[1] instanceof String
                     ){
                         return new DayTraffic(
+                                (String) params[0],
+                                (String) params[1]
+                        );
+                    }
+                    throw new IllegalArgumentException("Error params");
+                } catch (Exception e){
+                    throw new IllegalArgumentException("Error creating: "+ e.getMessage(), e);
+                }
+
+            case REAL_TIME:
+                try {
+                    if(
+                            params.length == 2
+                                    && params[0] instanceof String
+                                    && params[1] instanceof String
+                    ){
+                        return new RealTimeTraffic(
                                 (String) params[0],
                                 (String) params[1]
                         );

@@ -48,12 +48,10 @@ class GeneralTrafficObserverTest {
 
             observer = new GeneralTrafficObserver(repository, simpleDateFormatWithTime);
 
-            when(repository.findById(shortCode)).thenReturn(Optional.empty());
             when(repository.increaseTraffic(shortCode)).thenReturn(1L);
 
             observer.increaseTraffic(new IncreaseTraffic(shortCode, trafficDate, zoneID));
 
-            verify(repository).findById(any());
             verify(repository).increaseTraffic(any());
         }
     }

@@ -7,10 +7,14 @@ import "google/protobuf/empty.proto";
 // === GenerateShortCode ===
 message GenerateShortCodeRequest{
   string originalUrl = 1;
+  string trafficDate = 2;
+  string zoneId = 3;
 }
 
 message GenerateShortCodeAccountRequest{
   string originalUrl = 1;
+  string trafficDate = 2;
+  string zoneId = 3;
 }
 
 message GenerateShortCodeResponse{

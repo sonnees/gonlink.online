@@ -11,10 +11,15 @@ public class TrafficSubject {
     protected final Set<TrafficObserver> observers = new HashSet<>();
 
     public boolean notifyObservers(IncreaseTraffic increaseTraffic) {
-        for (TrafficObserver observer : observers) {
+        for (TrafficObserver observer : observers)
             observer.increaseTraffic(increaseTraffic);
-        }
+
         return true;
+    }
+
+    public void deleteTraffic(String shortCode) {
+        for (TrafficObserver observer : observers)
+            observer.deleteTraffic(shortCode);
     }
 
     public void addObserver(TrafficObserver observer) {

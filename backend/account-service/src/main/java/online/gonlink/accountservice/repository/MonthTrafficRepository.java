@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface MonthTrafficRepository extends MongoRepository<MonthTraffic, TrafficID> {
     @Query("{id: ?0}")
     @Update("{ '$inc' : { 'trafficDays.?1' : 1 } }")
-    Long increaseTraffic(TrafficID id, int index);
+    long increaseTraffic(TrafficID id, int index);
 
+    @Query(value = "{'id.shortCode': ?0}", delete = true)
+    void deleteAllByShortCode(String shortCode);
 }

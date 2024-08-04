@@ -7,6 +7,7 @@ import online.gonlink.accountservice.dto.UserInfo;
 import online.gonlink.accountservice.entity.Account;
 import online.gonlink.accountservice.exception.GrpcStatusException;
 import online.gonlink.accountservice.service.AccountService;
+import online.gonlink.accountservice.service.TrafficService;
 import online.gonlink.accountservice.util.FormatLogMessage;
 import io.grpc.Context;
 import io.grpc.Status;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import online.gonlink.AccountServiceGrpc.AccountServiceImplBase;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
@@ -23,7 +25,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AccountServiceGrpc extends AccountServiceImplBase {
 
-    private AccountService accountService;
+    private final AccountService accountService;
+    private final TrafficService trafficService;
 
     @Override
     public void getInfoAccount(GetInfoAccountRequest request, StreamObserver<GetInfoAccountResponse> responseObserver) {
@@ -75,12 +78,11 @@ public class AccountServiceGrpc extends AccountServiceImplBase {
     }
 
     @Override
+    @Transactional
     public void removeUrl(RemoveUrlRequest request, StreamObserver<RemoveUrlResponse> responseObserver) {
         Context context = Context.current();
-
         try {
-            accountService.removeUrl(AuthConstants.USER_EMAIL.get(context), request.getShortCode());
-
+            removeUrl_AccountService(AuthConstants.USER_EMAIL.get(context), request.getShortCode());
             RemoveUrlResponse response = RemoveUrlResponse.newBuilder().build();
 
             responseObserver.onNext(response);
@@ -98,5 +100,16 @@ public class AccountServiceGrpc extends AccountServiceImplBase {
             ));
             responseObserver.onError(new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error")));
         }
+    }
+
+    @Transactional
+    public void removeUrl_AccountService(String email, String shortCode){
+        accountService.removeUrl(email, shortCode);
+        removeUrl_TrafficService(shortCode);
+    }
+
+    @Transactional
+    public void removeUrl_TrafficService(String shortCode){
+        trafficService.deleteTraffic(shortCode);
     }
 }

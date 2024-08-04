@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import online.gonlink.accountservice.dto.IncreaseTraffic;
 import online.gonlink.accountservice.entity.MonthTraffic;
 import online.gonlink.accountservice.entity.TrafficID;
+import online.gonlink.accountservice.factory.TrafficFactory;
+import online.gonlink.accountservice.factory.type.TrafficType;
 import online.gonlink.accountservice.repository.MonthTrafficRepository;
 import online.gonlink.accountservice.util.FormatLogMessage;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,7 +53,7 @@ public class MonthTrafficObserver implements TrafficObserver{
         if(byId.isEmpty()) insert(record.shortCode(), date);
 
         try {
-            Long increased = repository.increaseTraffic(trafficID, index);
+            long increased = repository.increaseTraffic(trafficID, index);
             if(increased>0) return true;
             else{
                 log.error(FormatLogMessage.formatLogMessage(
@@ -73,11 +75,26 @@ public class MonthTrafficObserver implements TrafficObserver{
         }
     }
 
+    @Override
+    public void deleteTraffic(String shortCode) {
+        try {
+            repository.deleteAllByShortCode(shortCode);
+        } catch (Exception e){
+            log.error(FormatLogMessage.formatLogMessage(
+                    this.getClass().getSimpleName(),
+                    "removeUrl",
+                    "Unexpected error: {}",
+                    e
+            ));
+            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+        }
+    }
+
     @Transactional
     public void insert(String shortCode, String trafficDate) {
-        MonthTraffic monthTraffic = new MonthTraffic(shortCode, trafficDate);
+        MonthTraffic traffic = (MonthTraffic) TrafficFactory.createTraffic(TrafficType.MONTH, shortCode, trafficDate);
         try {
-            repository.insert(monthTraffic);
+            repository.insert(traffic);
         } catch (DuplicateKeyException e){
             throw new StatusRuntimeException( Status.ALREADY_EXISTS.withDescription("Duplicate Key Error"));
         } catch (Exception e){
