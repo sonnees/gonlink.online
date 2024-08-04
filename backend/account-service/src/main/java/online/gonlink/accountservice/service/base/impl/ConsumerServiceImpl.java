@@ -2,10 +2,12 @@ package online.gonlink.accountservice.service.base.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import online.gonlink.accountservice.dto.KafkaAppendUrl;
-import online.gonlink.accountservice.dto.KafkaIncreaseTraffic;
-import online.gonlink.accountservice.dto.KafkaMessage;
+import jakarta.annotation.PostConstruct;
+import online.gonlink.accountservice.dto.*;
 import online.gonlink.accountservice.entity.ShortUrl;
+import online.gonlink.accountservice.observer.CreateTrafficSubject;
+import online.gonlink.accountservice.observer.GeneralTrafficObserver;
+import online.gonlink.accountservice.observer.RealTimeTrafficObserver;
 import online.gonlink.accountservice.service.AccountService;
 import online.gonlink.accountservice.service.TrafficService;
 import online.gonlink.accountservice.service.base.ConsumerService;
@@ -21,10 +23,18 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class ConsumerServiceImpl implements ConsumerService {
-
+    private final CreateTrafficSubject createTrafficSubject;
+    private final GeneralTrafficObserver generalTrafficObserver;
+    private final RealTimeTrafficObserver realTimeTrafficObserver;
     private final AccountService accountService;
     private final TrafficService trafficService;
     private final ObjectMapper objectMapper;
+
+    @PostConstruct
+    public void initObservers() {
+        createTrafficSubject.addObserver(generalTrafficObserver);
+        createTrafficSubject.addObserver(realTimeTrafficObserver);
+    }
 
     @Override
     @KafkaListener(topics = "${account-service.kafka.topic}", groupId = "${spring.kafka.consumer.group-id}")
@@ -43,10 +53,12 @@ public class ConsumerServiceImpl implements ConsumerService {
         }
 
         switch (kafkaMessage.actionCode()) {
-            case "append-url":
+            case APPEND_URL:
                 KafkaAppendUrl appendUrl = objectMapper.convertValue(kafkaMessage.obj(), KafkaAppendUrl.class);
-                Boolean appended = accountService.appendUrl(appendUrl.email(), new ShortUrl(appendUrl.shortCode(), appendUrl.originalUrl()));
-                if(!appended) {
+                boolean appended = accountService.appendUrl(appendUrl.email(), new ShortUrl(appendUrl.shortCode(), appendUrl.originalUrl()));
+                if(appended)
+                    createTrafficSubject.create(new IncreaseTraffic(appendUrl.shortCode(), appendUrl.trafficDate(), appendUrl.zoneId()));
+                else{
                     log.error(FormatLogMessage.formatLogMessage(
                             this.getClass().getSimpleName(),
                             "kafkaMessage < appendUrl",
@@ -55,7 +67,11 @@ public class ConsumerServiceImpl implements ConsumerService {
                     ));
                 }
                 break;
-            case "increase-traffic":
+            case ANONYMOUS_URL:
+                KafkaAnonymousUrl anonymousUrl = objectMapper.convertValue(kafkaMessage.obj(), KafkaAnonymousUrl.class);
+                    createTrafficSubject.create(new IncreaseTraffic(anonymousUrl.shortCode(), anonymousUrl.trafficDate(), anonymousUrl.zoneId()));
+                break;
+            case INCREASE_TRAFFIC:
                 KafkaIncreaseTraffic increaseTraffic = objectMapper.convertValue(kafkaMessage.obj(), KafkaIncreaseTraffic.class);
                 boolean increased = trafficService.increaseTraffic(increaseTraffic.shortCode(), increaseTraffic.trafficDate(), increaseTraffic.zoneId());
                 if(!increased) {

@@ -6,7 +6,10 @@ import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import online.gonlink.accountservice.dto.IncreaseTraffic;
 import online.gonlink.accountservice.entity.DayTraffic;
+import online.gonlink.accountservice.entity.Traffic;
 import online.gonlink.accountservice.entity.TrafficID;
+import online.gonlink.accountservice.factory.TrafficFactory;
+import online.gonlink.accountservice.factory.type.TrafficType;
 import online.gonlink.accountservice.repository.DayTrafficRepository;
 import online.gonlink.accountservice.util.FormatLogMessage;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,7 +54,7 @@ public class DayTrafficObserver implements TrafficObserver{
         if(byId.isEmpty()) insert(record.shortCode(), date);
 
         try {
-            Long increased = repository.increaseTraffic(trafficID, index);
+            long increased = repository.increaseTraffic(trafficID, index);
             if(increased>0) return true;
             else{
                 log.error(FormatLogMessage.formatLogMessage(
@@ -73,11 +76,26 @@ public class DayTrafficObserver implements TrafficObserver{
         }
     }
 
+    @Override
+    public void deleteTraffic(String shortCode) {
+        try {
+            repository.deleteAllByShortCode(shortCode);
+        } catch (Exception e){
+            log.error(FormatLogMessage.formatLogMessage(
+                    this.getClass().getSimpleName(),
+                    "removeUrl",
+                    "Unexpected error: {}",
+                    e
+            ));
+            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+        }
+    }
+
     @Transactional
     public void insert(String shortCode, String trafficDate) {
-        DayTraffic dayTraffic = new DayTraffic(shortCode, trafficDate);
+        DayTraffic traffic = (DayTraffic) TrafficFactory.createTraffic(TrafficType.DAY, shortCode, trafficDate);
         try {
-            repository.insert(dayTraffic);
+            repository.insert(traffic);
         } catch (DuplicateKeyException e){
             throw new StatusRuntimeException( Status.ALREADY_EXISTS.withDescription("Duplicate Key Error"));
         } catch (Exception e){

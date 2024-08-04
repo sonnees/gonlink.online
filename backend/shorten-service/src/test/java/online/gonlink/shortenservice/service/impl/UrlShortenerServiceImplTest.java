@@ -33,6 +33,8 @@ class UrlShortenerServiceImplTest {
     void generateShortCode_NotExits(){
         String originalUrl = "https://www.youtube.com/sonnees";
         String shortCodeE = "12abCD";
+        String zoneID = "Asia/Saigon";
+        String trafficDate = "2024-07-02T08:52:37.442Z";
         ResponseGenerateShortCode responseGenerateShortCode = new ResponseGenerateShortCode(shortCodeE, true);
         ShortUrl shortUrl = new ShortUrl(shortCodeE, originalUrl);
 
@@ -46,7 +48,7 @@ class UrlShortenerServiceImplTest {
         when(shortCodeGenerator.generateShortCode()).thenReturn(shortCodeE);
         when(shortUrlRepository.insert(shortUrl)).thenReturn(shortUrl);
 
-        ResponseGenerateShortCode shortCodeA = urlShortenerService.generateShortCode(originalUrl);
+        ResponseGenerateShortCode shortCodeA = urlShortenerService.generateShortCode(originalUrl, trafficDate, zoneID);
 
         assertEquals(responseGenerateShortCode, shortCodeA);
 
@@ -57,6 +59,8 @@ class UrlShortenerServiceImplTest {
     void generateShortCode_Exits() {
         String originalUrl = "https://www.youtube.com/sonnees";
         String shortCodeE = "12abCD";
+        String zoneID = "Asia/Saigon";
+        String trafficDate = "2024-07-02T08:52:37.442Z";
         ResponseGenerateShortCode responseGenerateShortCode = new ResponseGenerateShortCode(shortCodeE, false);
         ShortUrl shortUrl = new ShortUrl(shortCodeE, originalUrl);
 
@@ -69,7 +73,7 @@ class UrlShortenerServiceImplTest {
         when(checkURL.isNotForbidden(originalUrl)).thenReturn(true);
         when(shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl)).thenReturn(Optional.of(shortUrl));
 
-        ResponseGenerateShortCode shortCodeA = urlShortenerService.generateShortCode(originalUrl);
+        ResponseGenerateShortCode shortCodeA = urlShortenerService.generateShortCode(originalUrl, trafficDate, zoneID);
         assertEquals(responseGenerateShortCode, shortCodeA);
     }
 
@@ -78,6 +82,8 @@ class UrlShortenerServiceImplTest {
         String originalUrl = "https://www.youtube.com/sonnees";
         String shortCodeE = "12abCD";
         String email = "son@gmail.com";
+        String zoneID = "Asia/Saigon";
+        String trafficDate = "2024-07-02T08:52:37.442Z";
         ResponseGenerateShortCode responseGenerateShortCode = new ResponseGenerateShortCode(shortCodeE, true);
         ShortUrl shortUrl = new ShortUrl(shortCodeE, originalUrl);
 
@@ -94,7 +100,7 @@ class UrlShortenerServiceImplTest {
 
         ResponseGenerateShortCode shortCodeA = null;
         try{
-            shortCodeA = urlShortenerService.generateShortCode(email,originalUrl);
+            shortCodeA = urlShortenerService.generateShortCode(email, originalUrl, trafficDate, zoneID);
         } catch (Exception e){
             fail();
         }
@@ -109,6 +115,8 @@ class UrlShortenerServiceImplTest {
         String originalUrl = "https://www.youtube.com/sonnees";
         String shortCodeE = "12abCD";
         String email = "son@gmail.com";
+        String zoneID = "Asia/Saigon";
+        String trafficDate = "2024-07-02T08:52:37.442Z";
         ResponseGenerateShortCode responseGenerateShortCode = new ResponseGenerateShortCode(shortCodeE, false);
         ShortUrl shortUrl = new ShortUrl(shortCodeE, originalUrl);
 
@@ -121,7 +129,7 @@ class UrlShortenerServiceImplTest {
         when(checkURL.isNotForbidden(originalUrl)).thenReturn(true);
         when(shortUrlRepository.findShortUrlsByOriginalUrl(originalUrl)).thenReturn(Optional.of(shortUrl));
 
-        ResponseGenerateShortCode shortCodeA = urlShortenerService.generateShortCode(email, originalUrl);
+        ResponseGenerateShortCode shortCodeA = urlShortenerService.generateShortCode(email, originalUrl, trafficDate, zoneID);
         assertEquals(responseGenerateShortCode, shortCodeA);
     }
 

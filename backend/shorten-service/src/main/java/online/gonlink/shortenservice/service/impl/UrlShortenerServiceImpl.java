@@ -1,10 +1,7 @@
 package online.gonlink.shortenservice.service.impl;
 
 import com.mongodb.DuplicateKeyException;
-import online.gonlink.shortenservice.dto.ResponseGenerateShortCode;
-import online.gonlink.shortenservice.dto.KafkaAppendUrl;
-import online.gonlink.shortenservice.dto.KafkaIncreaseTraffic;
-import online.gonlink.shortenservice.dto.KafkaMessage;
+import online.gonlink.shortenservice.dto.*;
 import online.gonlink.shortenservice.entity.ShortUrl;
 import online.gonlink.shortenservice.exception.GrpcStatusException;
 import online.gonlink.shortenservice.service.CheckURL;
@@ -32,7 +29,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     private final ProducerService producerService;
 
     @Override
-    public ResponseGenerateShortCode generateShortCode(String originalUrl) {
+    public ResponseGenerateShortCode generateShortCode(String originalUrl, String trafficDate, String zoneId) {
         try {
             if(!checkURL.isNotForbidden(originalUrl))
                 throw new StatusRuntimeException(Status.UNAUTHENTICATED.withDescription("URL Is Forbidden"));
@@ -63,6 +60,8 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
             ShortUrl shortUrl = new ShortUrl(shortCode,originalUrl);
             try{
                 shortUrlRepository.insert(shortUrl);
+                KafkaMessage message = new KafkaMessage(ActionCode.APPEND_URL, new KafkaAnonymousUrl(shortCode, trafficDate, zoneId));
+                producerService.sendMessage(message);
                 return new ResponseGenerateShortCode(shortCode, true);
             } catch (DuplicateKeyException ignored){
             } catch (Exception e){
@@ -78,7 +77,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     }
 
     @Override
-    public ResponseGenerateShortCode generateShortCode(String email, String originalUrl) {
+    public ResponseGenerateShortCode generateShortCode(String email, String originalUrl, String trafficDate, String zoneId) {
         try {
             if(!checkURL.isNotForbidden(originalUrl))
                 throw new StatusRuntimeException(Status.UNAUTHENTICATED.withDescription("URL Is Forbidden"));
@@ -109,7 +108,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
             ShortUrl shortUrl = new ShortUrl(shortCode,originalUrl);
             try{
                 shortUrlRepository.insert(shortUrl);
-                KafkaMessage message = new KafkaMessage("append-url", new KafkaAppendUrl(email, shortCode, originalUrl));
+                KafkaMessage message = new KafkaMessage(ActionCode.APPEND_URL, new KafkaAppendUrl(email, shortCode, originalUrl, trafficDate, zoneId));
                 producerService.sendMessage(message);
                 return new ResponseGenerateShortCode(shortCode, true);
             } catch (DuplicateKeyException ignored){
@@ -129,7 +128,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     public String getOriginalUrl(String shortCode, String clientTime, String zoneId) {
         Optional<ShortUrl> shortUrlOpt = shortUrlRepository.findById(shortCode);
         if (shortUrlOpt.isPresent()) {
-            KafkaMessage message = new KafkaMessage("increase-traffic", new KafkaIncreaseTraffic(shortCode, clientTime, zoneId));
+            KafkaMessage message = new KafkaMessage(ActionCode.INCREASE_TRAFFIC, new KafkaIncreaseTraffic(shortCode, clientTime, zoneId));
             producerService.sendMessage(message);
             return shortUrlOpt.get().getOriginalUrl();
         }
