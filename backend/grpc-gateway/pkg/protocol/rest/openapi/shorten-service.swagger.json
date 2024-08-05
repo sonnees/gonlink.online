@@ -154,6 +154,12 @@
       "properties": {
         "originalUrl": {
           "type": "string"
+        },
+        "trafficDate": {
+          "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
         }
       }
     },
@@ -161,6 +167,12 @@
       "type": "object",
       "properties": {
         "originalUrl": {
+          "type": "string"
+        },
+        "trafficDate": {
+          "type": "string"
+        },
+        "zoneId": {
           "type": "string"
         }
       },

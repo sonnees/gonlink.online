@@ -6,8 +6,7 @@ package online.gonlink;
 import "google/api/annotations.proto";
 
 // === GetInfoAccount ===
-message GetInfoAccountRequest{
-}
+message GetInfoAccountRequest{}
 
 message ShortUrl {
   string shortCode = 1;
