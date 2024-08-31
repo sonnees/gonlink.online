@@ -8,12 +8,12 @@ import { UserProvider } from '../context/UserContext'
 
 export default function Layout() {
   return (
-    <div>
+    <div className='flex flex-col min-h-screen'>
       <UserProvider>
         <Header/>
         
 
-        <div>
+        <div className='flex-grow'>
           <Outlet/>
         </div>
 
