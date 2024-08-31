@@ -29,7 +29,7 @@ public class QRCodeServiceImpl implements QRCodeService {
                 for (int y = 0; y < height; y++)
                     image.setRGB(x, y, matrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
 
-            BufferedImage scaledImage = Scalr.crop(image, 30, 30, width-60, height-60);
+            BufferedImage scaledImage = Scalr.crop(image, 20, 20, width-40, height-40);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ImageIO.write(scaledImage, "png", outputStream);
