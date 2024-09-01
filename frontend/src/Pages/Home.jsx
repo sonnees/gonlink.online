@@ -5,13 +5,16 @@ import Cookies from 'js-cookie';
 
 export default function Home() {
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorShortLink, setErrorShortLink] = useState(false);
+  const [qr, setQr] = useState("");
+  const [error, setError] = useState("");
 
 
 
   //===========================================================================
   const location = useLocation();
-  const { authenticated, setAuthenticated, email, setEmail, name, setName, avatar, setAvatar, token, setToken} = useUser();
+  const {userObject, setUserObject, authenticated, setAuthenticated, email, setEmail, name, setName, avatar, setAvatar, token, setToken} = useUser();
   // const cookies = new Cookies();
 
   useEffect(() => {
@@ -24,7 +27,7 @@ export default function Home() {
 
     if (tokenParams!=null) {
       // Lưu các giá trị vào localStorage hoặc state
-      localStorage.setItem('authenticated', tokenParams);
+      // localStorage.setItem('authenticated', tokenParams);
       // setName(tokenParams)
       setToken(tokenParams)
       Cookies.set('token', tokenParams, { expires: 1 });
@@ -63,7 +66,7 @@ export default function Home() {
   const getInfo = async (token) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/account-service/api/v1/get-info-account`,
+        `${process.env.HOST}/account-service/api/v1/get-info-account`,
         {
           method: "POST",
           headers: {
@@ -89,7 +92,8 @@ export default function Home() {
       if (response.ok) {
         // Xử lý khi API trả về thành công
         const data = await response.json();
-        // console.log(data);
+        console.log(data);
+        setUserObject(data)
         setName(data.name)
 
 
@@ -116,11 +120,11 @@ export default function Home() {
 
   const handleGenerateShortLink = async () => {
     console.log(link);
-
+    setIsLoading(true);
     try {
       
       const response = await fetch(
-        `http://localhost:8080/shorten-service/api/v1/generate-shortcode`,
+        `${process.env.HOST}/shorten-service/api/v1/generate-shortcode`,
         {
           method: "POST",
           headers: {
@@ -132,29 +136,45 @@ export default function Home() {
         },
       );
 
-      if (response.status == 401) {
-        console.error("URL Is Forbidden");
-        return;
-      }
+      // if (response.status == 401) {
+      //   console.error("URL Is Forbidden");
+      //   return;
+      // }
 
-      if (response.status == 500) {
-        console.error("URL Error");
-        return;
-      }
+      // if (response.status == 500) {
+      //   console.error("URL Error");
+      //   return;
+      // }
 
       if (response.ok) {
         // Xử lý khi API trả về thành công
         const data = await response.json();
 
-        const shortLink = "http://localhost:5173/" + data.shortCode;
+        const shortLink = `${process.env.HOST_PAGE}` + data.shortCode;
         console.log(shortLink);
-
+        setErrorShortLink(false)
         setLink(shortLink);
-        setIsShortCode(true)
+        setIsShortCode(true);
+        setQr("data:image/png;base64," + data.base64Image);
+        console.log(qr);
+        console.log(data);
+        
 
       } else {
         // Xử lý khi API trả về lỗi
-        navigate("/");
+        // navigate("/");
+
+        if (response.status === 404) {
+          setError("Liên kết không được tìm thấy.");
+        } else if (response.status === 500) {
+          setError("Những link không hợp lệ và vi phạm chính sách của chúng tôi. Vui lòng thử lại sau.");
+        } else if (response.status === 429) {
+          setError("Quá nhiều yêu cầu. Vui lòng thực hiện chậm lại.");
+        } else {
+          setError("Link bạn vừa nhập không hợp lệ hoặc vi phạm chính sách của chúng tôi.");
+        }
+
+        setErrorShortLink(true)
         console.error("API call failed");
         return ;
       }
@@ -162,17 +182,19 @@ export default function Home() {
       // Xử lý lỗi khi gọi API
       navigate("/");
       console.error("Error calling API:", error);
+    } finally {
+      setIsLoading(false);
     }
 
   }
 
   const handleGenerateShortLinkWithToken = async (token) => {
     console.log(link);
-
+    setIsLoading(true);
     try {
       
       const response = await fetch(
-        `http://localhost:8080/shorten-service/api/v1/account-generate-shortcode`,
+        `${process.env.HOST}/shorten-service/api/v1/account-generate-shortcode`,
         {
           method: "POST",
           headers: {
@@ -185,29 +207,42 @@ export default function Home() {
         },
       );
 
-      if (response.status == 401) {
-        console.error("URL Is Forbidden");
-        return;
-      }
+      // if (response.status == 401) {
+      //   console.error("URL Is Forbidden");
+      //   return;
+      // }
 
-      if (response.status == 500) {
-        console.error("URL Error");
-        return;
-      }
+      // if (response.status == 500) {
+      //   console.error("URL Error");
+      //   return;
+      // }
 
       if (response.ok) {
         // Xử lý khi API trả về thành công
         const data = await response.json();
 
-        const shortLink = "http://localhost:5173/" + data.shortCode;
+        const shortLink = `${process.env.HOST_PAGE}` + data.shortCode;
         console.log(shortLink);
-
+        setErrorShortLink(false)
         setLink(shortLink);
-        setIsShortCode(true)
+        setIsShortCode(true);
+        setQr("data:image/png;base64," + data.base64Image);
+        console.log(qr);
 
       } else {
         // Xử lý khi API trả về lỗi
-        navigate("/");
+        // navigate("/");
+        if (response.status === 404) {
+          setError("Liên kết không được tìm thấy.");
+        } else if (response.status === 500) {
+          setError("Những link không hợp lệ và vi phạm chính sách của chúng tôi. Vui lòng thử lại sau.");
+        } else if (response.status === 429) {
+          setError("Quá nhiều yêu cầu. Vui lòng thực hiện chậm lại.");
+        } else {
+          setError("Link bạn vừa nhập không hợp lệ hoặc vi phạm chính sách của chúng tôi.");
+        }
+        setErrorShortLink(true)
+        
         console.error("API call failed");
         return ;
       }
@@ -215,6 +250,8 @@ export default function Home() {
       // Xử lý lỗi khi gọi API
       navigate("/");
       console.error("Error calling API:", error);
+    } finally {
+      setIsLoading(false);
     }
 
   }
@@ -229,6 +266,22 @@ export default function Home() {
       });
   };
 
+  const saveBase64Image = (base64String, filename = 'image.png') => {
+    const link = document.createElement('a');
+    link.href = base64String;
+    link.download = filename;
+
+    // Thêm liên kết vào DOM để kích hoạt việc tải xuống
+    document.body.appendChild(link);
+    link.click(); // Kích hoạt tải xuống
+    document.body.removeChild(link); // Loại bỏ liên kết khỏi DOM
+  };
+
+  const handleSaveImage = () => {
+    saveBase64Image(qr, 'qr.png');
+};
+
+
   return (
     <div className='flex justify-center h-screen'>
       <div className='flex-col'>
@@ -238,17 +291,47 @@ export default function Home() {
           <p className='flex justify-center'>với Gonlink.online bạn có thể chia sẻ trên mạng xã hội, google, youtube, facebook, cốc cốc</p>
         </div>
 
+        {errorShortLink && (
+          <div className="flex justify-center items-center">
+            {/* <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10"></div> */}
+            <div className='flex justify-center p-2 text-red-500'>{error}</div>
+          </div>
+        )}
+
         {isShortCode ? 
-        <div className='flex justify-between border rounded-full p-3 w-full'>
-          <input onChange={(e) => setLink(e.target.value)} disabled  type="text" className='w-[70%] focus:outline-none mx-5' placeholder='Link cần rút gọn của bạn' value={link}/>
-          <button onClick={handleCopyShortLink} className='font-bold text-xl px-5 py-2 rounded-full bg-sky-600 hover:bg-orange-500' type="button">Copy</button>
+        <div className='flex justify-between border rounded-full p-3'>
+          <input onChange={(e) => setLink(e.target.value)} disabled  type="text" className='w-[70%] focus:outline-none mx-5 bg-white' placeholder='Link cần rút gọn của bạn' value={link}/>
+          <button onClick={handleCopyShortLink} className='font-bold text-xl px-5 py-2 rounded-md bg-sky-600 hover:bg-sky-700' type="button">Copy</button>
+          <button onClick={() => {navigate("/")}} className='font-bold text-xl px-5 py-2 rounded-full bg-sky-600 hover:bg-sky-700 ml-2' type="button">Mới</button>
         </div>
         : 
-        <div className='flex justify-between border rounded-full p-3 w-full'>
+        <div className='flex justify-between border rounded-full p-3'>
           <input onChange={(e) => setLink(e.target.value)} type="text" className='w-[70%] focus:outline-none mx-5' placeholder='Link cần rút gọn của bạn' value={link}/>
-          <button onClick={handleShortLink} className='font-bold text-xl px-5 py-2 rounded-full bg-sky-600 hover:bg-orange-500' type="button">Rút gọn</button>
+          <button onClick={handleShortLink} className='font-bold text-xl px-5 py-2 rounded-full bg-sky-600 hover:bg-sky-700' type="button">{isLoading ? 'Đang tạo...' : 'Rút gọn'}</button>
         </div>
         }
+
+        {isLoading && (
+          <div className="mt-4 flex justify-center items-center">
+            <div className="h-10 w-10 rounded-full border-4 border-t-transparent border-b-transparent border-r-transparent animate-spin"
+              style={{background: 'linear-gradient(90deg, #ff7e5f, #feb47b)', clipPath: 'circle(50%)'}}>
+            </div>
+          </div>
+        )}
+
+        {isShortCode && (
+          <div className='flex border rounded-sm p-2 mt-4'> 
+            <div>
+              <button onClick={handleSaveImage} className='font-bold text-xl px-3 py-1 rounded-lg bg-sky-600 hover:bg-sky-700' type="button">Lưu QR code</button>
+              <p className='flex p-2 text-red-500'>Lưu ý: Những link gốc có nội dung giả mạo, lừa đảo, tín dụng đen, đồi trụy, vi phạm pháp luật </p>
+              <p className='flex p-2 text-red-500'>sẽ bị xóa mà không cần báo trước.</p>
+
+            </div>
+            <div className='p-1 border-4 border-gray-800 rounded-md ml-2'>
+              <img src={qr} alt="QR" style={{ width: 120, height: 120 }} />
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

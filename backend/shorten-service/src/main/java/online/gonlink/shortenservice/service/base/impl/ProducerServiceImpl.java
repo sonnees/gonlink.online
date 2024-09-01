@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 public class ProducerServiceImpl implements ProducerService {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
-    private AccountServiceConfig config;
+    private final AccountServiceConfig config;
 
     @Override
     public void sendMessage(KafkaMessage message) {

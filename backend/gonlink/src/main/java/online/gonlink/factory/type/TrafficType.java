@@ -5,4 +5,6 @@ public enum TrafficType {
     MONTH,
     DAY,
     REAL_TIME
+
+    ;
 }
