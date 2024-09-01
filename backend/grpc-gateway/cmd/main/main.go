@@ -22,7 +22,6 @@ import (
 
 var (
     grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
-    grpcServer2Endpoint = flag.String("grpc-server2-endpoint", "localhost:9091", "Second gRPC server endpoint")
 )
 
 func run() error {
@@ -46,18 +45,18 @@ func run() error {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
-	err := gw.RegisterUrlShortenerServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := gw.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}
-	err = gw.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, *grpcServer2Endpoint, opts)
-    if err != nil {
-        return err
-    }
-	err = gw.RegisterQRCodeServiceHandlerFromEndpoint(ctx, mux, *grpcServer2Endpoint, opts)
-    if err != nil {
-        return err
-    }
+	err = gw.RegisterQRCodeServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	if err != nil {
+		return err
+	}
+	err = gw.RegisterUrlShortenerServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	if err != nil {
+		return err
+	}
 
 
 

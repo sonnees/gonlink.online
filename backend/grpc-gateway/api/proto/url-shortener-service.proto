@@ -1,0 +1,59 @@
+syntax = "proto3";
+option go_package = "grpc-gateway/api/proto";
+
+package online.gonlink;
+
+import "google/api/annotations.proto";
+
+// === GenerateShortCode ===
+message GenerateShortCodeRequest{
+  string originalUrl = 1;
+  string trafficDate = 2;
+  string zoneId = 3;
+}
+
+message GenerateShortCodeAccountRequest{
+  string originalUrl = 1;
+  string trafficDate = 2;
+  string zoneId = 3;
+}
+
+message GenerateShortCodeResponse{
+  string shortCode = 1;
+  string base64Image = 2;
+  bool isOwner = 3;
+}
+
+// === GetOriginalUrl ===
+message GetOriginalUrlRequest{
+  string shortCode = 1;
+  string clientTime = 2;
+  string zoneId = 3;
+}
+
+message GetOriginalUrlResponse{
+  string originalUrl = 1;
+}
+
+service UrlShortenerService {
+  rpc generateShortCode(GenerateShortCodeRequest) returns(GenerateShortCodeResponse){
+    option (google.api.http) = {
+      post: "/api/v1/shortens/gen"
+      body: "*"
+    };
+  }
+
+  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(GenerateShortCodeResponse){
+    option (google.api.http) = {
+      post: "/api/v1/shortens/account-gen"
+      body: "*"
+    };
+  }
+
+  rpc getOriginalUrl(GetOriginalUrlRequest) returns(GetOriginalUrlResponse){
+    option (google.api.http) = {
+      post: "/api/v1/shortens/get"
+      body: "*"
+    };
+  }
+}

@@ -3,6 +3,7 @@ option java_multiple_files = true;
 
 package online.gonlink;
 import "google/protobuf/empty.proto";
+import "common.proto";
 
 // === GenerateShortCode ===
 message GenerateShortCodeRequest{
@@ -35,24 +36,7 @@ message GetOriginalUrlResponse{
 }
 
 service UrlShortenerService {
-  rpc generateShortCode(GenerateShortCodeRequest) returns(GenerateShortCodeResponse){}
-  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(GenerateShortCodeResponse){}
-  rpc getOriginalUrl(GetOriginalUrlRequest) returns(GetOriginalUrlResponse){}
-  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(GetStringBase64ImageResponse){}
-}
-
-
-// === GetStringBase64Image ===
-message GetStringBase64ImageRequest{
-  string content = 1;
-  int32 width = 2;
-  int32 height = 3;
-}
-
-message GetStringBase64ImageResponse{
-  string base64Image = 1;
-}
-
-service QRCodeService {
-  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(GetStringBase64ImageResponse){}
+  rpc generateShortCode(GenerateShortCodeRequest) returns(online.gonlink.StandardResponse){}
+  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(online.gonlink.StandardResponse){}
+  rpc getOriginalUrl(GetOriginalUrlRequest) returns(online.gonlink.StandardResponse){}
 }

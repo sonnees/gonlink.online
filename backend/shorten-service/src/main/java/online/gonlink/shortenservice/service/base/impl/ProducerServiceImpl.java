@@ -2,6 +2,7 @@ package online.gonlink.shortenservice.service.base.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import online.gonlink.shortenservice.config.AccountServiceConfig;
 import online.gonlink.shortenservice.dto.KafkaMessage;
 import online.gonlink.shortenservice.service.base.ProducerService;
@@ -17,15 +18,11 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class ProducerServiceImpl implements ProducerService {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
     private AccountServiceConfig config;
-
-    public ProducerServiceImpl(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.objectMapper = objectMapper;
-    }
 
     @Override
     public void sendMessage(KafkaMessage message) {

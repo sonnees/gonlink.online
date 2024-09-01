@@ -1,0 +1,30 @@
+grpc:
+  server:
+    port: 9090
+
+spring:
+  application:
+    name: gonlink
+  data:
+    mongodb:
+      uri: mongodb+srv://sonnees:8ymAG8ia1s88DwXO@cluster0.m0vbmbu.mongodb.net/AccountService
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  jackson:
+    time-zone: UTC
+
+# global value
+gonlink:
+  allowed-characters: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+  length-short-code: 6
+  url-forbidden: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
+  jwt:
+    secret-key: 7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
+  qr:
+    width: 200
+    height: 200
+
+front-end:
+  domain: http://localhost:5173/
+

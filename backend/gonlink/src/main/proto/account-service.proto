@@ -1,9 +1,9 @@
 syntax = "proto3";
-option go_package = "grpc-gateway/api/proto";
+option java_multiple_files = true;
 
 package online.gonlink;
-
-import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "common.proto";
 
 // === GetInfoAccount ===
 message GetInfoAccountRequest{}
@@ -28,17 +28,7 @@ message RemoveUrlRequest{
 message RemoveUrlResponse{}
 
 service AccountService {
-  rpc getInfoAccount(GetInfoAccountRequest) returns(GetInfoAccountResponse){
-    option (google.api.http) = {
-      post: "/api/v1/acounts/me"
-      body: "*"
-    };
-  }
-
-  rpc removeUrl(RemoveUrlRequest) returns(RemoveUrlResponse){
-    option (google.api.http) = {
-      post: "/api/v1/acounts/remove-url"
-      body: "*"
-    };
-  }
+  rpc getInfoAccount(GetInfoAccountRequest) returns(online.gonlink.StandardResponse){}
+  rpc removeUrl(RemoveUrlRequest) returns(online.gonlink.StandardResponse){}
 }
+

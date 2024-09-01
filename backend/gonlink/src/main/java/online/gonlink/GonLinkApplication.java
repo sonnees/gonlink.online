@@ -1,11 +1,11 @@
-package online.gonlink.shortenservice;
+package online.gonlink;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ShortenServiceApplication {
+public class GonLinkApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ShortenServiceApplication.class, args);
+        SpringApplication.run(GonLinkApplication.class, args);
     }
 }
