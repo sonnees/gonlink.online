@@ -66,7 +66,7 @@ export default function Home() {
   const getInfo = async (token) => {
     try {
       const response = await fetch(
-        `${process.env.HOST}/account-service/api/v1/get-info-account`,
+        `${process.env.GET_INFO}`,
         {
           method: "POST",
           headers: {
@@ -124,7 +124,8 @@ export default function Home() {
     try {
       
       const response = await fetch(
-        `${process.env.HOST}/shorten-service/api/v1/generate-shortcode`,
+        `${process.env.GEN_SHORTCODE}`,
+        // `http://localhost:8080/shorten-service/api/v1/generate-shortcode`,
         {
           method: "POST",
           headers: {
@@ -194,7 +195,7 @@ export default function Home() {
     try {
       
       const response = await fetch(
-        `${process.env.HOST}/shorten-service/api/v1/account-generate-shortcode`,
+        `${process.env.ACCOUNT_GEN_SHORTCODE}`,
         {
           method: "POST",
           headers: {

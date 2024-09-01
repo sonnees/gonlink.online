@@ -5,7 +5,7 @@ import React from 'react'
 export default function Login() {
 
   const handleLogin = () => {
-    window.location.href = `${process.env.HOST}/auth/github/login`;
+    window.location.href = `${process.env.LOGIN}`;
   }
 
   return (
