@@ -19,7 +19,7 @@ export default function DynamicPage() {
 
         try {
             const response = await fetch(
-                `${process.env.HOST}/shorten-service/api/v1/get-original-url`,
+                `${process.env.OG_URL}`,
                 {
                     method: "POST",
                     headers: {
