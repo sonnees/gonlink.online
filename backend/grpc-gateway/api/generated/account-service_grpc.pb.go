@@ -27,8 +27,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountServiceClient interface {
-	GetInfoAccount(ctx context.Context, in *GetInfoAccountRequest, opts ...grpc.CallOption) (*GetInfoAccountResponse, error)
-	RemoveUrl(ctx context.Context, in *RemoveUrlRequest, opts ...grpc.CallOption) (*RemoveUrlResponse, error)
+	GetInfoAccount(ctx context.Context, in *GetInfoAccountRequest, opts ...grpc.CallOption) (*StandardResponse, error)
+	RemoveUrl(ctx context.Context, in *RemoveUrlRequest, opts ...grpc.CallOption) (*StandardResponse, error)
 }
 
 type accountServiceClient struct {
@@ -39,9 +39,9 @@ func NewAccountServiceClient(cc grpc.ClientConnInterface) AccountServiceClient {
 	return &accountServiceClient{cc}
 }
 
-func (c *accountServiceClient) GetInfoAccount(ctx context.Context, in *GetInfoAccountRequest, opts ...grpc.CallOption) (*GetInfoAccountResponse, error) {
+func (c *accountServiceClient) GetInfoAccount(ctx context.Context, in *GetInfoAccountRequest, opts ...grpc.CallOption) (*StandardResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetInfoAccountResponse)
+	out := new(StandardResponse)
 	err := c.cc.Invoke(ctx, AccountService_GetInfoAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -49,9 +49,9 @@ func (c *accountServiceClient) GetInfoAccount(ctx context.Context, in *GetInfoAc
 	return out, nil
 }
 
-func (c *accountServiceClient) RemoveUrl(ctx context.Context, in *RemoveUrlRequest, opts ...grpc.CallOption) (*RemoveUrlResponse, error) {
+func (c *accountServiceClient) RemoveUrl(ctx context.Context, in *RemoveUrlRequest, opts ...grpc.CallOption) (*StandardResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RemoveUrlResponse)
+	out := new(StandardResponse)
 	err := c.cc.Invoke(ctx, AccountService_RemoveUrl_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,8 +63,8 @@ func (c *accountServiceClient) RemoveUrl(ctx context.Context, in *RemoveUrlReque
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility
 type AccountServiceServer interface {
-	GetInfoAccount(context.Context, *GetInfoAccountRequest) (*GetInfoAccountResponse, error)
-	RemoveUrl(context.Context, *RemoveUrlRequest) (*RemoveUrlResponse, error)
+	GetInfoAccount(context.Context, *GetInfoAccountRequest) (*StandardResponse, error)
+	RemoveUrl(context.Context, *RemoveUrlRequest) (*StandardResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -72,10 +72,10 @@ type AccountServiceServer interface {
 type UnimplementedAccountServiceServer struct {
 }
 
-func (UnimplementedAccountServiceServer) GetInfoAccount(context.Context, *GetInfoAccountRequest) (*GetInfoAccountResponse, error) {
+func (UnimplementedAccountServiceServer) GetInfoAccount(context.Context, *GetInfoAccountRequest) (*StandardResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInfoAccount not implemented")
 }
-func (UnimplementedAccountServiceServer) RemoveUrl(context.Context, *RemoveUrlRequest) (*RemoveUrlResponse, error) {
+func (UnimplementedAccountServiceServer) RemoveUrl(context.Context, *RemoveUrlRequest) (*StandardResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveUrl not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}

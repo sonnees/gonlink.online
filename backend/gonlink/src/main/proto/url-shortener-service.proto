@@ -35,8 +35,35 @@ message GetOriginalUrlResponse{
   string originalUrl = 1;
 }
 
+// === GeneralTraffics ===
+message GeneralTrafficsSearchRequest{
+  optional int32 page = 1;
+  optional int32 size = 2;
+  optional string sortDirection = 3;
+}
+
+message PageInfo {
+  int32 currentPage = 1;
+  int32 totalPages = 2;
+  int64 totalElements = 3;
+  int32 pageSize = 4;
+}
+
+message GeneralTraffic{
+  string shortCode = 1;
+  string originalUrl = 2;
+  string trafficDate = 3;
+  int64 traffic = 4;
+}
+
+message GeneralTrafficsSearchResponse{
+  repeated GeneralTraffic generalTraffic = 1;
+  PageInfo pageInfo = 2;
+}
+
 service UrlShortenerService {
   rpc generateShortCode(GenerateShortCodeRequest) returns(online.gonlink.StandardResponse){}
   rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(online.gonlink.StandardResponse){}
   rpc getOriginalUrl(GetOriginalUrlRequest) returns(online.gonlink.StandardResponse){}
+  rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.StandardResponse){}
 }

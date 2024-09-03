@@ -4,8 +4,6 @@ import io.grpc.stub.StreamObserver;
 import online.gonlink.GetInfoAccountRequest;
 import online.gonlink.GetInfoAccountResponse;
 import online.gonlink.RemoveUrlRequest;
-import online.gonlink.RemoveUrlResponse;
-import online.gonlink.ShortUrl;
 import online.gonlink.StandardResponse;
 import online.gonlink.dto.Standard;
 import online.gonlink.dto.AuthConstants;
@@ -19,8 +17,6 @@ import io.grpc.Context;
 import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.stream.Collectors;
 
 @GrpcService
 @AllArgsConstructor
@@ -51,41 +47,16 @@ public class AccountServiceGrpc extends AccountServiceImplBase {
                         .setAvatar(account.getAvatar())
                         .setRole(account.getRole())
                         .setCreate(account.getCreate())
-                        .addAllUrls(
-                                account.getUrls()
-                                        .stream()
-                                        .map(shortUrl ->
-                                                ShortUrl.newBuilder()
-                                                        .setShortCode(shortUrl.getShortCode())
-                                                        .setOriginalUrl(shortUrl.getOriginalUrl())
-                                                        .build()
-                                        ).collect(Collectors.toList())
-                        ).build()
+                        .build()
         );
         responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
         responseObserver.onCompleted();
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void removeUrl(RemoveUrlRequest request, StreamObserver<StandardResponse> responseObserver) {
-        Context context = Context.current();
-        removeUrl_AccountService(AuthConstants.USER_EMAIL.get(context), request.getShortCode());
-        Standard standard = Standard.ACCOUNT_REMOVE_URL_SUCCESS;
-        standard.setData(RemoveUrlResponse.newBuilder().build());
-        responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
-        responseObserver.onCompleted();
-    }
-
-    @Transactional
-    public void removeUrl_AccountService(String email, String shortCode){
-        accountService.removeUrl(email, shortCode);
-        removeUrl_TrafficService(shortCode);
-    }
-
-    @Transactional
-    public void removeUrl_TrafficService(String shortCode){
-        trafficService.deleteTraffic(shortCode);
+        trafficService.deleteTraffic(request.getShortCode());
     }
 
 }

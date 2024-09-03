@@ -17,16 +17,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.Set;
 
 @Slf4j
 @Component
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthInterceptor implements ServerInterceptor {
+    GlobalValue globalValue;
     JwtUtil jwtUtil;
-
-    static Set<String> PUBLIC_METHODS = Set.of();
 
     @Override
     public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(
@@ -35,7 +33,7 @@ public class AuthInterceptor implements ServerInterceptor {
             ServerCallHandler<ReqT, RespT> next) {
 
         String fullMethodName = call.getMethodDescriptor().getFullMethodName();
-        if(PUBLIC_METHODS.contains(fullMethodName)) return next.startCall(call, headers);
+        if(globalValue.getPUBLIC_METHODS().contains(fullMethodName)) return next.startCall(call, headers);
 
         String token = headers.get(Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER));
         if (token != null && token.startsWith("Bearer ")) {

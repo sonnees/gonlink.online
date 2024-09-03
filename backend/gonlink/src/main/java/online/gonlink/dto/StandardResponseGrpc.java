@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StandardResponseGrpc {
-    static ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     public StandardResponse standardResponse(Standard standard){
         return StandardResponse
                 .newBuilder()
                 .setMessage(standard.message)
-                .setData((Any) standard.data)
+                .setData(Any.pack(standard.data))
                 .build();
     }
 
@@ -29,7 +29,7 @@ public class StandardResponseGrpc {
                     StandardResponse
                             .newBuilder()
                             .setMessage(standard.message)
-                            .setData((Any) standard.data)
+                            .setData(Any.pack(standard.data))
                             .build()
             );
         } catch (JsonProcessingException e) {

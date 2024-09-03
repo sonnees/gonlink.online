@@ -7,7 +7,7 @@ spring:
     name: gonlink
   data:
     mongodb:
-      uri: mongodb+srv://sonnees:8ymAG8ia1s88DwXO@cluster0.m0vbmbu.mongodb.net/AccountService
+      uri: mongodb+srv://sonnees:tCy7srcWvlHuxGnO@cluster0.m0vbmbu.mongodb.net/gonlink
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
@@ -16,6 +16,7 @@ spring:
 
 # global value
 gonlink:
+  public-method: online.gonlink.UrlShortenerService/generateShortCode, online.gonlink.UrlShortenerService/getOriginalUrl, online.gonlink.UrlShortenerService/getStringBase64Image,
   allowed-characters: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
   length-short-code: 6
   url-forbidden: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
@@ -24,6 +25,10 @@ gonlink:
   qr:
     width: 200
     height: 200
+  paging:
+    page: 0
+    size: 10
+    sort-direction: ASC
 
 front-end:
   domain: http://localhost:5173/

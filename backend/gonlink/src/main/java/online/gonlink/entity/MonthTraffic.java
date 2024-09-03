@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class MonthTraffic implements Traffic{
     @Id
     private TrafficID id;
-    private int[] trafficDays;
+    private short[] trafficDays;
 
     public MonthTraffic(String shortCode, String trafficDate) {
         this.id = new TrafficID(shortCode, trafficDate);
@@ -33,7 +33,7 @@ public class MonthTraffic implements Traffic{
 //
 //        // Lấy số ngày trong tháng
 //        int daysInMonth = yearMonth.lengthOfMonth();
-        this.trafficDays = new int[31];
+        this.trafficDays = new short[31];
     }
 
 }

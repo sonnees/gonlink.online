@@ -4,6 +4,7 @@ option go_package = "grpc-gateway/api/proto";
 package online.gonlink;
 
 import "google/api/annotations.proto";
+import "common.proto";
 
 // === GetInfoAccount ===
 message GetInfoAccountRequest{}
@@ -18,7 +19,6 @@ message GetInfoAccountResponse{
   string avatar = 3;
   string role = 4;
   string create = 5;
-  repeated ShortUrl urls = 6;
 }
 
 // === RemoveUrl ===
@@ -28,16 +28,16 @@ message RemoveUrlRequest{
 message RemoveUrlResponse{}
 
 service AccountService {
-  rpc getInfoAccount(GetInfoAccountRequest) returns(GetInfoAccountResponse){
+  rpc getInfoAccount(GetInfoAccountRequest) returns(online.gonlink.StandardResponse){
     option (google.api.http) = {
-      post: "/api/v1/acounts/me"
+      post: "/api/v1/accounts/me"
       body: "*"
     };
   }
 
-  rpc removeUrl(RemoveUrlRequest) returns(RemoveUrlResponse){
+  rpc removeUrl(RemoveUrlRequest) returns(online.gonlink.StandardResponse){
     option (google.api.http) = {
-      post: "/api/v1/acounts/remove-url"
+      post: "/api/v1/accounts/remove-url"
       body: "*"
     };
   }

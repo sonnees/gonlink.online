@@ -13,11 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class DayTraffic implements Traffic{
     @Id
     private TrafficID id;
-    private int[] trafficHours;
+    private short[] trafficHours;
 
     public DayTraffic(String shortCode, String trafficDate) {
         this.id = new TrafficID(shortCode, trafficDate);
-        this.trafficHours = new int[24];
+        this.trafficHours = new short[24];
     }
 
 }

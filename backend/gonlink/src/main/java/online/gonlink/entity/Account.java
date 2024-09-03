@@ -21,7 +21,6 @@ public class Account {
     private String avatar;
     private String role;
     private LocalDate create;
-    private List<ShortUrl> urls;
 
     public Account(UserInfo userInfo) {
         this.email = userInfo.user_email();
@@ -29,7 +28,6 @@ public class Account {
         this.avatar = userInfo.user_avatar();
         this.role = userInfo.user_role();
         this.create = LocalDate.now();
-        this.urls = new ArrayList<>();
     }
     public String getCreate() {
         return this.create.toString();

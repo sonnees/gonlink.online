@@ -13,11 +13,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class GeneralTraffic implements Traffic{
     @Id
     private String shortCode;
+    private String owner;
+    private String originalUrl;
     private String trafficDate;
     private long traffic;
 
-    public GeneralTraffic(String shortCode, String trafficDate) {
+    public GeneralTraffic(String shortCode, String owner, String originalUrl, String trafficDate) {
         this.shortCode = shortCode;
+        this.owner = owner;
+        this.originalUrl = originalUrl;
         this.trafficDate = trafficDate;
         this.traffic = 0;
     }

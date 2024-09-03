@@ -13,13 +13,17 @@ public class TrafficFactory {
             case GENERAL:
                 try {
                     if(
-                            params.length == 2
+                            params.length == 4
                             && params[0] instanceof String
                             && params[1] instanceof String
+                            && params[2] instanceof String
+                            && params[3] instanceof String
                     ){
                         return new GeneralTraffic(
                                 (String) params[0],
-                                (String) params[1]
+                                (String) params[1],
+                                (String) params[2],
+                                (String) params[3]
                         );
                     }
                     throw new IllegalArgumentException("Error params");

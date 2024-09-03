@@ -2,6 +2,7 @@ package online.gonlink.observer;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import online.gonlink.dto.CreateTraffic;
 import online.gonlink.dto.IncreaseTraffic;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,9 @@ import java.util.Set;
 public class CreateTrafficSubject {
     Set<CreateTrafficObserver> observers = new HashSet<>();
 
-    public boolean create(IncreaseTraffic increaseTraffic) {
+    public boolean create(CreateTraffic createTraffic) {
         for (CreateTrafficObserver observer : observers)
-            observer.create(increaseTraffic);
+            observer.create(createTraffic);
         return true;
     }
 

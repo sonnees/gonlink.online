@@ -4,6 +4,7 @@ option go_package = "grpc-gateway/api/proto";
 package online.gonlink;
 
 import "google/api/annotations.proto";
+import "common.proto";
 
 // === GetStringBase64Image ===
 message GetStringBase64ImageRequest{
@@ -17,7 +18,7 @@ message GetStringBase64ImageResponse{
 }
 
 service QRCodeService {
-  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(GetStringBase64ImageResponse){
+  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(online.gonlink.StandardResponse){
     option (google.api.http) = {
       post: "/api/v1/qr-codes"
       body: "*"

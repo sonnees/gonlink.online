@@ -1,16 +1,15 @@
 package online.gonlink.observer;
 
 import com.mongodb.DuplicateKeyException;
-import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import online.gonlink.dto.IncreaseTraffic;
+import online.gonlink.dto.Standard;
 import online.gonlink.entity.DayTraffic;
 import online.gonlink.entity.TrafficID;
+import online.gonlink.exception.ResourceException;
 import online.gonlink.factory.TrafficFactory;
 import online.gonlink.factory.type.TrafficType;
 import online.gonlink.repository.DayTrafficRepository;
-import online.gonlink.util.FormatLogMessage;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,24 +53,11 @@ public class DayTrafficObserver implements TrafficObserver{
 
         try {
             long increased = repository.increaseTraffic(trafficID, index);
-            if(increased>0) return true;
-            else{
-                log.error(FormatLogMessage.formatLogMessage(
-                        this.getClass().getSimpleName(),
-                        "increaseTraffic < increaseTraffic",
-                        "Unexpected error: {}",
-                        ""
-                ));
-                throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
-            }
+            if(increased<=0)
+                throw new ResourceException(Standard.DAY_TRAFFIC_INCREASE_FAIL.name(), null);
+            return true;
         } catch (Exception e){
-            log.error(FormatLogMessage.formatLogMessage(
-                    this.getClass().getSimpleName(),
-                    "increaseTraffic",
-                    "Unexpected error: {}",
-                    e
-            ));
-            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+            throw new ResourceException(Standard.INTERNAL.name(), e);
         }
     }
 
@@ -80,13 +66,7 @@ public class DayTrafficObserver implements TrafficObserver{
         try {
             repository.deleteAllByShortCode(shortCode);
         } catch (Exception e){
-            log.error(FormatLogMessage.formatLogMessage(
-                    this.getClass().getSimpleName(),
-                    "removeUrl",
-                    "Unexpected error: {}",
-                    e
-            ));
-            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+            throw new ResourceException(Standard.INTERNAL.name(), e);
         }
     }
 
@@ -96,15 +76,9 @@ public class DayTrafficObserver implements TrafficObserver{
         try {
             repository.insert(traffic);
         } catch (DuplicateKeyException e){
-            throw new StatusRuntimeException( Status.ALREADY_EXISTS.withDescription("Duplicate Key Error"));
+            throw new ResourceException(Standard.SHORTEN_GENERATE_ALREADY_EXISTS.name(), e);
         } catch (Exception e){
-            log.error(FormatLogMessage.formatLogMessage(
-                    this.getClass().getSimpleName(),
-                    "insert",
-                    "Unexpected error: {}",
-                    e
-            ));
-            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Internal Server Error"));
+            throw new ResourceException(Standard.INTERNAL.name(), e);
         }
     }
 }

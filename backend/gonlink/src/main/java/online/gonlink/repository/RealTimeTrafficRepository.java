@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RealTimeTrafficRepository extends MongoRepository<RealTimeTraffic, String> {
     @Query("{shortCode: ?0}")
-    @Update("{ '$inc' : { 'trafficHours.?1' : 1 } }")
-    long increaseTraffic(String shortCode, String trafficDate);
-
+    @Update("{ '$inc' : { 'trafficMinute.?1' : 1 } }")
+    long increaseTraffic(String shortCode, int minute);
 }

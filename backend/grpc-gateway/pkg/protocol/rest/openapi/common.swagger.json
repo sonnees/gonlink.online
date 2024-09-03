@@ -1,112 +1,17 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "account-service.proto",
+    "title": "common.proto",
     "version": "version not set"
   },
-  "tags": [
-    {
-      "name": "AccountService"
-    }
-  ],
   "consumes": [
     "application/json"
   ],
   "produces": [
     "application/json"
   ],
-  "paths": {
-    "/api/v1/accounts/me": {
-      "post": {
-        "operationId": "AccountService_getInfoAccount",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/gonlinkStandardResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gonlinkGetInfoAccountRequest"
-            }
-          }
-        ],
-        "tags": [
-          "AccountService"
-        ]
-      }
-    },
-    "/api/v1/accounts/remove-url": {
-      "post": {
-        "operationId": "AccountService_removeUrl",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/gonlinkStandardResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gonlinkRemoveUrlRequest"
-            }
-          }
-        ],
-        "tags": [
-          "AccountService"
-        ]
-      }
-    }
-  },
+  "paths": {},
   "definitions": {
-    "gonlinkGetInfoAccountRequest": {
-      "type": "object",
-      "title": "=== GetInfoAccount ==="
-    },
-    "gonlinkRemoveUrlRequest": {
-      "type": "object",
-      "properties": {
-        "shortCode": {
-          "type": "string"
-        }
-      },
-      "title": "=== RemoveUrl ==="
-    },
-    "gonlinkStandardResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "data": {
-          "$ref": "#/definitions/protobufAny"
-        }
-      },
-      "title": "=== ==="
-    },
     "protobufAny": {
       "type": "object",
       "properties": {

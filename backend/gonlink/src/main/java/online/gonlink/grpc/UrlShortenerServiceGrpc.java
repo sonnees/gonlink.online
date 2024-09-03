@@ -4,21 +4,29 @@ import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
+import online.gonlink.GeneralTrafficsSearchRequest;
+import online.gonlink.GeneralTrafficsSearchResponse;
 import online.gonlink.GenerateShortCodeAccountRequest;
 import online.gonlink.GenerateShortCodeRequest;
 import online.gonlink.GenerateShortCodeResponse;
 import online.gonlink.GetOriginalUrlRequest;
 import online.gonlink.GetOriginalUrlResponse;
+import online.gonlink.PageInfo;
 import online.gonlink.StandardResponse;
 import online.gonlink.config.GlobalValue;
 import online.gonlink.dto.AuthConstants;
 import online.gonlink.dto.ResponseGenerateShortCode;
 import online.gonlink.dto.Standard;
 import online.gonlink.dto.StandardResponseGrpc;
+import online.gonlink.entity.GeneralTraffic;
+import online.gonlink.service.TrafficService;
 import online.gonlink.service.UrlShortenerService;
 import online.gonlink.service.base.QRCodeService;
 import online.gonlink.util.HtmlSanitizer;
 import online.gonlink.UrlShortenerServiceGrpc.UrlShortenerServiceImplBase;
+import org.springframework.data.domain.Page;
+
+import java.util.stream.Collectors;
 
 @GrpcService
 @AllArgsConstructor
@@ -28,6 +36,7 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
     private final HtmlSanitizer htmlSanitizer;
     private GlobalValue config;
     private StandardResponseGrpc standardResponseGrpc;
+    private TrafficService trafficService;
 
     @Override
     public void generateShortCode(GenerateShortCodeRequest request, StreamObserver<StandardResponse> responseObserver) {
@@ -86,6 +95,40 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
                 GetOriginalUrlResponse
                         .newBuilder()
                         .setOriginalUrl(originalUrl)
+                        .build()
+        );
+
+        responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void searchGeneralTraffics(GeneralTrafficsSearchRequest request, StreamObserver<StandardResponse> responseObserver) {
+
+        Page<GeneralTraffic> traffics = trafficService.searchGeneralTraffics(request);
+        Standard standard = Standard.SUCCESS;
+        standard.setData(
+                GeneralTrafficsSearchResponse
+                        .newBuilder()
+                        .addAllGeneralTraffic(
+                                traffics.getContent()
+                                        .stream()
+                                        .map(o -> online.gonlink.GeneralTraffic
+                                                .newBuilder()
+                                                .setShortCode(o.getShortCode())
+                                                .setOriginalUrl(o.getOriginalUrl())
+                                                .setTrafficDate(o.getTrafficDate())
+                                                .setTraffic(o.getTraffic())
+                                                .build()
+                                        )
+                                        .collect(Collectors.toList())
+                        )
+                        .setPageInfo(PageInfo.newBuilder()
+                                .setCurrentPage(traffics.getNumber())
+                                .setTotalPages(traffics.getTotalPages())
+                                .setTotalElements(traffics.getTotalElements())
+                                .setPageSize(traffics.getSize())
+                                .build())
                         .build()
         );
 

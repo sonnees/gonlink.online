@@ -7,16 +7,26 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Sort;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 import java.util.TimeZone;
 
 @Getter
 @Configuration
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GlobalValue {
+    @Value("${gonlink.paging.page}")
+    int PAGE;
+
+    @Value("${gonlink.paging.size}")
+    int SIZE;
+
+    @Value("${gonlink.paging.sort-direction}")
+    Sort.Direction SORT_DIRECTION;
 
     @Value("${gonlink.qr.width}")
     int WIDTH;
@@ -38,6 +48,9 @@ public class GlobalValue {
 
     @Value("${front-end.domain}")
     String FRONTEND_DOMAIN;
+
+    @Value("${gonlink.public-method}")
+    Set<String> PUBLIC_METHODS;
 
     @Bean
     SecureRandom secureRandom(){

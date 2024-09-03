@@ -18,7 +18,6 @@ message GetInfoAccountResponse{
   string avatar = 3;
   string role = 4;
   string create = 5;
-  repeated ShortUrl urls = 6;
 }
 
 // === RemoveUrl ===
