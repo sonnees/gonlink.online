@@ -61,9 +61,48 @@ message GeneralTrafficsSearchResponse{
   PageInfo pageInfo = 2;
 }
 
+// === MonthTraffics ===
+message MonthTrafficsGetAllRequest{
+  string shortCode = 1;
+}
+
+message TrafficData{
+  string date = 1;
+  int64 data = 2;
+}
+
+message MonthTrafficGetAllResponse{
+  repeated TrafficData trafficData = 1;
+}
+
+// === MonthTraffics ===
+message DayTrafficInRangeRequest{
+  string shortCode = 1;
+  string fromDate = 2;
+  string toDate = 3;
+}
+
+message DayTrafficInRangeResponse{
+  repeated TrafficData trafficData = 1;
+}
+
+// === RealTimeTraffics ===
+message RealTimeTrafficRequest{
+  string shortCode = 1;
+  string clientTime = 2;
+  string zoneId = 3;
+}
+
+message RealTimeTrafficResponse{
+  repeated int32 data = 1;
+}
+
 service UrlShortenerService {
   rpc generateShortCode(GenerateShortCodeRequest) returns(online.gonlink.StandardResponse){}
   rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(online.gonlink.StandardResponse){}
   rpc getOriginalUrl(GetOriginalUrlRequest) returns(online.gonlink.StandardResponse){}
   rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.StandardResponse){}
+  rpc getAllMonthTraffics(MonthTrafficsGetAllRequest) returns(online.gonlink.StandardResponse){}
+  rpc getDayTrafficInRange(DayTrafficInRangeRequest) returns(online.gonlink.StandardResponse){}
+  rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.StandardResponse){}
 }

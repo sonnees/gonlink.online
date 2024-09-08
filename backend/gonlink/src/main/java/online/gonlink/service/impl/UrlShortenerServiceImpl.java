@@ -68,7 +68,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
             if(shortUrlRepository.existsById(shortCode))continue;
             ShortUrl shortUrl = new ShortUrl(shortCode,originalUrl);
             shortUrlRepository.insert(shortUrl);
-            boolean isCreated = createTrafficSubject.create(new CreateTraffic(shortCode, haveAccount?"":email, originalUrl, trafficDate, zoneId));
+            boolean isCreated = createTrafficSubject.create(new CreateTraffic(shortCode, haveAccount?email:"", originalUrl, trafficDate, zoneId));
             if(!isCreated)
                 throw new ResourceException(Standard.INTERNAL.name(), null);
             return new ResponseGenerateShortCode(shortCode, IS_OWNER);
@@ -83,5 +83,6 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
         trafficService.increaseTraffic(shortCode, clientTime, zoneId);
         return shortUrlOpt.get().getOriginalUrl();
     }
+
 
 }

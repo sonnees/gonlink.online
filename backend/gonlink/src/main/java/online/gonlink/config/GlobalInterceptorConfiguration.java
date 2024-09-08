@@ -3,7 +3,7 @@ package online.gonlink.config;
 import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import online.gonlink.dto.StandardResponseGrpc;
 import online.gonlink.exception.GrpcExceptionInterceptor;
-import online.gonlink.jwt.JwtUtil;
+import online.gonlink.util.JwtUtil;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

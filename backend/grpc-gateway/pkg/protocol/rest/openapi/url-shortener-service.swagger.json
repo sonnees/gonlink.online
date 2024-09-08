@@ -112,6 +112,38 @@
         ]
       }
     },
+    "/api/v1/traffics/day-range": {
+      "post": {
+        "operationId": "UrlShortenerService_getDayTrafficInRange",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkStandardResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkDayTrafficInRangeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UrlShortenerService"
+        ]
+      }
+    },
     "/api/v1/traffics/general": {
       "post": {
         "operationId": "UrlShortenerService_searchGeneralTraffics",
@@ -143,9 +175,88 @@
           "UrlShortenerService"
         ]
       }
+    },
+    "/api/v1/traffics/month-all": {
+      "post": {
+        "operationId": "UrlShortenerService_getAllMonthTraffics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkStandardResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkMonthTrafficsGetAllRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UrlShortenerService"
+        ]
+      }
+    },
+    "/api/v1/traffics/real-time": {
+      "post": {
+        "operationId": "UrlShortenerService_getRealTimeTraffic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkStandardResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkRealTimeTrafficRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UrlShortenerService"
+        ]
+      }
     }
   },
   "definitions": {
+    "gonlinkDayTrafficInRangeRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        },
+        "fromDate": {
+          "type": "string"
+        },
+        "toDate": {
+          "type": "string"
+        }
+      },
+      "title": "=== MonthTraffics ==="
+    },
     "gonlinkGeneralTrafficsSearchRequest": {
       "type": "object",
       "properties": {
@@ -206,6 +317,30 @@
         }
       },
       "title": "=== GetOriginalUrl ==="
+    },
+    "gonlinkMonthTrafficsGetAllRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        }
+      },
+      "title": "=== MonthTraffics ==="
+    },
+    "gonlinkRealTimeTrafficRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        },
+        "clientTime": {
+          "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
+        }
+      },
+      "title": "=== RealTimeTraffics ==="
     },
     "gonlinkStandardResponse": {
       "type": "object",

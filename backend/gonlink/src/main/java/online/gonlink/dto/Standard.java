@@ -33,6 +33,8 @@ public enum Standard {
     UNAUTHORIZED(Status.PERMISSION_DENIED, "KHÔNG CÓ QUYỀN", MessageEmpty.newBuilder().build()),
     FORBIDDEN_URL(Status.PERMISSION_DENIED, "KHÔNG ĐƯỢC PHÉP RÚT GỌN", MessageEmpty.newBuilder().build()),
     NOT_FOUND_URL(Status.NOT_FOUND, "URL KHÔNG THỂ XÁC ĐỊNH", MessageEmpty.newBuilder().build()),
+    NOT_FOUND_SHORT_CODE(Status.NOT_FOUND, "SHORT CODE KHÔNG TỒN TẠI", MessageEmpty.newBuilder().build()),
+    DATE_FORMAT(Status.FAILED_PRECONDITION, "DATE KHÔNG HỢP LỆ", MessageEmpty.newBuilder().build()),
     INTERNAL(Status.INTERNAL, "SERVER ĐANG GẶP LỖI", MessageEmpty.newBuilder().build()),
 
 

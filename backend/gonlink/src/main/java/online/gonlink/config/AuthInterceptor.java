@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import online.gonlink.dto.AuthConstants;
 import online.gonlink.dto.UserInfo;
-import online.gonlink.jwt.JwtUtil;
+import online.gonlink.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

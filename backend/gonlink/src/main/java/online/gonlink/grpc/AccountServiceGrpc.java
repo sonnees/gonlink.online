@@ -4,6 +4,7 @@ import io.grpc.stub.StreamObserver;
 import online.gonlink.GetInfoAccountRequest;
 import online.gonlink.GetInfoAccountResponse;
 import online.gonlink.RemoveUrlRequest;
+import online.gonlink.RemoveUrlResponse;
 import online.gonlink.StandardResponse;
 import online.gonlink.dto.Standard;
 import online.gonlink.dto.AuthConstants;
@@ -57,6 +58,14 @@ public class AccountServiceGrpc extends AccountServiceImplBase {
     @Transactional(rollbackFor = Exception.class)
     public void removeUrl(RemoveUrlRequest request, StreamObserver<StandardResponse> responseObserver) {
         trafficService.deleteTraffic(request.getShortCode());
+        Standard standard = Standard.ACCOUNT_REMOVE_URL_SUCCESS;
+        standard.setData(
+                RemoveUrlResponse
+                        .newBuilder()
+                        .build()
+        );
+        responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
+        responseObserver.onCompleted();
     }
 
 }

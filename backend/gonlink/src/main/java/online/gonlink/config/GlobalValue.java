@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
+import online.gonlink.constant.GonLinkConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Sort;
 
 import java.security.SecureRandom;
@@ -57,42 +59,36 @@ public class GlobalValue {
         return new SecureRandom();
     }
 
-    @Bean(name = "simpleDateFormat")
-    SimpleDateFormat simpleDateFormat() {
-        SimpleDateFormat sdfUTC = new SimpleDateFormat("yyyy-MM-dd");
-        sdfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return sdfUTC;
-    }
-
     @Bean
     ObjectMapper objectMapper(){
         return new ObjectMapper();
     }
 
-    @Bean(name = "simpleDateFormat_YM")
+    @Bean(name = GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YM)
     SimpleDateFormat simpleDateFormat_YM() {
-        SimpleDateFormat sdfUTC = new SimpleDateFormat("yyyy-MM");
-        sdfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat sdfUTC = new SimpleDateFormat(GonLinkConstant.SIMPLE_DATE_FORMAT_YM);
+        sdfUTC.setTimeZone(TimeZone.getTimeZone(GonLinkConstant.TIME_ZONE));
         return sdfUTC;
     }
 
-    @Bean(name = "simpleDateFormat_YMD")
+    @Primary
+    @Bean(name = GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD)
     SimpleDateFormat simpleDateFormat_YMD() {
-        SimpleDateFormat sdfUTC = new SimpleDateFormat("yyyy-MM-dd");
-        sdfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat sdfUTC = new SimpleDateFormat(GonLinkConstant.SIMPLE_DATE_FORMAT_YMD);
+        sdfUTC.setTimeZone(TimeZone.getTimeZone(GonLinkConstant.TIME_ZONE));
         return sdfUTC;
     }
 
-    @Bean(name = "simpleDateFormatWithTime")
+    @Bean(name = GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)
     SimpleDateFormat simpleDateFormatWithTime() {
-        SimpleDateFormat sdfUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat sdfUTC = new SimpleDateFormat(GonLinkConstant.SIMPLE_DATE_FORMAT_YMD_HMS);
+        sdfUTC.setTimeZone(TimeZone.getTimeZone(GonLinkConstant.TIME_ZONE));
         return sdfUTC;
     }
 
     @Bean
     DateTimeFormatter dateTimeFormatter(){
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return DateTimeFormatter.ofPattern(GonLinkConstant.DATE_TIME_FORMAT);
     }
 
 }

@@ -4,6 +4,7 @@ import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
+import online.gonlink.DayTrafficInRangeRequest;
 import online.gonlink.GeneralTrafficsSearchRequest;
 import online.gonlink.GeneralTrafficsSearchResponse;
 import online.gonlink.GenerateShortCodeAccountRequest;
@@ -11,13 +12,18 @@ import online.gonlink.GenerateShortCodeRequest;
 import online.gonlink.GenerateShortCodeResponse;
 import online.gonlink.GetOriginalUrlRequest;
 import online.gonlink.GetOriginalUrlResponse;
+import online.gonlink.MonthTrafficGetAllResponse;
+import online.gonlink.MonthTrafficsGetAllRequest;
 import online.gonlink.PageInfo;
+import online.gonlink.RealTimeTrafficRequest;
+import online.gonlink.RealTimeTrafficResponse;
 import online.gonlink.StandardResponse;
 import online.gonlink.config.GlobalValue;
 import online.gonlink.dto.AuthConstants;
 import online.gonlink.dto.ResponseGenerateShortCode;
 import online.gonlink.dto.Standard;
 import online.gonlink.dto.StandardResponseGrpc;
+import online.gonlink.dto.TrafficData;
 import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.service.TrafficService;
 import online.gonlink.service.UrlShortenerService;
@@ -26,6 +32,9 @@ import online.gonlink.util.HtmlSanitizer;
 import online.gonlink.UrlShortenerServiceGrpc.UrlShortenerServiceImplBase;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @GrpcService
@@ -132,6 +141,71 @@ public class UrlShortenerServiceGrpc extends UrlShortenerServiceImplBase {
                         .build()
         );
 
+        responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getAllMonthTraffics(MonthTrafficsGetAllRequest request, StreamObserver<StandardResponse> responseObserver) {
+        List<TrafficData> traffics = trafficService.getAllMonthTraffic(request);
+        Standard standard = Standard.SUCCESS;
+        standard.setData(
+                MonthTrafficGetAllResponse
+                        .newBuilder()
+                        .addAllTrafficData(
+                                traffics.stream()
+                                        .map(o -> online.gonlink.TrafficData
+                                                .newBuilder()
+                                                .setDate(o.getDate())
+                                                .setData(o.getData())
+                                                .build()
+                                        )
+                                        .collect(Collectors.toList())
+                        )
+                        .build()
+        );
+        responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getDayTrafficInRange(DayTrafficInRangeRequest request, StreamObserver<StandardResponse> responseObserver) {
+        List<TrafficData> traffics = trafficService.getDayTrafficInRange(request);
+        Standard standard = Standard.SUCCESS;
+        standard.setData(
+                MonthTrafficGetAllResponse
+                        .newBuilder()
+                        .addAllTrafficData(
+                                traffics.stream()
+                                        .map(o -> online.gonlink.TrafficData
+                                                .newBuilder()
+                                                .setDate(o.getDate())
+                                                .setData(o.getData())
+                                                .build()
+                                        )
+                                        .collect(Collectors.toList())
+                        )
+                        .build()
+        );
+        responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getRealTimeTraffic(RealTimeTrafficRequest request, StreamObserver<StandardResponse> responseObserver) {
+        short[] realTimeTraffic = trafficService.getRealTimeTraffic(request);
+        List<Integer> realTimeTrafficAsIntegers = new ArrayList<>();
+
+        for (short value : realTimeTraffic) {
+            realTimeTrafficAsIntegers.add((int) value);
+        }
+        Standard standard = Standard.SUCCESS;
+        standard.setData(
+                RealTimeTrafficResponse
+                        .newBuilder()
+                        .addAllData(realTimeTrafficAsIntegers)
+                        .build()
+        );
         responseObserver.onNext(standardResponseGrpc.standardResponse(standard));
         responseObserver.onCompleted();
     }

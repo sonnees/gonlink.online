@@ -23,6 +23,9 @@ const (
 	UrlShortenerService_GenerateShortCodeAccount_FullMethodName = "/online.gonlink.UrlShortenerService/generateShortCodeAccount"
 	UrlShortenerService_GetOriginalUrl_FullMethodName           = "/online.gonlink.UrlShortenerService/getOriginalUrl"
 	UrlShortenerService_SearchGeneralTraffics_FullMethodName    = "/online.gonlink.UrlShortenerService/searchGeneralTraffics"
+	UrlShortenerService_GetAllMonthTraffics_FullMethodName      = "/online.gonlink.UrlShortenerService/getAllMonthTraffics"
+	UrlShortenerService_GetDayTrafficInRange_FullMethodName     = "/online.gonlink.UrlShortenerService/getDayTrafficInRange"
+	UrlShortenerService_GetRealTimeTraffic_FullMethodName       = "/online.gonlink.UrlShortenerService/getRealTimeTraffic"
 )
 
 // UrlShortenerServiceClient is the client API for UrlShortenerService service.
@@ -33,6 +36,9 @@ type UrlShortenerServiceClient interface {
 	GenerateShortCodeAccount(ctx context.Context, in *GenerateShortCodeAccountRequest, opts ...grpc.CallOption) (*StandardResponse, error)
 	GetOriginalUrl(ctx context.Context, in *GetOriginalUrlRequest, opts ...grpc.CallOption) (*StandardResponse, error)
 	SearchGeneralTraffics(ctx context.Context, in *GeneralTrafficsSearchRequest, opts ...grpc.CallOption) (*StandardResponse, error)
+	GetAllMonthTraffics(ctx context.Context, in *MonthTrafficsGetAllRequest, opts ...grpc.CallOption) (*StandardResponse, error)
+	GetDayTrafficInRange(ctx context.Context, in *DayTrafficInRangeRequest, opts ...grpc.CallOption) (*StandardResponse, error)
+	GetRealTimeTraffic(ctx context.Context, in *RealTimeTrafficRequest, opts ...grpc.CallOption) (*StandardResponse, error)
 }
 
 type urlShortenerServiceClient struct {
@@ -83,6 +89,36 @@ func (c *urlShortenerServiceClient) SearchGeneralTraffics(ctx context.Context, i
 	return out, nil
 }
 
+func (c *urlShortenerServiceClient) GetAllMonthTraffics(ctx context.Context, in *MonthTrafficsGetAllRequest, opts ...grpc.CallOption) (*StandardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(StandardResponse)
+	err := c.cc.Invoke(ctx, UrlShortenerService_GetAllMonthTraffics_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *urlShortenerServiceClient) GetDayTrafficInRange(ctx context.Context, in *DayTrafficInRangeRequest, opts ...grpc.CallOption) (*StandardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(StandardResponse)
+	err := c.cc.Invoke(ctx, UrlShortenerService_GetDayTrafficInRange_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *urlShortenerServiceClient) GetRealTimeTraffic(ctx context.Context, in *RealTimeTrafficRequest, opts ...grpc.CallOption) (*StandardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(StandardResponse)
+	err := c.cc.Invoke(ctx, UrlShortenerService_GetRealTimeTraffic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UrlShortenerServiceServer is the server API for UrlShortenerService service.
 // All implementations must embed UnimplementedUrlShortenerServiceServer
 // for forward compatibility
@@ -91,6 +127,9 @@ type UrlShortenerServiceServer interface {
 	GenerateShortCodeAccount(context.Context, *GenerateShortCodeAccountRequest) (*StandardResponse, error)
 	GetOriginalUrl(context.Context, *GetOriginalUrlRequest) (*StandardResponse, error)
 	SearchGeneralTraffics(context.Context, *GeneralTrafficsSearchRequest) (*StandardResponse, error)
+	GetAllMonthTraffics(context.Context, *MonthTrafficsGetAllRequest) (*StandardResponse, error)
+	GetDayTrafficInRange(context.Context, *DayTrafficInRangeRequest) (*StandardResponse, error)
+	GetRealTimeTraffic(context.Context, *RealTimeTrafficRequest) (*StandardResponse, error)
 	mustEmbedUnimplementedUrlShortenerServiceServer()
 }
 
@@ -109,6 +148,15 @@ func (UnimplementedUrlShortenerServiceServer) GetOriginalUrl(context.Context, *G
 }
 func (UnimplementedUrlShortenerServiceServer) SearchGeneralTraffics(context.Context, *GeneralTrafficsSearchRequest) (*StandardResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchGeneralTraffics not implemented")
+}
+func (UnimplementedUrlShortenerServiceServer) GetAllMonthTraffics(context.Context, *MonthTrafficsGetAllRequest) (*StandardResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllMonthTraffics not implemented")
+}
+func (UnimplementedUrlShortenerServiceServer) GetDayTrafficInRange(context.Context, *DayTrafficInRangeRequest) (*StandardResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDayTrafficInRange not implemented")
+}
+func (UnimplementedUrlShortenerServiceServer) GetRealTimeTraffic(context.Context, *RealTimeTrafficRequest) (*StandardResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRealTimeTraffic not implemented")
 }
 func (UnimplementedUrlShortenerServiceServer) mustEmbedUnimplementedUrlShortenerServiceServer() {}
 
@@ -195,6 +243,60 @@ func _UrlShortenerService_SearchGeneralTraffics_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UrlShortenerService_GetAllMonthTraffics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MonthTrafficsGetAllRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UrlShortenerServiceServer).GetAllMonthTraffics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UrlShortenerService_GetAllMonthTraffics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UrlShortenerServiceServer).GetAllMonthTraffics(ctx, req.(*MonthTrafficsGetAllRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UrlShortenerService_GetDayTrafficInRange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DayTrafficInRangeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UrlShortenerServiceServer).GetDayTrafficInRange(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UrlShortenerService_GetDayTrafficInRange_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UrlShortenerServiceServer).GetDayTrafficInRange(ctx, req.(*DayTrafficInRangeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UrlShortenerService_GetRealTimeTraffic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RealTimeTrafficRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UrlShortenerServiceServer).GetRealTimeTraffic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UrlShortenerService_GetRealTimeTraffic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UrlShortenerServiceServer).GetRealTimeTraffic(ctx, req.(*RealTimeTrafficRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UrlShortenerService_ServiceDesc is the grpc.ServiceDesc for UrlShortenerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -217,6 +319,18 @@ var UrlShortenerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "searchGeneralTraffics",
 			Handler:    _UrlShortenerService_SearchGeneralTraffics_Handler,
+		},
+		{
+			MethodName: "getAllMonthTraffics",
+			Handler:    _UrlShortenerService_GetAllMonthTraffics_Handler,
+		},
+		{
+			MethodName: "getDayTrafficInRange",
+			Handler:    _UrlShortenerService_GetDayTrafficInRange_Handler,
+		},
+		{
+			MethodName: "getRealTimeTraffic",
+			Handler:    _UrlShortenerService_GetRealTimeTraffic_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

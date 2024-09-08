@@ -2,6 +2,7 @@ package online.gonlink.observer;
 
 import com.mongodb.DuplicateKeyException;
 import lombok.extern.slf4j.Slf4j;
+import online.gonlink.constant.GonLinkConstant;
 import online.gonlink.dto.IncreaseTraffic;
 import online.gonlink.dto.Standard;
 import online.gonlink.entity.MonthTraffic;
@@ -26,13 +27,17 @@ import java.util.Optional;
 @Component
 public class MonthTrafficObserver implements TrafficObserver{
     private final MonthTrafficRepository repository;
-    @Qualifier("simpleDateFormat_YM") private final SimpleDateFormat simpleDateFormat;
-    @Qualifier("simpleDateFormatWithTime") private final SimpleDateFormat simpleDateFormatWithTime;
+    @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YM) private final SimpleDateFormat simpleDateFormat;
+    @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) private final SimpleDateFormat simpleDateFormatWithTime;
     private final DateTimeFormatter dateTimeFormatter;
 
-    public MonthTrafficObserver(MonthTrafficRepository repository, SimpleDateFormat simpleDateFormat_YM, SimpleDateFormat simpleDateFormatWithTime, DateTimeFormatter dateTimeFormatter) {
+    public MonthTrafficObserver(
+            MonthTrafficRepository repository,
+            @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YM) SimpleDateFormat simpleDateFormat,
+            @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) SimpleDateFormat simpleDateFormatWithTime,
+            DateTimeFormatter dateTimeFormatter) {
         this.repository = repository;
-        this.simpleDateFormat = simpleDateFormat_YM;
+        this.simpleDateFormat = simpleDateFormat;
         this.simpleDateFormatWithTime = simpleDateFormatWithTime;
         this.dateTimeFormatter = dateTimeFormatter;
     }

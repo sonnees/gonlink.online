@@ -2,6 +2,7 @@ package online.gonlink.observer;
 
 import com.mongodb.DuplicateKeyException;
 import lombok.extern.slf4j.Slf4j;
+import online.gonlink.constant.GonLinkConstant;
 import online.gonlink.dto.CreateTraffic;
 import online.gonlink.dto.IncreaseTraffic;
 import online.gonlink.dto.Standard;
@@ -14,20 +15,22 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Component
 public class RealTimeTrafficObserver implements TrafficObserver, CreateTrafficObserver{
     private final RealTimeTrafficRepository repository;
     private final DateTimeFormatter dateTimeFormatter;
-    @Qualifier("simpleDateFormatWithTime") private final SimpleDateFormat simpleDateFormatWithTime;
+    @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) private final SimpleDateFormat simpleDateFormatWithTime;
 
-    public RealTimeTrafficObserver(RealTimeTrafficRepository repository, DateTimeFormatter dateTimeFormatter, SimpleDateFormat simpleDateFormatWithTime) {
+    public RealTimeTrafficObserver(RealTimeTrafficRepository repository, DateTimeFormatter dateTimeFormatter, @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) SimpleDateFormat simpleDateFormatWithTime) {
         this.repository = repository;
         this.dateTimeFormatter = dateTimeFormatter;
         this.simpleDateFormatWithTime = simpleDateFormatWithTime;
@@ -37,17 +40,42 @@ public class RealTimeTrafficObserver implements TrafficObserver, CreateTrafficOb
     public boolean increaseTraffic(IncreaseTraffic record) {
         ZonedDateTime clientTime = ZonedDateTime.parse(record.trafficDate()).withZoneSameInstant(ZoneId.of(record.zoneId()));
         String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dateTimeFormatter);
-        int minute = localDateTime.getMinute();
+        Optional<RealTimeTraffic> realTimeTrafficOptional = repository.findById(record.shortCode());
 
-        try {
-            long increased = repository.increaseTraffic(record.shortCode(), minute);
-            if(increased<=0)
-                throw new ResourceException(Standard.REALTIME_TRAFFIC_INCREASE_FAIL.name(), null);
-            return true;
-        } catch (Exception e){
-            throw new ResourceException(Standard.INTERNAL.name(), e);
+        if(realTimeTrafficOptional.isPresent()){
+            RealTimeTraffic realTimeTraffic = realTimeTrafficOptional.get();
+
+            String updateAt = realTimeTraffic.getUpdateAt();
+            LocalDateTime oldTime = LocalDateTime.parse(updateAt.replace(' ', 'T'));
+            LocalDateTime newTime = LocalDateTime.parse(dateTime.replace(' ', 'T'));
+            int offset = (int) Duration.between(oldTime, newTime).getSeconds()/60;
+
+            short[] trafficMinute = realTimeTraffic.getTrafficMinute();
+            if(offset==0){
+                trafficMinute[59] += 1;
+                realTimeTraffic.setTrafficMinute(trafficMinute);
+            }
+            else if(offset > 0 && offset < 60){
+                short[] updatedTrafficMinute = new short[60];
+                int y = 59-offset;
+                for (int i = 0; i < 60; i++){
+                    if(y >= i)
+                        updatedTrafficMinute[i] = trafficMinute[offset+i];
+                    else updatedTrafficMinute[i] = 0;
+                }
+                updatedTrafficMinute[59] += 1;
+                realTimeTraffic.setTrafficMinute(updatedTrafficMinute);
+            } else {
+                short[] shorts = new short[60];
+                shorts[59] = 1;
+                realTimeTraffic.setTrafficMinute(shorts);
+            }
+            realTimeTraffic.setUpdateAt(dateTime);
+            repository.save(realTimeTraffic);
+        } else {
+            throw new ResourceException(Standard.NOT_FOUND_SHORT_CODE.name(), null);
         }
+        return true;
     }
 
     @Override
