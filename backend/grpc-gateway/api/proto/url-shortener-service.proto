@@ -1,0 +1,152 @@
+syntax = "proto3";
+option go_package = "grpc-gateway/api/proto";
+
+package online.gonlink;
+
+import "google/api/annotations.proto";
+import "common.proto";
+
+// === GenerateShortCode ===
+message GenerateShortCodeRequest{
+  string originalUrl = 1;
+  string trafficDate = 2;
+  string zoneId = 3;
+}
+
+message GenerateShortCodeAccountRequest{
+  string originalUrl = 1;
+  string trafficDate = 2;
+  string zoneId = 3;
+}
+
+message GenerateShortCodeResponse{
+  string shortCode = 1;
+  string base64Image = 2;
+  bool isOwner = 3;
+}
+
+// === GetOriginalUrl ===
+message GetOriginalUrlRequest{
+  string shortCode = 1;
+  string clientTime = 2;
+  string zoneId = 3;
+}
+
+message GetOriginalUrlResponse{
+  string originalUrl = 1;
+}
+
+
+// === GeneralTraffics ===
+message GeneralTrafficsSearchRequest{
+  optional int32 page = 1;
+  optional int32 size = 2;
+  optional string sortDirection = 3;
+}
+
+message PageInfo {
+  int32 currentPage = 1;
+  int32 totalPages = 2;
+  int64 totalElements = 3;
+  int32 pageSize = 4;
+}
+
+message GeneralTraffic{
+  string shortCode = 1;
+  string originalUrl = 2;
+  string trafficDate = 3;
+  int64 traffic = 4;
+}
+
+message GeneralTrafficsSearchResponse{
+  repeated GeneralTraffic generalTraffic = 1;
+  PageInfo pageInfo = 2;
+}
+
+// === MonthTraffics ===
+message MonthTrafficsGetAllRequest{
+  string shortCode = 1;
+}
+
+message TrafficData{
+  string date = 1;
+  int64 data = 2;
+}
+
+message MonthTrafficGetAllResponse{
+  repeated TrafficData trafficData = 1;
+}
+
+// === MonthTraffics ===
+message DayTrafficInRangeRequest{
+  string shortCode = 1;
+  string fromDate = 2;
+  string toDate = 3;
+}
+
+message DayTrafficInRangeResponse{
+  repeated TrafficData trafficData = 1;
+}
+
+// === RealTimeTraffics ===
+message RealTimeTrafficRequest{
+  string shortCode = 1;
+  string clientTime = 2;
+  string zoneId = 3;
+}
+
+message RealTimeTrafficResponse{
+  repeated int32 data = 1;
+}
+
+
+service UrlShortenerService {
+  rpc generateShortCode(GenerateShortCodeRequest) returns(online.gonlink.StandardResponse){
+    option (google.api.http) = {
+      post: "/api/v1/shortens/gen"
+      body: "*"
+    };
+  }
+
+  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(online.gonlink.StandardResponse){
+    option (google.api.http) = {
+      post: "/api/v1/shortens/account-gen"
+      body: "*"
+    };
+  }
+
+  rpc getOriginalUrl(GetOriginalUrlRequest) returns(online.gonlink.StandardResponse){
+    option (google.api.http) = {
+      post: "/api/v1/shortens/get"
+      body: "*"
+    };
+  }
+
+  rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.StandardResponse){
+    option (google.api.http) = {
+      post: "/api/v1/traffics/general"
+      body: "*"
+    };
+  }
+
+  rpc getAllMonthTraffics(MonthTrafficsGetAllRequest) returns(online.gonlink.StandardResponse){
+    option (google.api.http) = {
+      post: "/api/v1/traffics/month-all"
+      body: "*"
+    };
+  }
+
+  rpc getDayTrafficInRange(DayTrafficInRangeRequest) returns(online.gonlink.StandardResponse){
+    option (google.api.http) = {
+      post: "/api/v1/traffics/day-range"
+      body: "*"
+    };
+  }
+
+  rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.StandardResponse){
+    option (google.api.http) = {
+      post: "/api/v1/traffics/real-time"
+      body: "*"
+    };
+  }
+}

@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "account-service.proto",
+    "title": "qr-code-service.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "AccountService"
+      "name": "QRCodeService"
     }
   ],
   "consumes": [
@@ -16,9 +16,9 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/accounts/me": {
+    "/api/v1/qr-codes": {
       "post": {
-        "operationId": "AccountService_getInfoAccount",
+        "operationId": "QRCodeService_getStringBase64Image",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -39,61 +39,33 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/gonlinkGetInfoAccountRequest"
+              "$ref": "#/definitions/gonlinkGetStringBase64ImageRequest"
             }
           }
         ],
         "tags": [
-          "AccountService"
-        ]
-      }
-    },
-    "/api/v1/accounts/remove-url": {
-      "post": {
-        "operationId": "AccountService_removeUrl",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/gonlinkStandardResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gonlinkRemoveUrlRequest"
-            }
-          }
-        ],
-        "tags": [
-          "AccountService"
+          "QRCodeService"
         ]
       }
     }
   },
   "definitions": {
-    "gonlinkGetInfoAccountRequest": {
-      "type": "object",
-      "title": "=== GetInfoAccount ==="
-    },
-    "gonlinkRemoveUrlRequest": {
+    "gonlinkGetStringBase64ImageRequest": {
       "type": "object",
       "properties": {
-        "shortCode": {
+        "content": {
           "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
         }
       },
-      "title": "=== RemoveUrl ==="
+      "title": "=== GetStringBase64Image ==="
     },
     "gonlinkStandardResponse": {
       "type": "object",

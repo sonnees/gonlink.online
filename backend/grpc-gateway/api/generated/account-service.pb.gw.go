@@ -97,7 +97,7 @@ func RegisterAccountServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.AccountService/GetInfoAccount", runtime.WithHTTPPathPattern("/account-service/api/v1/get-info-account"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.AccountService/GetInfoAccount", runtime.WithHTTPPathPattern("/api/v1/accounts/me"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -122,7 +122,7 @@ func RegisterAccountServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.AccountService/RemoveUrl", runtime.WithHTTPPathPattern("/account-service/api/v1/remove-url"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.AccountService/RemoveUrl", runtime.WithHTTPPathPattern("/api/v1/accounts/remove-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -186,7 +186,7 @@ func RegisterAccountServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.AccountService/GetInfoAccount", runtime.WithHTTPPathPattern("/account-service/api/v1/get-info-account"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.AccountService/GetInfoAccount", runtime.WithHTTPPathPattern("/api/v1/accounts/me"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -208,7 +208,7 @@ func RegisterAccountServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.AccountService/RemoveUrl", runtime.WithHTTPPathPattern("/account-service/api/v1/remove-url"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.AccountService/RemoveUrl", runtime.WithHTTPPathPattern("/api/v1/accounts/remove-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -228,9 +228,9 @@ func RegisterAccountServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_AccountService_GetInfoAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"account-service", "api", "v1", "get-info-account"}, ""))
+	pattern_AccountService_GetInfoAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "accounts", "me"}, ""))
 
-	pattern_AccountService_RemoveUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"account-service", "api", "v1", "remove-url"}, ""))
+	pattern_AccountService_RemoveUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "accounts", "remove-url"}, ""))
 )
 
 var (
