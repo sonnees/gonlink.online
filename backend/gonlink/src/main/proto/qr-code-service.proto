@@ -17,6 +17,6 @@ message GetStringBase64ImageResponse{
 }
 
 service QRCodeService {
-  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(online.gonlink.StandardResponse){}
+  rpc getStringBase64Image(GetStringBase64ImageRequest) returns(online.gonlink.BaseGrpc){}
 }
 

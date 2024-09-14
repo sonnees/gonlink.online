@@ -2,14 +2,14 @@ package online.gonlink.observer;
 
 import com.mongodb.DuplicateKeyException;
 import lombok.extern.slf4j.Slf4j;
-import online.gonlink.constant.GonLinkConstant;
-import online.gonlink.dto.CreateTraffic;
-import online.gonlink.dto.IncreaseTraffic;
-import online.gonlink.dto.Standard;
+import online.gonlink.constant.CommonConstant;
+import online.gonlink.dto.TrafficCreateDto;
+import online.gonlink.dto.TrafficIncreaseDto;
+import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.entity.RealTimeTraffic;
 import online.gonlink.exception.ResourceException;
 import online.gonlink.factory.TrafficFactory;
-import online.gonlink.factory.type.TrafficType;
+import online.gonlink.factory.enumdef.TrafficType;
 import online.gonlink.repository.RealTimeTrafficRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -28,16 +28,16 @@ import java.util.Optional;
 public class RealTimeTrafficObserver implements TrafficObserver, CreateTrafficObserver{
     private final RealTimeTrafficRepository repository;
     private final DateTimeFormatter dateTimeFormatter;
-    @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) private final SimpleDateFormat simpleDateFormatWithTime;
+    @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) private final SimpleDateFormat simpleDateFormatWithTime;
 
-    public RealTimeTrafficObserver(RealTimeTrafficRepository repository, DateTimeFormatter dateTimeFormatter, @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) SimpleDateFormat simpleDateFormatWithTime) {
+    public RealTimeTrafficObserver(RealTimeTrafficRepository repository, DateTimeFormatter dateTimeFormatter, @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) SimpleDateFormat simpleDateFormatWithTime) {
         this.repository = repository;
         this.dateTimeFormatter = dateTimeFormatter;
         this.simpleDateFormatWithTime = simpleDateFormatWithTime;
     }
 
     @Override
-    public boolean increaseTraffic(IncreaseTraffic record) {
+    public boolean increaseTraffic(TrafficIncreaseDto record) {
         ZonedDateTime clientTime = ZonedDateTime.parse(record.trafficDate()).withZoneSameInstant(ZoneId.of(record.zoneId()));
         String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
         Optional<RealTimeTraffic> realTimeTrafficOptional = repository.findById(record.shortCode());
@@ -73,7 +73,7 @@ public class RealTimeTrafficObserver implements TrafficObserver, CreateTrafficOb
             realTimeTraffic.setUpdateAt(dateTime);
             repository.save(realTimeTraffic);
         } else {
-            throw new ResourceException(Standard.NOT_FOUND_SHORT_CODE.name(), null);
+            throw new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE.name(), null);
         }
         return true;
     }
@@ -83,12 +83,12 @@ public class RealTimeTrafficObserver implements TrafficObserver, CreateTrafficOb
         try {
             repository.deleteById(shortCode);
         } catch (Exception e){
-            throw new ResourceException(Standard.INTERNAL.name(), null);
+            throw new ResourceException(ExceptionEnum.INTERNAL.name(), null);
         }
     }
 
     @Override
-    public boolean create(CreateTraffic record) {
+    public boolean create(TrafficCreateDto record) {
         ZonedDateTime clientTime = ZonedDateTime.parse(record.trafficDate()).withZoneSameInstant(ZoneId.of(record.zoneId()));
         String date = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
         RealTimeTraffic traffic = (RealTimeTraffic) TrafficFactory.createTraffic(TrafficType.REAL_TIME, record.shortCode(), date);
@@ -96,9 +96,9 @@ public class RealTimeTrafficObserver implements TrafficObserver, CreateTrafficOb
             repository.insert(traffic);
             return true;
         } catch (DuplicateKeyException e){
-            throw new ResourceException(Standard.SHORTEN_GENERATE_ALREADY_EXISTS.name(), null);
+            throw new ResourceException(ExceptionEnum.SHORTEN_GENERATE_ALREADY_EXISTS.name(), null);
         } catch (Exception e){
-            throw new ResourceException(Standard.INTERNAL.name(), e);
+            throw new ResourceException(ExceptionEnum.INTERNAL.name(), e);
         }
     }
 }

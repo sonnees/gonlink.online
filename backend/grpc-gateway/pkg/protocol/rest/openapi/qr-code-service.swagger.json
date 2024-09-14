@@ -23,7 +23,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/gonlinkStandardResponse"
+              "$ref": "#/definitions/gonlinkBaseGrpc"
             }
           },
           "default": {
@@ -50,6 +50,60 @@
     }
   },
   "definitions": {
+    "gonlinkBaseGrpc": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "took": {
+          "type": "string",
+          "format": "int64"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/gonlinkErrorDetailGrpc"
+          }
+        },
+        "data": {
+          "$ref": "#/definitions/protobufAny"
+        }
+      }
+    },
+    "gonlinkErrorDetailGrpc": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "objectName": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/protobufAny"
+        }
+      },
+      "title": "=== ==="
+    },
     "gonlinkGetStringBase64ImageRequest": {
       "type": "object",
       "properties": {
@@ -66,18 +120,6 @@
         }
       },
       "title": "=== GetStringBase64Image ==="
-    },
-    "gonlinkStandardResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "data": {
-          "$ref": "#/definitions/protobufAny"
-        }
-      },
-      "title": "=== ==="
     },
     "protobufAny": {
       "type": "object",

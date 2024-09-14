@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import online.gonlink.config.GlobalValue;
-import online.gonlink.dto.Standard;
+import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.exception.ResourceException;
 import online.gonlink.service.base.QRCodeService;
 import org.imgscalr.Scalr;
@@ -42,7 +42,7 @@ public class QRCodeServiceImpl implements QRCodeService {
 
             return Base64.getEncoder().encodeToString(imageBytes);
         } catch (Exception e){
-            throw new ResourceException(Standard.INTERNAL.name(), e);
+            throw new ResourceException(ExceptionEnum.INTERNAL.name(), e);
         }
     }
 

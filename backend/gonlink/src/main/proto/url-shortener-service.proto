@@ -10,12 +10,26 @@ message GenerateShortCodeRequest{
   string originalUrl = 1;
   string trafficDate = 2;
   string zoneId = 3;
+
+  optional string shortCode = 4;
+  optional string alias = 5;
+  optional string desc = 6;
+  optional string timeExpired = 7;
+  optional string password = 8;
+  optional int64 maxUsage = 9;
 }
 
 message GenerateShortCodeAccountRequest{
   string originalUrl = 1;
   string trafficDate = 2;
   string zoneId = 3;
+
+  optional string shortCode = 4;
+  optional string alias = 5;
+  optional string desc = 6;
+  optional string timeExpired = 7;
+  optional string password = 8;
+  optional int64 maxUsage = 9;
 }
 
 message GenerateShortCodeResponse{
@@ -24,11 +38,30 @@ message GenerateShortCodeResponse{
   bool isOwner = 3;
 }
 
+// === checkExistShortCode ===
+message ShortCodeCheckExistRequest{
+  string shortCode = 1;
+}
+
+message ShortCodeCheckExistResponse{
+  bool isExistShortCode = 1;
+}
+
+// === checkNeedPassword ===
+message OriginalUrlCheckNeedPasswordRequest{
+  string shortCode = 1;
+}
+
+message OriginalUrlCheckNeedPasswordResponse{
+  bool isNeedPassword = 1;
+}
+
 // === GetOriginalUrl ===
 message GetOriginalUrlRequest{
   string shortCode = 1;
   string clientTime = 2;
   string zoneId = 3;
+  optional string password = 4;
 }
 
 message GetOriginalUrlResponse{
@@ -98,11 +131,13 @@ message RealTimeTrafficResponse{
 }
 
 service UrlShortenerService {
-  rpc generateShortCode(GenerateShortCodeRequest) returns(online.gonlink.StandardResponse){}
-  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(online.gonlink.StandardResponse){}
-  rpc getOriginalUrl(GetOriginalUrlRequest) returns(online.gonlink.StandardResponse){}
-  rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.StandardResponse){}
-  rpc getAllMonthTraffics(MonthTrafficsGetAllRequest) returns(online.gonlink.StandardResponse){}
-  rpc getDayTrafficInRange(DayTrafficInRangeRequest) returns(online.gonlink.StandardResponse){}
-  rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.StandardResponse){}
+  rpc checkExistShortCode(ShortCodeCheckExistRequest) returns(online.gonlink.BaseGrpc){}
+  rpc checkNeedPasswordGetOriginalUrl(OriginalUrlCheckNeedPasswordRequest) returns(online.gonlink.BaseGrpc){}
+  rpc generateShortCode(GenerateShortCodeRequest) returns(online.gonlink.BaseGrpc){}
+  rpc generateShortCodeAccount(GenerateShortCodeAccountRequest) returns(online.gonlink.BaseGrpc){}
+  rpc getOriginalUrl(GetOriginalUrlRequest) returns(online.gonlink.BaseGrpc){}
+  rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.BaseGrpc){}
+  rpc getAllMonthTraffics(MonthTrafficsGetAllRequest) returns(online.gonlink.BaseGrpc){}
+  rpc getDayTrafficInRange(DayTrafficInRangeRequest) returns(online.gonlink.BaseGrpc){}
+  rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.BaseGrpc){}
 }

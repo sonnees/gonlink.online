@@ -8,11 +8,11 @@ import online.gonlink.GeneralTrafficsSearchRequest;
 import online.gonlink.MonthTrafficsGetAllRequest;
 import online.gonlink.RealTimeTrafficRequest;
 import online.gonlink.config.GlobalValue;
-import online.gonlink.constant.GonLinkConstant;
-import online.gonlink.dto.AuthConstants;
-import online.gonlink.dto.IncreaseTraffic;
-import online.gonlink.dto.Standard;
-import online.gonlink.dto.TrafficData;
+import online.gonlink.constant.CommonConstant;
+import online.gonlink.constant.AuthConstant;
+import online.gonlink.dto.TrafficIncreaseDto;
+import online.gonlink.exception.enumdef.ExceptionEnum;
+import online.gonlink.dto.TrafficDataDto;
 import online.gonlink.entity.DayTraffic;
 import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.entity.MonthTraffic;
@@ -40,7 +40,6 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class TrafficServiceImpl implements TrafficService {
 
     private final SimpleDateFormat simpleDateFormatWithTime;
 
-    public TrafficServiceImpl(GlobalValue globalValue, GeneralTrafficRepository generalTrafficRepository, MonthTrafficRepository monthTrafficRepository, DayTrafficRepository dayTrafficRepository, RealTimeTrafficRepository realTimeTrafficRepository, ShortUrlRepository shortUrlRepository, TrafficSubject trafficSubject, GeneralTrafficObserver generalTrafficObserver, MonthTrafficObserver monthTrafficObserver, DayTrafficObserver dayTrafficObserver, RealTimeTrafficObserver realTimeTrafficObserver, @Qualifier(GonLinkConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)  SimpleDateFormat simpleDateFormatWithTime) {
+    public TrafficServiceImpl(GlobalValue globalValue, GeneralTrafficRepository generalTrafficRepository, MonthTrafficRepository monthTrafficRepository, DayTrafficRepository dayTrafficRepository, RealTimeTrafficRepository realTimeTrafficRepository, ShortUrlRepository shortUrlRepository, TrafficSubject trafficSubject, GeneralTrafficObserver generalTrafficObserver, MonthTrafficObserver monthTrafficObserver, DayTrafficObserver dayTrafficObserver, RealTimeTrafficObserver realTimeTrafficObserver, @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)  SimpleDateFormat simpleDateFormatWithTime) {
         this.globalValue = globalValue;
         this.generalTrafficRepository = generalTrafficRepository;
         this.monthTrafficRepository = monthTrafficRepository;
@@ -92,7 +91,7 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public boolean increaseTraffic(String shortCode, String trafficDate, String zoneId) {
-        return trafficSubject.notifyObservers(new IncreaseTraffic(shortCode, trafficDate, zoneId));
+        return trafficSubject.notifyObservers(new TrafficIncreaseDto(shortCode, trafficDate, zoneId));
     }
 
     @Override
@@ -110,13 +109,19 @@ public class TrafficServiceImpl implements TrafficService {
                 request.getPage()==0?globalValue.getPAGE():request.getPage(),
                 request.getSize()==0?globalValue.getSIZE():request.getSize()
         );
-        traffics = generalTrafficRepository.findAllByOwner(AuthConstants.USER_EMAIL.get(context), pageable);
+        traffics = generalTrafficRepository.findAllByOwner(AuthConstant.USER_EMAIL.get(context), pageable);
         return traffics;
     }
 
     @Override
-    public List<TrafficData> getAllMonthTraffic(MonthTrafficsGetAllRequest request) {
-        List<TrafficData> trafficDataList = new ArrayList<>();
+    public GeneralTraffic searchGeneralTrafficByShortCode(String shortCode){
+        return generalTrafficRepository.findById(shortCode)
+                .orElseThrow(()-> new ResourceException(ExceptionEnum.SHORT_CODE_NOT_FOUND.name(), null));
+    }
+
+    @Override
+    public List<TrafficDataDto> getAllMonthTraffic(MonthTrafficsGetAllRequest request) {
+        List<TrafficDataDto> trafficDataDtoList = new ArrayList<>();
         List<MonthTraffic> monthTrafficList = monthTrafficRepository.getAll(request.getShortCode());
         long cumulativeSum = 0;
         LocalDate today = LocalDate.now();
@@ -136,13 +141,13 @@ public class TrafficServiceImpl implements TrafficService {
                 if (previousDate != null && !previousDate.plusDays(1).equals(date)) {
                     LocalDate missingDate = previousDate.plusDays(1);
                     while (!missingDate.equals(date) && !missingDate.isAfter(today)) {
-                        trafficDataList.add(new TrafficData(missingDate.toString(), cumulativeSum));
+                        trafficDataDtoList.add(new TrafficDataDto(missingDate.toString(), cumulativeSum));
                         missingDate = missingDate.plusDays(1);
                     }
                 }
 
                 cumulativeSum += trafficDays[i];
-                trafficDataList.add(new TrafficData(dateStr, cumulativeSum));
+                trafficDataDtoList.add(new TrafficDataDto(dateStr, cumulativeSum));
                 previousDate = date;
             }
         }
@@ -150,16 +155,16 @@ public class TrafficServiceImpl implements TrafficService {
         if (previousDate != null && previousDate.isBefore(today)) {
             LocalDate missingDate = previousDate.plusDays(1);
             while (!missingDate.isAfter(today)) {
-                trafficDataList.add(new TrafficData(missingDate.toString(), cumulativeSum));
+                trafficDataDtoList.add(new TrafficDataDto(missingDate.toString(), cumulativeSum));
                 missingDate = missingDate.plusDays(1);
             }
         }
-        return trafficDataList;
+        return trafficDataDtoList;
     }
 
     @Override
-    public List<TrafficData> getDayTrafficInRange(DayTrafficInRangeRequest request) {
-        List<TrafficData> trafficDataList = new ArrayList<>();
+    public List<TrafficDataDto> getDayTrafficInRange(DayTrafficInRangeRequest request) {
+        List<TrafficDataDto> trafficDataDtoList = new ArrayList<>();
         List<DayTraffic> dayTrafficList = dayTrafficRepository.findByShortCodeAndTrafficDate(request.getShortCode(), request.getFromDate(), request.getToDate());
         LocalDate toDate = LocalDate.parse(request.getToDate());
         LocalDate curDate = LocalDate.parse(request.getFromDate());
@@ -171,10 +176,10 @@ public class TrafficServiceImpl implements TrafficService {
         while (curDate.isEqual(toDate) || curDate.isBefore(toDate)){
             if(!Objects.equal(null, indexDate)){
                 if(Objects.equal(indexDate, curDate)){
-                    trafficDataList.addAll(appendData(curDate, trafficHours));
+                    trafficDataDtoList.addAll(appendData(curDate, trafficHours));
                     indexDate = null;
                 } else {
-                    trafficDataList.addAll(appendData(curDate, new short[24]));
+                    trafficDataDtoList.addAll(appendData(curDate, new short[24]));
                 }
                 curDate = curDate.plusDays(1);
             } else {
@@ -187,26 +192,26 @@ public class TrafficServiceImpl implements TrafficService {
                     trafficHours = dayTraffic.getTrafficHours();
                     index++;
                 } else {
-                    trafficDataList.addAll(appendData(curDate, new short[24]));
+                    trafficDataDtoList.addAll(appendData(curDate, new short[24]));
                     curDate = curDate.plusDays(1);
                 }
             }
         }
 
-        return trafficDataList;
+        return trafficDataDtoList;
     }
 
-    private List<TrafficData> appendData(LocalDate indexDate, short[] trafficHours) {
-        List<TrafficData> trafficDataList = new ArrayList<>();
+    private List<TrafficDataDto> appendData(LocalDate indexDate, short[] trafficHours) {
+        List<TrafficDataDto> trafficDataDtoList = new ArrayList<>();
         for (int i = 0; i < trafficHours.length; i++) {
             LocalDateTime dateTime = indexDate.atStartOfDay();
             LocalDateTime currentHour = dateTime.plusHours(i);
-            trafficDataList.add(new TrafficData(
+            trafficDataDtoList.add(new TrafficDataDto(
                     currentHour.toLocalDate().toString() + "T" + String.format("%02d", i) + ":00",
                     trafficHours[i]
             ));
         }
-        return trafficDataList;
+        return trafficDataDtoList;
     }
 
     @Override
@@ -239,7 +244,7 @@ public class TrafficServiceImpl implements TrafficService {
                 trafficMinute = trafficMinuteShorts;
             }
         } else {
-            throw new ResourceException(Standard.NOT_FOUND_SHORT_CODE.name(), null);
+            throw new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE.name(), null);
         }
         return trafficMinute;
     }

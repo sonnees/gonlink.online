@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrafficData{
+public class TrafficDataDto {
     private String date;
     private long data;
 }

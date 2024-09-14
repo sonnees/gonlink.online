@@ -1,25 +1,40 @@
 package online.gonlink.observer;
 
-import online.gonlink.dto.IncreaseTraffic;
-import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
+import online.gonlink.config.GlobalValue;
+import online.gonlink.dto.TrafficIncreaseDto;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-@Service
+@Component
 public class TrafficSubject {
-    protected final Set<TrafficObserver> observers = new HashSet<>();
+    private final GlobalValue globalValue;
+    protected Set<TrafficObserver> observers;
+    protected ExecutorService executor;
 
-    public boolean notifyObservers(IncreaseTraffic increaseTraffic) {
+    public TrafficSubject(GlobalValue globalValue) {
+        this.globalValue = globalValue;
+    }
+
+    @PostConstruct
+    public void setUp(){
+        observers = new HashSet<>();
+        executor = Executors.newFixedThreadPool(globalValue.getTHREAD_FIX_POOL());
+    }
+
+    public boolean notifyObservers(TrafficIncreaseDto trafficIncreaseDto) {
         for (TrafficObserver observer : observers)
-            observer.increaseTraffic(increaseTraffic);
-
+            executor.submit(() -> observer.increaseTraffic(trafficIncreaseDto));
         return true;
     }
 
     public void deleteTraffic(String shortCode) {
         for (TrafficObserver observer : observers)
-            observer.deleteTraffic(shortCode);
+            executor.submit(() -> observer.deleteTraffic(shortCode));
     }
 
     public void addObserver(TrafficObserver observer) {
@@ -28,5 +43,9 @@ public class TrafficSubject {
 
     public void deleteObserver(TrafficObserver observer) {
         observers.remove(observer);
+    }
+
+    public void shutdown() {
+        executor.shutdown();
     }
 }

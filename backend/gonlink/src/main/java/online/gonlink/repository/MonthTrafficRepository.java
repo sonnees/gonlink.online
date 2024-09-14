@@ -1,9 +1,7 @@
 package online.gonlink.repository;
 
-import online.gonlink.dto.TrafficData;
 import online.gonlink.entity.MonthTraffic;
 import online.gonlink.entity.TrafficID;
-import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;

@@ -1,4 +1,4 @@
-package online.gonlink.factory.type;
+package online.gonlink.factory.enumdef;
 
 public enum TrafficType {
     GENERAL,

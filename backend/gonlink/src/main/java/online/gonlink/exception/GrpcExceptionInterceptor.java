@@ -8,16 +8,15 @@ import io.grpc.ServerInterceptor;
 import io.grpc.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import online.gonlink.dto.Standard;
-import online.gonlink.dto.StandardResponseGrpc;
+import online.gonlink.exception.enumdef.ExceptionEnum;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Slf4j
 @AllArgsConstructor
 @Component
-public class GrpcExceptionInterceptor implements ServerInterceptor {
-    StandardResponseGrpc standardResponseGrpc;
-
+public class GrpcExceptionInterceptor implements ServerInterceptor, GrpcExceptionHandle {
     @Override
     public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(
             ServerCall<ReqT, RespT> call,
@@ -61,15 +60,14 @@ public class GrpcExceptionInterceptor implements ServerInterceptor {
         }
 
         private void handleException(RuntimeException ex, ServerCall<ReqT, RespT> serverCall, Metadata metadata) {
-            log.error(ex.toString());
+            log.debug(Arrays.toString(ex.getStackTrace()));
+
             Status status;
             if (ex instanceof IllegalArgumentException) {
                 status = Status.INVALID_ARGUMENT.withDescription(ex.getMessage());
-            } else if (ex instanceof ResourceNotFoundException) {
-                status = Status.NOT_FOUND.withDescription(ex.getMessage());
             } else if (ex instanceof ResourceException) {
-                Standard standard = Standard.valueOf(ex.getMessage());
-                status = standard.getStatus().withDescription(standard.getMessage());
+                ExceptionEnum exceptionEnum = ExceptionEnum.valueOf(ex.getMessage());
+                status = exceptionEnum.getStatus().withDescription(exceptionEnum.getMessage());
             } else {
                 status = Status.INTERNAL.withDescription("An internal error occurred");
             }

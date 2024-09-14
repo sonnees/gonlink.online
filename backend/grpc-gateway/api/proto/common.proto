@@ -7,9 +7,23 @@ import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
 
 // === ===
-message StandardResponse {
-  string message = 1;
-  google.protobuf.Any data = 2;
+message ErrorDetailGrpc {
+  int32 code = 1;
+  string message = 2;
+  string objectName = 3;
+  string field = 4;
+  google.protobuf.Any data = 5;
 }
+
+message BaseGrpc {
+  int32 status = 1;
+  string message = 2;
+  string title = 3;
+  string time = 4;
+  int64 took = 5;
+  repeated ErrorDetailGrpc errors = 6;
+  google.protobuf.Any data = 7;
+}
+
 message MessageEmpty {}
 

@@ -15,7 +15,7 @@ public class GeneralTraffic implements Traffic{
     private String shortCode;
     private String owner;
     private String originalUrl;
-    private String trafficDate;
+    private String trafficDate; // createDate
     private long traffic;
 
     public GeneralTraffic(String shortCode, String owner, String originalUrl, String trafficDate) {

@@ -7,11 +7,9 @@ import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.grpc.Status;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import online.gonlink.dto.AuthConstants;
-import online.gonlink.dto.UserInfo;
+import online.gonlink.constant.AuthConstant;
+import online.gonlink.dto.UserInfoDto;
 import online.gonlink.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,10 +19,9 @@ import java.util.Map;
 @Slf4j
 @Component
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthInterceptor implements ServerInterceptor {
-    GlobalValue globalValue;
-    JwtUtil jwtUtil;
+    private final GlobalValue globalValue;
+    private final JwtUtil jwtUtil;
 
     @Override
     public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(
@@ -39,13 +36,13 @@ public class AuthInterceptor implements ServerInterceptor {
         if (token != null && token.startsWith("Bearer ")) {
             String bearerToken = token.substring(7);
 
-            UserInfo userInfo =  authenticateAndGetUserInfo(bearerToken);
-            if(userInfo!=null) {
+            UserInfoDto userInfoDto =  authenticateAndGetUserInfo(bearerToken);
+            if(userInfoDto !=null) {
                 Context context = Context.current()
-                        .withValue(AuthConstants.USER_EMAIL, userInfo.user_email())
-                        .withValue(AuthConstants.USER_NAME, userInfo.user_name())
-                        .withValue(AuthConstants.USER_AVATAR, userInfo.user_avatar())
-                        .withValue(AuthConstants.USER_ROLE, userInfo.user_role());
+                        .withValue(AuthConstant.USER_EMAIL, userInfoDto.user_email())
+                        .withValue(AuthConstant.USER_NAME, userInfoDto.user_name())
+                        .withValue(AuthConstant.USER_AVATAR, userInfoDto.user_avatar())
+                        .withValue(AuthConstant.USER_ROLE, userInfoDto.user_role());
                 return Contexts.interceptCall(context, call, headers, next);
             }
         }
@@ -53,12 +50,12 @@ public class AuthInterceptor implements ServerInterceptor {
         return new ServerCall.Listener<>() {};
     }
 
-    private UserInfo authenticateAndGetUserInfo(String token) {
+    private UserInfoDto authenticateAndGetUserInfo(String token) {
         try{
             Map<String, Object> objectMap = jwtUtil.validateToken(token);
             boolean tokenExpired = jwtUtil.isTokenExpired(objectMap);
             if(tokenExpired) return null;
-            return new UserInfo(
+            return new UserInfoDto(
                     (String) objectMap.get("email"),
                     (String) objectMap.get("name"),
                     (String) objectMap.get("avatar"),
