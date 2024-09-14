@@ -8,12 +8,11 @@ import io.grpc.Metadata;
 import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
-import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import online.gonlink.util.FormatLogMessage;
+import online.gonlink.exception.enumdef.ExceptionEnum;
+import online.gonlink.exception.ResourceException;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -43,19 +42,11 @@ public class RateLimitInterceptor implements ServerInterceptor {
         try {
             bucket = cache.get(ip, this::newBucket);
         } catch (ExecutionException e) {
-            log.error(FormatLogMessage.formatLogMessage(
-                    this.getClass().getSimpleName(),
-                    "interceptCall",
-                    "Unexpected error: Bucket not create success!",
-                    e
-            ));
-            throw new StatusRuntimeException(Status.INTERNAL.withDescription("Bucket not create success!"));
+            throw new ResourceException(ExceptionEnum.RLI_CREATE_BUCKET_FAIL, e);
         }
 
         if (!bucket.tryConsume(1)) {
-            call.close(Status.RESOURCE_EXHAUSTED
-                    .withDescription("Rate limit exceeded"), new Metadata());
-            return new ServerCall.Listener<>() {};
+            throw new ResourceException(ExceptionEnum.RLI_LIMIT_EXCEEDED, null);
         }
 
         return next.startCall(call, headers);

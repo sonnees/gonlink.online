@@ -1,6 +1,6 @@
 package online.gonlink.entity;
 
-import online.gonlink.dto.UserInfo;
+import online.gonlink.dto.UserInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -22,11 +21,11 @@ public class Account {
     private String role;
     private LocalDate create;
 
-    public Account(UserInfo userInfo) {
-        this.email = userInfo.user_email();
-        this.name = userInfo.user_name();
-        this.avatar = userInfo.user_avatar();
-        this.role = userInfo.user_role();
+    public Account(UserInfoDto userInfoDto) {
+        this.email = userInfoDto.user_email();
+        this.name = userInfoDto.user_name();
+        this.avatar = userInfoDto.user_avatar();
+        this.role = userInfoDto.user_role();
         this.create = LocalDate.now();
     }
     public String getCreate() {

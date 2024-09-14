@@ -28,14 +28,14 @@ message RemoveUrlRequest{
 message RemoveUrlResponse{}
 
 service AccountService {
-  rpc getInfoAccount(GetInfoAccountRequest) returns(online.gonlink.StandardResponse){
+  rpc getInfoAccount(GetInfoAccountRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
       post: "/api/v1/accounts/me"
       body: "*"
     };
   }
 
-  rpc removeUrl(RemoveUrlRequest) returns(online.gonlink.StandardResponse){
+  rpc removeUrl(RemoveUrlRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
       post: "/api/v1/accounts/remove-url"
       body: "*"

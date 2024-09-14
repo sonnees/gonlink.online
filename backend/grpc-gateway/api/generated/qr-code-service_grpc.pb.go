@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QRCodeServiceClient interface {
-	GetStringBase64Image(ctx context.Context, in *GetStringBase64ImageRequest, opts ...grpc.CallOption) (*StandardResponse, error)
+	GetStringBase64Image(ctx context.Context, in *GetStringBase64ImageRequest, opts ...grpc.CallOption) (*BaseGrpc, error)
 }
 
 type qRCodeServiceClient struct {
@@ -37,9 +37,9 @@ func NewQRCodeServiceClient(cc grpc.ClientConnInterface) QRCodeServiceClient {
 	return &qRCodeServiceClient{cc}
 }
 
-func (c *qRCodeServiceClient) GetStringBase64Image(ctx context.Context, in *GetStringBase64ImageRequest, opts ...grpc.CallOption) (*StandardResponse, error) {
+func (c *qRCodeServiceClient) GetStringBase64Image(ctx context.Context, in *GetStringBase64ImageRequest, opts ...grpc.CallOption) (*BaseGrpc, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(StandardResponse)
+	out := new(BaseGrpc)
 	err := c.cc.Invoke(ctx, QRCodeService_GetStringBase64Image_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (c *qRCodeServiceClient) GetStringBase64Image(ctx context.Context, in *GetS
 // All implementations must embed UnimplementedQRCodeServiceServer
 // for forward compatibility
 type QRCodeServiceServer interface {
-	GetStringBase64Image(context.Context, *GetStringBase64ImageRequest) (*StandardResponse, error)
+	GetStringBase64Image(context.Context, *GetStringBase64ImageRequest) (*BaseGrpc, error)
 	mustEmbedUnimplementedQRCodeServiceServer()
 }
 
@@ -59,7 +59,7 @@ type QRCodeServiceServer interface {
 type UnimplementedQRCodeServiceServer struct {
 }
 
-func (UnimplementedQRCodeServiceServer) GetStringBase64Image(context.Context, *GetStringBase64ImageRequest) (*StandardResponse, error) {
+func (UnimplementedQRCodeServiceServer) GetStringBase64Image(context.Context, *GetStringBase64ImageRequest) (*BaseGrpc, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStringBase64Image not implemented")
 }
 func (UnimplementedQRCodeServiceServer) mustEmbedUnimplementedQRCodeServiceServer() {}

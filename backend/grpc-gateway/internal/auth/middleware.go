@@ -10,6 +10,8 @@ var unprotectedPaths = []string{
 	"/auth/github/login/callback",
 	"/api/v1/shortens/gen",
 	"/api/v1/shortens/get",
+	"/api/v1/shortens/check-need-password",
+	"/api/v1/shortens/check-exist-short-code",
 	"/api/v1/qr-codes",
 }
 

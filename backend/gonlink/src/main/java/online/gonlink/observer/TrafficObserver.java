@@ -1,8 +1,8 @@
 package online.gonlink.observer;
 
-import online.gonlink.dto.IncreaseTraffic;
+import online.gonlink.dto.TrafficIncreaseDto;
 
 public interface TrafficObserver {
-    boolean increaseTraffic(IncreaseTraffic increaseTraffic);
+    boolean increaseTraffic(TrafficIncreaseDto trafficIncreaseDto);
     void deleteTraffic(String shortCode);
 }

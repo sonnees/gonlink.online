@@ -1,7 +1,6 @@
 package online.gonlink.util;
 
-import online.gonlink.StandardResponse;
-import online.gonlink.dto.Standard;
+import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.exception.ResourceException;
 
 import java.time.LocalDate;
@@ -19,7 +18,7 @@ public class DateUtil {
             YearMonth yearMonth = YearMonth.of(year, month);
             daysInMonth = yearMonth.lengthOfMonth();
         } catch (Exception e){
-            throw new ResourceException(Standard.DATE_FORMAT.name(), e);
+            throw new ResourceException(ExceptionEnum.DATE_FORMAT.name(), e);
         }
         return daysInMonth;
     }

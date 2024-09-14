@@ -27,6 +27,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
 
     implementation 'org.jsoup:jsoup:1.17.2'

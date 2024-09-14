@@ -27,7 +27,7 @@ message RemoveUrlRequest{
 message RemoveUrlResponse{}
 
 service AccountService {
-  rpc getInfoAccount(GetInfoAccountRequest) returns(online.gonlink.StandardResponse){}
-  rpc removeUrl(RemoveUrlRequest) returns(online.gonlink.StandardResponse){}
+  rpc getInfoAccount(GetInfoAccountRequest) returns(online.gonlink.BaseGrpc){}
+  rpc removeUrl(RemoveUrlRequest) returns(online.gonlink.BaseGrpc){}
 }
 
