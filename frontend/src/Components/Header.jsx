@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <div className='flex justify-around items-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 p-1'>
-      <img src="/src/assets/Logo.png" alt="" className='w-[180px]' />
+      <img src="/src/assets/Logo.png" alt="" className='w-[180px]' onClick={()=>navigate("/")}/>
       <ul className='flex gap-4 md:gap-14'>
         <li className='hover:font-bold cursor-pointer'> <Link to={"home"}>Trang chủ</Link> </li>
         {name && <li className='hover:font-bold cursor-pointer'> <Link to={"history"}>Lịch sử</Link> </li>}
@@ -28,12 +28,9 @@ export default function Header() {
           {name?
             <div onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center">
               {name}
-              {/* <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg> */}
             </div>
           :<Link to={"/login"}>Đăng nhập</Link>}
-          {/* <Link to={"/login"}>{name?name:"Đăng nhập"}</Link>  */}
+
 
           {dropdownOpen && name && (
             <ul className="absolute right-0 mt-2 w-28 bg-white shadow-lg rounded-lg">

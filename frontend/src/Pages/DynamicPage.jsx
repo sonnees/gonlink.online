@@ -40,7 +40,7 @@ export default function DynamicPage() {
       
             if (response.ok) {
                 const link = await response.json();
-                window.location.href = link.originalUrl;
+                window.location.href = link.data.originalUrl;
 
             } else {
                 // Xử lý khi API trả về lỗi

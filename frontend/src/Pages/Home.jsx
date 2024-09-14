@@ -67,6 +67,7 @@ export default function Home() {
     try {
       const response = await fetch(
         `${process.env.GET_INFO}`,
+        // `http://localhost:8080/account-service/api/v1/get-info-account`,
         {
           method: "POST",
           headers: {
@@ -92,9 +93,11 @@ export default function Home() {
       if (response.ok) {
         // Xử lý khi API trả về thành công
         const data = await response.json();
-        console.log(data);
-        setUserObject(data)
-        setName(data.name)
+        setUserObject(data.data)
+        localStorage.setItem('userObj', JSON.stringify(data.data));
+        setName(data.data.name)
+        
+        
 
 
       } else {
@@ -121,6 +124,10 @@ export default function Home() {
   const handleGenerateShortLink = async () => {
     console.log(link);
     setIsLoading(true);
+
+    const now = new Date();
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     try {
       
       const response = await fetch(
@@ -132,7 +139,9 @@ export default function Home() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            originalUrl: link
+            originalUrl: link,
+            trafficDate: now.toISOString(),
+	          zoneId: timeZone
           }),
         },
       );
@@ -151,14 +160,14 @@ export default function Home() {
         // Xử lý khi API trả về thành công
         const data = await response.json();
 
-        const shortLink = `${process.env.HOST_PAGE}` + data.shortCode;
+        const shortLink = `${process.env.HOST_PAGE}`+ "/" + data.data.shortCode;
         console.log(shortLink);
         setErrorShortLink(false)
         setLink(shortLink);
         setIsShortCode(true);
-        setQr("data:image/png;base64," + data.base64Image);
-        console.log(qr);
-        console.log(data);
+        setQr("data:image/png;base64," + data.data.base64Image);
+        // console.log(qr);
+        // console.log(data.data);
         
 
       } else {
@@ -192,6 +201,8 @@ export default function Home() {
   const handleGenerateShortLinkWithToken = async (token) => {
     console.log(link);
     setIsLoading(true);
+    const now = new Date();
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
       
       const response = await fetch(
@@ -203,7 +214,9 @@ export default function Home() {
             "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify({
-            originalUrl: link
+            originalUrl: link,
+            trafficDate: now.toISOString(),
+	          zoneId: timeZone
           }),
         },
       );
@@ -222,13 +235,14 @@ export default function Home() {
         // Xử lý khi API trả về thành công
         const data = await response.json();
 
-        const shortLink = `${process.env.HOST_PAGE}` + data.shortCode;
+        const shortLink = `${process.env.HOST_PAGE}` + "/" + data.data.shortCode;
         console.log(shortLink);
         setErrorShortLink(false)
         setLink(shortLink);
         setIsShortCode(true);
-        setQr("data:image/png;base64," + data.base64Image);
-        console.log(qr);
+        setQr("data:image/png;base64," + data.data.base64Image);
+        console.log(data.qr);
+        getInfo(Cookies.get('token'));
 
       } else {
         // Xử lý khi API trả về lỗi

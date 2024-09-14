@@ -8,6 +8,7 @@ import PageNotFound from '../Pages/PageNotFound'
 import DynamicPage from '../Pages/DynamicPage'
 import Login from '../Login/Login'
 import History from '../Pages/History'
+import DetailLink from '../Pages/DetailLink'
 
 export default function Router() {
     return useRoutes([
@@ -23,6 +24,7 @@ export default function Router() {
                 { path: "history", element: <History /> },
                 { path: "contact", element: <ContactPage /> },
                 { path: "about", element: <About /> },
+                { path: "detailLink", element: <DetailLink/> },
                 { path: "notfound", element: <PageNotFound/> },
                 // { path: "*", element: <Navigate to="/page/notfound" /> }
             ],
