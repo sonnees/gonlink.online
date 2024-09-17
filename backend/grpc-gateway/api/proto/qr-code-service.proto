@@ -17,7 +17,7 @@ message GetStringBase64ImageResponse{
   string base64Image = 1;
 }
 
-service QRCodeService {
+service QRCode {
   rpc getStringBase64Image(GetStringBase64ImageRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
       post: "/api/v1/qr-codes"

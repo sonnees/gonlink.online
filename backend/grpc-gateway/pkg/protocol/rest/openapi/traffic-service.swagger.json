@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "account-service.proto",
+    "title": "traffic-service.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "Account"
+      "name": "Traffic"
     }
   ],
   "consumes": [
@@ -16,9 +16,9 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/accounts/me": {
+    "/api/v1/traffics/day-range": {
       "post": {
-        "operationId": "Account_getInfoAccount",
+        "operationId": "Traffic_getDayTrafficInRange",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -39,12 +39,108 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/gonlinkGetInfoAccountRequest"
+              "$ref": "#/definitions/gonlinkDayTrafficInRangeRequest"
             }
           }
         ],
         "tags": [
-          "Account"
+          "Traffic"
+        ]
+      }
+    },
+    "/api/v1/traffics/general": {
+      "post": {
+        "operationId": "Traffic_searchGeneralTraffics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkBaseGrpc"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkGeneralTrafficsSearchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Traffic"
+        ]
+      }
+    },
+    "/api/v1/traffics/month-all": {
+      "post": {
+        "operationId": "Traffic_getAllMonthTraffics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkBaseGrpc"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkMonthTrafficsGetAllRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Traffic"
+        ]
+      }
+    },
+    "/api/v1/traffics/real-time": {
+      "post": {
+        "operationId": "Traffic_getRealTimeTraffic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkBaseGrpc"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkRealTimeTrafficRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Traffic"
         ]
       }
     }
@@ -82,6 +178,21 @@
         }
       }
     },
+    "gonlinkDayTrafficInRangeRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        },
+        "fromDate": {
+          "type": "string"
+        },
+        "toDate": {
+          "type": "string"
+        }
+      },
+      "title": "=== MonthTraffics ==="
+    },
     "gonlinkErrorDetailGrpc": {
       "type": "object",
       "properties": {
@@ -104,9 +215,46 @@
       },
       "title": "=== ==="
     },
-    "gonlinkGetInfoAccountRequest": {
+    "gonlinkGeneralTrafficsSearchRequest": {
       "type": "object",
-      "title": "=== GetInfoAccount ==="
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sortDirection": {
+          "type": "string"
+        }
+      },
+      "title": "=== GeneralTraffics ==="
+    },
+    "gonlinkMonthTrafficsGetAllRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        }
+      },
+      "title": "=== MonthTraffics ==="
+    },
+    "gonlinkRealTimeTrafficRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        },
+        "clientTime": {
+          "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
+        }
+      },
+      "title": "=== RealTimeTraffics ==="
     },
     "protobufAny": {
       "type": "object",

@@ -7,7 +7,8 @@ gen-proto:
 		../grpc-gateway/api/proto/common.proto \
 		../grpc-gateway/api/proto/account-service.proto \
 		../grpc-gateway/api/proto/qr-code-service.proto \
-		../grpc-gateway/api/proto/url-shortener-service.proto
+		../grpc-gateway/api/proto/url-shortener-service.proto \
+		../grpc-gateway/api/proto/traffic-service.proto 
 run-proxy:
 	go run ../grpc-gateway/cmd/main/main.go
 all: gen-proto 

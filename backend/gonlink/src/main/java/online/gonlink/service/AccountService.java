@@ -1,8 +1,8 @@
 package online.gonlink.service;
 
-import online.gonlink.dto.UserInfoDto;
-import online.gonlink.entity.Account;
+import online.gonlink.GetInfoAccountRequest;
+import online.gonlink.GetInfoAccountResponse;
 
 public interface AccountService {
-    Account getInfoAccount(UserInfoDto userInfoDto);
+    GetInfoAccountResponse getInfoAccount(GetInfoAccountRequest request);
 }

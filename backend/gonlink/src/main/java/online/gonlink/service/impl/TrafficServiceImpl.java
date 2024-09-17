@@ -5,12 +5,15 @@ import io.grpc.Context;
 import jakarta.annotation.PostConstruct;
 import online.gonlink.DayTrafficInRangeRequest;
 import online.gonlink.GeneralTrafficsSearchRequest;
+import online.gonlink.GetOriginalUrlRequest;
 import online.gonlink.MonthTrafficsGetAllRequest;
 import online.gonlink.RealTimeTrafficRequest;
+import online.gonlink.RemoveUrlRequest;
+import online.gonlink.RemoveUrlResponse;
 import online.gonlink.config.GlobalValue;
 import online.gonlink.constant.CommonConstant;
 import online.gonlink.constant.AuthConstant;
-import online.gonlink.dto.TrafficIncreaseDto;
+import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.dto.TrafficDataDto;
 import online.gonlink.entity.DayTraffic;
@@ -18,6 +21,7 @@ import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.entity.MonthTraffic;
 import online.gonlink.entity.RealTimeTraffic;
 import online.gonlink.exception.ResourceException;
+import online.gonlink.observer.AccountObserver;
 import online.gonlink.observer.DayTrafficObserver;
 import online.gonlink.observer.GeneralTrafficObserver;
 import online.gonlink.observer.MonthTrafficObserver;
@@ -34,6 +38,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
@@ -45,28 +50,36 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TrafficServiceImpl implements TrafficService {
+    /** Config */
     private final GlobalValue globalValue;
+    private final SimpleDateFormat simpleDateFormatWithTime;
+
+    /** Repository */
     private final GeneralTrafficRepository generalTrafficRepository;
     private final MonthTrafficRepository monthTrafficRepository;
     private final DayTrafficRepository dayTrafficRepository;
     private final RealTimeTrafficRepository realTimeTrafficRepository;
-
     private final ShortUrlRepository shortUrlRepository;
 
-
+    /** Observer */
     private final TrafficSubject trafficSubject;
+    private final AccountObserver accountObserver;
     private final GeneralTrafficObserver generalTrafficObserver;
     private final MonthTrafficObserver monthTrafficObserver;
     private final DayTrafficObserver dayTrafficObserver;
     private final RealTimeTrafficObserver realTimeTrafficObserver;
 
-    private final SimpleDateFormat simpleDateFormatWithTime;
-
-    public TrafficServiceImpl(GlobalValue globalValue, GeneralTrafficRepository generalTrafficRepository, MonthTrafficRepository monthTrafficRepository, DayTrafficRepository dayTrafficRepository, RealTimeTrafficRepository realTimeTrafficRepository, ShortUrlRepository shortUrlRepository, TrafficSubject trafficSubject, GeneralTrafficObserver generalTrafficObserver, MonthTrafficObserver monthTrafficObserver, DayTrafficObserver dayTrafficObserver, RealTimeTrafficObserver realTimeTrafficObserver, @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)  SimpleDateFormat simpleDateFormatWithTime) {
+    public TrafficServiceImpl(GlobalValue globalValue, GeneralTrafficRepository generalTrafficRepository,
+                              MonthTrafficRepository monthTrafficRepository, DayTrafficRepository dayTrafficRepository,
+                              RealTimeTrafficRepository realTimeTrafficRepository, ShortUrlRepository shortUrlRepository,
+                              TrafficSubject trafficSubject, GeneralTrafficObserver generalTrafficObserver,
+                              MonthTrafficObserver monthTrafficObserver, DayTrafficObserver dayTrafficObserver,
+                              RealTimeTrafficObserver realTimeTrafficObserver, @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)  SimpleDateFormat simpleDateFormatWithTime,
+                              AccountObserver accountObserver
+                              ) {
         this.globalValue = globalValue;
         this.generalTrafficRepository = generalTrafficRepository;
         this.monthTrafficRepository = monthTrafficRepository;
@@ -74,6 +87,7 @@ public class TrafficServiceImpl implements TrafficService {
         this.realTimeTrafficRepository = realTimeTrafficRepository;
         this.shortUrlRepository = shortUrlRepository;
         this.trafficSubject = trafficSubject;
+        this.accountObserver = accountObserver;
         this.generalTrafficObserver = generalTrafficObserver;
         this.monthTrafficObserver = monthTrafficObserver;
         this.dayTrafficObserver = dayTrafficObserver;
@@ -83,6 +97,7 @@ public class TrafficServiceImpl implements TrafficService {
 
     @PostConstruct
     public void initObservers() {
+        trafficSubject.addObserver(accountObserver);
         trafficSubject.addObserver(generalTrafficObserver);
         trafficSubject.addObserver(monthTrafficObserver);
         trafficSubject.addObserver(dayTrafficObserver);
@@ -90,15 +105,24 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     @Override
-    public boolean increaseTraffic(String shortCode, String trafficDate, String zoneId) {
-        return trafficSubject.notifyObservers(new TrafficIncreaseDto(shortCode, trafficDate, zoneId));
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public boolean createsTraffic(TrafficCreateDto trafficCreateDto) {
+        return trafficSubject.createsTraffic(trafficCreateDto);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteTraffic(String shortCode) {
-        shortUrlRepository.deleteById(shortCode);
-        trafficSubject.deleteTraffic(shortCode);
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request) {
+        return trafficSubject.increasesTraffic(owner, originalUrl, request);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public RemoveUrlResponse deletesTraffic(RemoveUrlRequest request) {
+        shortUrlRepository.deleteById(request.getShortCode());
+        trafficSubject.deletesTraffic(request.getShortCode());
+        return RemoveUrlResponse.newBuilder()
+                .build();
     }
 
     @Override
@@ -183,7 +207,7 @@ public class TrafficServiceImpl implements TrafficService {
                 }
                 curDate = curDate.plusDays(1);
             } else {
-                // không lấy tương lai
+                /* không lấy tương lai */
                 if(curDate.isAfter(toDay)) break;
 
                 if(index < dayTrafficList.size()){
@@ -217,34 +241,30 @@ public class TrafficServiceImpl implements TrafficService {
     @Override
     public short[] getRealTimeTraffic(RealTimeTrafficRequest request) {
         short[] trafficMinute;
-        Optional<RealTimeTraffic> realTimeTrafficOptional = realTimeTrafficRepository.findById(request.getShortCode());
+        RealTimeTraffic realTimeTraffic = realTimeTrafficRepository.findById(request.getShortCode())
+                .orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE.name(), null));
 
         ZonedDateTime clientTime = ZonedDateTime.parse(request.getClientTime()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
         String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
 
-        if(realTimeTrafficOptional.isPresent()){
-            RealTimeTraffic realTimeTraffic = realTimeTrafficOptional.get();
-            String updateAt = realTimeTraffic.getUpdateAt();
-            LocalDateTime oldTime = LocalDateTime.parse(updateAt.replace(' ', 'T'));
-            LocalDateTime newTime = LocalDateTime.parse(dateTime.replace(' ', 'T'));
-            int offset = (int) Duration.between(oldTime, newTime).getSeconds()/60;
+        String updateAt = realTimeTraffic.getUpdateAt();
+        LocalDateTime oldTime = LocalDateTime.parse(updateAt.replace(' ', 'T'));
+        LocalDateTime newTime = LocalDateTime.parse(dateTime.replace(' ', 'T'));
+        int offset = (int) Duration.between(oldTime, newTime).getSeconds()/60;
 
-            short[] trafficMinuteShorts = realTimeTraffic.getTrafficMinute();
-            if(offset > 0 && offset < 60){
-                trafficMinute = new short[60];
-                int y = 59-offset;
-                for (int i = 0; i < 60; i++){
-                    if(y >= i)
-                        trafficMinute[i] = trafficMinuteShorts[offset+i];
-                    else trafficMinute[i] = 0;
-                }
-            } else if (offset>=60) {
-                trafficMinute = new short[60];
-            } else {
-                trafficMinute = trafficMinuteShorts;
+        short[] trafficMinuteShorts = realTimeTraffic.getTrafficMinute();
+        if(offset > 0 && offset < 60){
+            trafficMinute = new short[60];
+            int y = 59-offset;
+            for (int i = 0; i < 60; i++){
+                if(y >= i)
+                    trafficMinute[i] = trafficMinuteShorts[offset+i];
+                else trafficMinute[i] = 0;
             }
+        } else if (offset>=60) {
+            trafficMinute = new short[60];
         } else {
-            throw new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE.name(), null);
+            trafficMinute = trafficMinuteShorts;
         }
         return trafficMinute;
     }

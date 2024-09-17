@@ -5,7 +5,10 @@ import online.gonlink.exception.ResourceException;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class DateUtil {
     public static int getDaysInDate(String trafficDate) {
@@ -21,5 +24,9 @@ public class DateUtil {
             throw new ResourceException(ExceptionEnum.DATE_FORMAT.name(), e);
         }
         return daysInMonth;
+    }
+
+    public static ZonedDateTime getZonedDateTime(String date, String noneID) {
+        return ZonedDateTime.parse(date).withZoneSameInstant(ZoneId.of(noneID));
     }
 }

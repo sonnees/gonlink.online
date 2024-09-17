@@ -29,8 +29,11 @@ public class AuthInterceptor implements ServerInterceptor {
             Metadata headers,
             ServerCallHandler<ReqT, RespT> next) {
 
+        Context contextHead = Context.current()
+                .withValue(AuthConstant.IP_ADDRESS, getClientIp(headers));
+
         String fullMethodName = call.getMethodDescriptor().getFullMethodName();
-        if(globalValue.getPUBLIC_METHODS().contains(fullMethodName)) return next.startCall(call, headers);
+        if(globalValue.getPUBLIC_METHODS().contains(fullMethodName)) return Contexts.interceptCall(contextHead, call, headers, next);
 
         String token = headers.get(Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER));
         if (token != null && token.startsWith("Bearer ")) {
@@ -65,5 +68,9 @@ public class AuthInterceptor implements ServerInterceptor {
             log.error(e.toString());
             return null;
         }
+    }
+
+    private String getClientIp(Metadata headers) {
+        return headers.get(Metadata.Key.of("X-Forwarded-For", Metadata.ASCII_STRING_MARSHALLER));
     }
 }

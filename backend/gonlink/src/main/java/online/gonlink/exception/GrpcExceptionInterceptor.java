@@ -60,7 +60,7 @@ public class GrpcExceptionInterceptor implements ServerInterceptor, GrpcExceptio
         }
 
         private void handleException(RuntimeException ex, ServerCall<ReqT, RespT> serverCall, Metadata metadata) {
-            log.debug(Arrays.toString(ex.getStackTrace()));
+            log.error(Arrays.toString(ex.getStackTrace()));
 
             Status status;
             if (ex instanceof IllegalArgumentException) {

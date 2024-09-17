@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_UrlShortenerService_CheckExistShortCode_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UrlShortener_CheckExistShortCode_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ShortCodeCheckExistRequest
 	var metadata runtime.ServerMetadata
 
@@ -44,7 +44,7 @@ func request_UrlShortenerService_CheckExistShortCode_0(ctx context.Context, mars
 
 }
 
-func local_request_UrlShortenerService_CheckExistShortCode_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UrlShortener_CheckExistShortCode_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ShortCodeCheckExistRequest
 	var metadata runtime.ServerMetadata
 
@@ -57,7 +57,7 @@ func local_request_UrlShortenerService_CheckExistShortCode_0(ctx context.Context
 
 }
 
-func request_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UrlShortener_CheckNeedPasswordGetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq OriginalUrlCheckNeedPasswordRequest
 	var metadata runtime.ServerMetadata
 
@@ -70,7 +70,7 @@ func request_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(ctx context.C
 
 }
 
-func local_request_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UrlShortener_CheckNeedPasswordGetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq OriginalUrlCheckNeedPasswordRequest
 	var metadata runtime.ServerMetadata
 
@@ -83,7 +83,7 @@ func local_request_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(ctx con
 
 }
 
-func request_UrlShortenerService_GenerateShortCode_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UrlShortener_GenerateShortCode_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GenerateShortCodeRequest
 	var metadata runtime.ServerMetadata
 
@@ -96,7 +96,7 @@ func request_UrlShortenerService_GenerateShortCode_0(ctx context.Context, marsha
 
 }
 
-func local_request_UrlShortenerService_GenerateShortCode_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UrlShortener_GenerateShortCode_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GenerateShortCodeRequest
 	var metadata runtime.ServerMetadata
 
@@ -109,7 +109,7 @@ func local_request_UrlShortenerService_GenerateShortCode_0(ctx context.Context, 
 
 }
 
-func request_UrlShortenerService_GenerateShortCodeAccount_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UrlShortener_GenerateShortCodeAccount_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GenerateShortCodeAccountRequest
 	var metadata runtime.ServerMetadata
 
@@ -122,7 +122,7 @@ func request_UrlShortenerService_GenerateShortCodeAccount_0(ctx context.Context,
 
 }
 
-func local_request_UrlShortenerService_GenerateShortCodeAccount_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UrlShortener_GenerateShortCodeAccount_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GenerateShortCodeAccountRequest
 	var metadata runtime.ServerMetadata
 
@@ -135,7 +135,7 @@ func local_request_UrlShortenerService_GenerateShortCodeAccount_0(ctx context.Co
 
 }
 
-func request_UrlShortenerService_GetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UrlShortener_GetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetOriginalUrlRequest
 	var metadata runtime.ServerMetadata
 
@@ -148,7 +148,7 @@ func request_UrlShortenerService_GetOriginalUrl_0(ctx context.Context, marshaler
 
 }
 
-func local_request_UrlShortenerService_GetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UrlShortener_GetOriginalUrl_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetOriginalUrlRequest
 	var metadata runtime.ServerMetadata
 
@@ -161,117 +161,65 @@ func local_request_UrlShortenerService_GetOriginalUrl_0(ctx context.Context, mar
 
 }
 
-func request_UrlShortenerService_SearchGeneralTraffics_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GeneralTrafficsSearchRequest
+func request_UrlShortener_RemoveByID_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RemoveUrlRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.SearchGeneralTraffics(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.RemoveByID(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_UrlShortenerService_SearchGeneralTraffics_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GeneralTrafficsSearchRequest
+func local_request_UrlShortener_RemoveByID_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RemoveUrlRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.SearchGeneralTraffics(ctx, &protoReq)
+	msg, err := server.RemoveByID(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_UrlShortenerService_GetAllMonthTraffics_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MonthTrafficsGetAllRequest
+func request_UrlShortener_UpdateByID_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ShortCodeUpdateRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.GetAllMonthTraffics(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UpdateByID(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_UrlShortenerService_GetAllMonthTraffics_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MonthTrafficsGetAllRequest
+func local_request_UrlShortener_UpdateByID_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ShortCodeUpdateRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.GetAllMonthTraffics(ctx, &protoReq)
+	msg, err := server.UpdateByID(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_UrlShortenerService_GetDayTrafficInRange_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DayTrafficInRangeRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.GetDayTrafficInRange(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_UrlShortenerService_GetDayTrafficInRange_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DayTrafficInRangeRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := server.GetDayTrafficInRange(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
-func request_UrlShortenerService_GetRealTimeTraffic_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RealTimeTrafficRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.GetRealTimeTraffic(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_UrlShortenerService_GetRealTimeTraffic_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RealTimeTrafficRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := server.GetRealTimeTraffic(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
-// RegisterUrlShortenerServiceHandlerServer registers the http handlers for service UrlShortenerService to "mux".
-// UnaryRPC     :call UrlShortenerServiceServer directly.
+// RegisterUrlShortenerHandlerServer registers the http handlers for service UrlShortener to "mux".
+// UnaryRPC     :call UrlShortenerServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterUrlShortenerServiceHandlerFromEndpoint instead.
-func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UrlShortenerServiceServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterUrlShortenerHandlerFromEndpoint instead.
+func RegisterUrlShortenerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UrlShortenerServer) error {
 
-	mux.Handle("POST", pattern_UrlShortenerService_CheckExistShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_CheckExistShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -279,12 +227,12 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/CheckExistShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/check-exist-short-code"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortener/CheckExistShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/check-exist-short-code"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UrlShortenerService_CheckExistShortCode_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UrlShortener_CheckExistShortCode_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -292,11 +240,11 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_UrlShortenerService_CheckExistShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_CheckExistShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_CheckNeedPasswordGetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -304,12 +252,12 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/CheckNeedPasswordGetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/check-need-password"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortener/CheckNeedPasswordGetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/check-need-password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UrlShortener_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -317,11 +265,11 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GenerateShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_GenerateShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -329,12 +277,12 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GenerateShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/gen"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortener/GenerateShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/gen"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UrlShortenerService_GenerateShortCode_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UrlShortener_GenerateShortCode_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -342,11 +290,11 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_UrlShortenerService_GenerateShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_GenerateShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GenerateShortCodeAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_GenerateShortCodeAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -354,12 +302,12 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GenerateShortCodeAccount", runtime.WithHTTPPathPattern("/api/v1/shortens/account-gen"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortener/GenerateShortCodeAccount", runtime.WithHTTPPathPattern("/api/v1/shortens/account-gen"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UrlShortenerService_GenerateShortCodeAccount_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UrlShortener_GenerateShortCodeAccount_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -367,11 +315,11 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_UrlShortenerService_GenerateShortCodeAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_GenerateShortCodeAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_GetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -379,12 +327,12 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/get"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortener/GetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/get"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UrlShortenerService_GetOriginalUrl_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UrlShortener_GetOriginalUrl_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -392,11 +340,11 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_UrlShortenerService_GetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_GetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_SearchGeneralTraffics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_RemoveByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -404,12 +352,12 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/SearchGeneralTraffics", runtime.WithHTTPPathPattern("/api/v1/traffics/general"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortener/RemoveByID", runtime.WithHTTPPathPattern("/api/v1/accounts/remove-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UrlShortenerService_SearchGeneralTraffics_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UrlShortener_RemoveByID_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -417,11 +365,11 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_UrlShortenerService_SearchGeneralTraffics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_RemoveByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GetAllMonthTraffics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_UpdateByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -429,12 +377,12 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetAllMonthTraffics", runtime.WithHTTPPathPattern("/api/v1/traffics/month-all"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortener/UpdateByID", runtime.WithHTTPPathPattern("/api/v1/shortens/update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UrlShortenerService_GetAllMonthTraffics_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UrlShortener_UpdateByID_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -442,66 +390,16 @@ func RegisterUrlShortenerServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_UrlShortenerService_GetAllMonthTraffics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("POST", pattern_UrlShortenerService_GetDayTrafficInRange_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetDayTrafficInRange", runtime.WithHTTPPathPattern("/api/v1/traffics/day-range"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_UrlShortenerService_GetDayTrafficInRange_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_UrlShortenerService_GetDayTrafficInRange_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("POST", pattern_UrlShortenerService_GetRealTimeTraffic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetRealTimeTraffic", runtime.WithHTTPPathPattern("/api/v1/traffics/real-time"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_UrlShortenerService_GetRealTimeTraffic_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_UrlShortenerService_GetRealTimeTraffic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_UpdateByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterUrlShortenerServiceHandlerFromEndpoint is same as RegisterUrlShortenerServiceHandler but
+// RegisterUrlShortenerHandlerFromEndpoint is same as RegisterUrlShortenerHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterUrlShortenerServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterUrlShortenerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
@@ -521,217 +419,173 @@ func RegisterUrlShortenerServiceHandlerFromEndpoint(ctx context.Context, mux *ru
 		}()
 	}()
 
-	return RegisterUrlShortenerServiceHandler(ctx, mux, conn)
+	return RegisterUrlShortenerHandler(ctx, mux, conn)
 }
 
-// RegisterUrlShortenerServiceHandler registers the http handlers for service UrlShortenerService to "mux".
+// RegisterUrlShortenerHandler registers the http handlers for service UrlShortener to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterUrlShortenerServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterUrlShortenerServiceHandlerClient(ctx, mux, NewUrlShortenerServiceClient(conn))
+func RegisterUrlShortenerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterUrlShortenerHandlerClient(ctx, mux, NewUrlShortenerClient(conn))
 }
 
-// RegisterUrlShortenerServiceHandlerClient registers the http handlers for service UrlShortenerService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UrlShortenerServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UrlShortenerServiceClient"
+// RegisterUrlShortenerHandlerClient registers the http handlers for service UrlShortener
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UrlShortenerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UrlShortenerClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "UrlShortenerServiceClient" to call the correct interceptors.
-func RegisterUrlShortenerServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UrlShortenerServiceClient) error {
+// "UrlShortenerClient" to call the correct interceptors.
+func RegisterUrlShortenerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UrlShortenerClient) error {
 
-	mux.Handle("POST", pattern_UrlShortenerService_CheckExistShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_CheckExistShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/CheckExistShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/check-exist-short-code"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortener/CheckExistShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/check-exist-short-code"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UrlShortenerService_CheckExistShortCode_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UrlShortener_CheckExistShortCode_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UrlShortenerService_CheckExistShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_CheckExistShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_CheckNeedPasswordGetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/CheckNeedPasswordGetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/check-need-password"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortener/CheckNeedPasswordGetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/check-need-password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UrlShortener_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_CheckNeedPasswordGetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GenerateShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_GenerateShortCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GenerateShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/gen"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortener/GenerateShortCode", runtime.WithHTTPPathPattern("/api/v1/shortens/gen"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UrlShortenerService_GenerateShortCode_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UrlShortener_GenerateShortCode_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UrlShortenerService_GenerateShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_GenerateShortCode_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GenerateShortCodeAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_GenerateShortCodeAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GenerateShortCodeAccount", runtime.WithHTTPPathPattern("/api/v1/shortens/account-gen"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortener/GenerateShortCodeAccount", runtime.WithHTTPPathPattern("/api/v1/shortens/account-gen"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UrlShortenerService_GenerateShortCodeAccount_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UrlShortener_GenerateShortCodeAccount_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UrlShortenerService_GenerateShortCodeAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_GenerateShortCodeAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_GetOriginalUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/get"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortener/GetOriginalUrl", runtime.WithHTTPPathPattern("/api/v1/shortens/get"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UrlShortenerService_GetOriginalUrl_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UrlShortener_GetOriginalUrl_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UrlShortenerService_GetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_GetOriginalUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_SearchGeneralTraffics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_RemoveByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/SearchGeneralTraffics", runtime.WithHTTPPathPattern("/api/v1/traffics/general"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortener/RemoveByID", runtime.WithHTTPPathPattern("/api/v1/accounts/remove-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UrlShortenerService_SearchGeneralTraffics_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UrlShortener_RemoveByID_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UrlShortenerService_SearchGeneralTraffics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_RemoveByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortenerService_GetAllMonthTraffics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UrlShortener_UpdateByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetAllMonthTraffics", runtime.WithHTTPPathPattern("/api/v1/traffics/month-all"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortener/UpdateByID", runtime.WithHTTPPathPattern("/api/v1/shortens/update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UrlShortenerService_GetAllMonthTraffics_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UrlShortener_UpdateByID_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UrlShortenerService_GetAllMonthTraffics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("POST", pattern_UrlShortenerService_GetDayTrafficInRange_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetDayTrafficInRange", runtime.WithHTTPPathPattern("/api/v1/traffics/day-range"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_UrlShortenerService_GetDayTrafficInRange_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_UrlShortenerService_GetDayTrafficInRange_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("POST", pattern_UrlShortenerService_GetRealTimeTraffic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.UrlShortenerService/GetRealTimeTraffic", runtime.WithHTTPPathPattern("/api/v1/traffics/real-time"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_UrlShortenerService_GetRealTimeTraffic_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_UrlShortenerService_GetRealTimeTraffic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UrlShortener_UpdateByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -739,41 +593,33 @@ func RegisterUrlShortenerServiceHandlerClient(ctx context.Context, mux *runtime.
 }
 
 var (
-	pattern_UrlShortenerService_CheckExistShortCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "check-exist-short-code"}, ""))
+	pattern_UrlShortener_CheckExistShortCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "check-exist-short-code"}, ""))
 
-	pattern_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "check-need-password"}, ""))
+	pattern_UrlShortener_CheckNeedPasswordGetOriginalUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "check-need-password"}, ""))
 
-	pattern_UrlShortenerService_GenerateShortCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "gen"}, ""))
+	pattern_UrlShortener_GenerateShortCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "gen"}, ""))
 
-	pattern_UrlShortenerService_GenerateShortCodeAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "account-gen"}, ""))
+	pattern_UrlShortener_GenerateShortCodeAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "account-gen"}, ""))
 
-	pattern_UrlShortenerService_GetOriginalUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "get"}, ""))
+	pattern_UrlShortener_GetOriginalUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "get"}, ""))
 
-	pattern_UrlShortenerService_SearchGeneralTraffics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "traffics", "general"}, ""))
+	pattern_UrlShortener_RemoveByID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "accounts", "remove-url"}, ""))
 
-	pattern_UrlShortenerService_GetAllMonthTraffics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "traffics", "month-all"}, ""))
-
-	pattern_UrlShortenerService_GetDayTrafficInRange_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "traffics", "day-range"}, ""))
-
-	pattern_UrlShortenerService_GetRealTimeTraffic_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "traffics", "real-time"}, ""))
+	pattern_UrlShortener_UpdateByID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "shortens", "update"}, ""))
 )
 
 var (
-	forward_UrlShortenerService_CheckExistShortCode_0 = runtime.ForwardResponseMessage
+	forward_UrlShortener_CheckExistShortCode_0 = runtime.ForwardResponseMessage
 
-	forward_UrlShortenerService_CheckNeedPasswordGetOriginalUrl_0 = runtime.ForwardResponseMessage
+	forward_UrlShortener_CheckNeedPasswordGetOriginalUrl_0 = runtime.ForwardResponseMessage
 
-	forward_UrlShortenerService_GenerateShortCode_0 = runtime.ForwardResponseMessage
+	forward_UrlShortener_GenerateShortCode_0 = runtime.ForwardResponseMessage
 
-	forward_UrlShortenerService_GenerateShortCodeAccount_0 = runtime.ForwardResponseMessage
+	forward_UrlShortener_GenerateShortCodeAccount_0 = runtime.ForwardResponseMessage
 
-	forward_UrlShortenerService_GetOriginalUrl_0 = runtime.ForwardResponseMessage
+	forward_UrlShortener_GetOriginalUrl_0 = runtime.ForwardResponseMessage
 
-	forward_UrlShortenerService_SearchGeneralTraffics_0 = runtime.ForwardResponseMessage
+	forward_UrlShortener_RemoveByID_0 = runtime.ForwardResponseMessage
 
-	forward_UrlShortenerService_GetAllMonthTraffics_0 = runtime.ForwardResponseMessage
-
-	forward_UrlShortenerService_GetDayTrafficInRange_0 = runtime.ForwardResponseMessage
-
-	forward_UrlShortenerService_GetRealTimeTraffic_0 = runtime.ForwardResponseMessage
+	forward_UrlShortener_UpdateByID_0 = runtime.ForwardResponseMessage
 )

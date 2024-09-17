@@ -1,8 +1,9 @@
 package online.gonlink.observer;
 
 import jakarta.annotation.PostConstruct;
+import online.gonlink.GetOriginalUrlRequest;
 import online.gonlink.config.GlobalValue;
-import online.gonlink.dto.TrafficIncreaseDto;
+import online.gonlink.dto.TrafficCreateDto;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -26,15 +27,22 @@ public class TrafficSubject {
         executor = Executors.newFixedThreadPool(globalValue.getTHREAD_FIX_POOL());
     }
 
-    public boolean notifyObservers(TrafficIncreaseDto trafficIncreaseDto) {
+    public boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request) {
         for (TrafficObserver observer : observers)
-            executor.submit(() -> observer.increaseTraffic(trafficIncreaseDto));
+            executor.submit(() -> observer.increasesTraffic(owner, originalUrl, request));
         return true;
     }
 
-    public void deleteTraffic(String shortCode) {
+    public boolean deletesTraffic(String shortCode) {
         for (TrafficObserver observer : observers)
-            executor.submit(() -> observer.deleteTraffic(shortCode));
+            executor.submit(() -> observer.deletesTraffic(shortCode));
+        return true;
+    }
+
+    public boolean createsTraffic(TrafficCreateDto trafficCreateDto) {
+        for (TrafficObserver observer : observers)
+            executor.submit(() -> observer.createsTraffic(trafficCreateDto));
+        return true;
     }
 
     public void addObserver(TrafficObserver observer) {

@@ -38,7 +38,7 @@ public enum ExceptionEnum {
     RLI_CREATE_BUCKET_FAIL(Status.INTERNAL, "RLI_CREATE_BUCKET_FAIL"),
     RLI_LIMIT_EXCEEDED(Status.RESOURCE_EXHAUSTED, "RLI_LIMIT_EXCEEDED"),
 
-    /** HtmlSanitizer */
+    /** HtmlSanitizerServiceImpl */
     HTML_SANITIZER(Status.CANCELLED, "Đã đạt giới hạn tạo bucket!"),
     PASSWORD_NOT_CORRECT(Status.PERMISSION_DENIED, "PASSWORD_NOT_CORRECT"),
     TIME_EXPIRED(Status.PERMISSION_DENIED, "TIME_EXPIRED"),

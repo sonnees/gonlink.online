@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_QRCodeService_GetStringBase64Image_0(ctx context.Context, marshaler runtime.Marshaler, client QRCodeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_QRCode_GetStringBase64Image_0(ctx context.Context, marshaler runtime.Marshaler, client QRCodeClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetStringBase64ImageRequest
 	var metadata runtime.ServerMetadata
 
@@ -44,7 +44,7 @@ func request_QRCodeService_GetStringBase64Image_0(ctx context.Context, marshaler
 
 }
 
-func local_request_QRCodeService_GetStringBase64Image_0(ctx context.Context, marshaler runtime.Marshaler, server QRCodeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_QRCode_GetStringBase64Image_0(ctx context.Context, marshaler runtime.Marshaler, server QRCodeServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetStringBase64ImageRequest
 	var metadata runtime.ServerMetadata
 
@@ -57,13 +57,13 @@ func local_request_QRCodeService_GetStringBase64Image_0(ctx context.Context, mar
 
 }
 
-// RegisterQRCodeServiceHandlerServer registers the http handlers for service QRCodeService to "mux".
-// UnaryRPC     :call QRCodeServiceServer directly.
+// RegisterQRCodeHandlerServer registers the http handlers for service QRCode to "mux".
+// UnaryRPC     :call QRCodeServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterQRCodeServiceHandlerFromEndpoint instead.
-func RegisterQRCodeServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server QRCodeServiceServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterQRCodeHandlerFromEndpoint instead.
+func RegisterQRCodeHandlerServer(ctx context.Context, mux *runtime.ServeMux, server QRCodeServer) error {
 
-	mux.Handle("POST", pattern_QRCodeService_GetStringBase64Image_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_QRCode_GetStringBase64Image_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -71,12 +71,12 @@ func RegisterQRCodeServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.QRCodeService/GetStringBase64Image", runtime.WithHTTPPathPattern("/api/v1/qr-codes"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/online.gonlink.QRCode/GetStringBase64Image", runtime.WithHTTPPathPattern("/api/v1/qr-codes"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_QRCodeService_GetStringBase64Image_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_QRCode_GetStringBase64Image_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -84,16 +84,16 @@ func RegisterQRCodeServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			return
 		}
 
-		forward_QRCodeService_GetStringBase64Image_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_QRCode_GetStringBase64Image_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterQRCodeServiceHandlerFromEndpoint is same as RegisterQRCodeServiceHandler but
+// RegisterQRCodeHandlerFromEndpoint is same as RegisterQRCodeHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterQRCodeServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterQRCodeHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
@@ -113,41 +113,41 @@ func RegisterQRCodeServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.
 		}()
 	}()
 
-	return RegisterQRCodeServiceHandler(ctx, mux, conn)
+	return RegisterQRCodeHandler(ctx, mux, conn)
 }
 
-// RegisterQRCodeServiceHandler registers the http handlers for service QRCodeService to "mux".
+// RegisterQRCodeHandler registers the http handlers for service QRCode to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterQRCodeServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterQRCodeServiceHandlerClient(ctx, mux, NewQRCodeServiceClient(conn))
+func RegisterQRCodeHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterQRCodeHandlerClient(ctx, mux, NewQRCodeClient(conn))
 }
 
-// RegisterQRCodeServiceHandlerClient registers the http handlers for service QRCodeService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "QRCodeServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "QRCodeServiceClient"
+// RegisterQRCodeHandlerClient registers the http handlers for service QRCode
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "QRCodeClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "QRCodeClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "QRCodeServiceClient" to call the correct interceptors.
-func RegisterQRCodeServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client QRCodeServiceClient) error {
+// "QRCodeClient" to call the correct interceptors.
+func RegisterQRCodeHandlerClient(ctx context.Context, mux *runtime.ServeMux, client QRCodeClient) error {
 
-	mux.Handle("POST", pattern_QRCodeService_GetStringBase64Image_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_QRCode_GetStringBase64Image_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.QRCodeService/GetStringBase64Image", runtime.WithHTTPPathPattern("/api/v1/qr-codes"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/online.gonlink.QRCode/GetStringBase64Image", runtime.WithHTTPPathPattern("/api/v1/qr-codes"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_QRCodeService_GetStringBase64Image_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_QRCode_GetStringBase64Image_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_QRCodeService_GetStringBase64Image_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_QRCode_GetStringBase64Image_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -155,9 +155,9 @@ func RegisterQRCodeServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 }
 
 var (
-	pattern_QRCodeService_GetStringBase64Image_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "qr-codes"}, ""))
+	pattern_QRCode_GetStringBase64Image_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "qr-codes"}, ""))
 )
 
 var (
-	forward_QRCodeService_GetStringBase64Image_0 = runtime.ForwardResponseMessage
+	forward_QRCode_GetStringBase64Image_0 = runtime.ForwardResponseMessage
 )

@@ -19,128 +19,90 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	AccountService_GetInfoAccount_FullMethodName = "/online.gonlink.AccountService/getInfoAccount"
-	AccountService_RemoveUrl_FullMethodName      = "/online.gonlink.AccountService/removeUrl"
+	Account_GetInfoAccount_FullMethodName = "/online.gonlink.Account/getInfoAccount"
 )
 
-// AccountServiceClient is the client API for AccountService service.
+// AccountClient is the client API for Account service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AccountServiceClient interface {
+type AccountClient interface {
 	GetInfoAccount(ctx context.Context, in *GetInfoAccountRequest, opts ...grpc.CallOption) (*BaseGrpc, error)
-	RemoveUrl(ctx context.Context, in *RemoveUrlRequest, opts ...grpc.CallOption) (*BaseGrpc, error)
 }
 
-type accountServiceClient struct {
+type accountClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAccountServiceClient(cc grpc.ClientConnInterface) AccountServiceClient {
-	return &accountServiceClient{cc}
+func NewAccountClient(cc grpc.ClientConnInterface) AccountClient {
+	return &accountClient{cc}
 }
 
-func (c *accountServiceClient) GetInfoAccount(ctx context.Context, in *GetInfoAccountRequest, opts ...grpc.CallOption) (*BaseGrpc, error) {
+func (c *accountClient) GetInfoAccount(ctx context.Context, in *GetInfoAccountRequest, opts ...grpc.CallOption) (*BaseGrpc, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BaseGrpc)
-	err := c.cc.Invoke(ctx, AccountService_GetInfoAccount_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Account_GetInfoAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *accountServiceClient) RemoveUrl(ctx context.Context, in *RemoveUrlRequest, opts ...grpc.CallOption) (*BaseGrpc, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(BaseGrpc)
-	err := c.cc.Invoke(ctx, AccountService_RemoveUrl_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// AccountServiceServer is the server API for AccountService service.
-// All implementations must embed UnimplementedAccountServiceServer
+// AccountServer is the server API for Account service.
+// All implementations must embed UnimplementedAccountServer
 // for forward compatibility
-type AccountServiceServer interface {
+type AccountServer interface {
 	GetInfoAccount(context.Context, *GetInfoAccountRequest) (*BaseGrpc, error)
-	RemoveUrl(context.Context, *RemoveUrlRequest) (*BaseGrpc, error)
-	mustEmbedUnimplementedAccountServiceServer()
+	mustEmbedUnimplementedAccountServer()
 }
 
-// UnimplementedAccountServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedAccountServiceServer struct {
+// UnimplementedAccountServer must be embedded to have forward compatible implementations.
+type UnimplementedAccountServer struct {
 }
 
-func (UnimplementedAccountServiceServer) GetInfoAccount(context.Context, *GetInfoAccountRequest) (*BaseGrpc, error) {
+func (UnimplementedAccountServer) GetInfoAccount(context.Context, *GetInfoAccountRequest) (*BaseGrpc, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInfoAccount not implemented")
 }
-func (UnimplementedAccountServiceServer) RemoveUrl(context.Context, *RemoveUrlRequest) (*BaseGrpc, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveUrl not implemented")
-}
-func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
+func (UnimplementedAccountServer) mustEmbedUnimplementedAccountServer() {}
 
-// UnsafeAccountServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AccountServiceServer will
+// UnsafeAccountServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AccountServer will
 // result in compilation errors.
-type UnsafeAccountServiceServer interface {
-	mustEmbedUnimplementedAccountServiceServer()
+type UnsafeAccountServer interface {
+	mustEmbedUnimplementedAccountServer()
 }
 
-func RegisterAccountServiceServer(s grpc.ServiceRegistrar, srv AccountServiceServer) {
-	s.RegisterService(&AccountService_ServiceDesc, srv)
+func RegisterAccountServer(s grpc.ServiceRegistrar, srv AccountServer) {
+	s.RegisterService(&Account_ServiceDesc, srv)
 }
 
-func _AccountService_GetInfoAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Account_GetInfoAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetInfoAccountRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServiceServer).GetInfoAccount(ctx, in)
+		return srv.(AccountServer).GetInfoAccount(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AccountService_GetInfoAccount_FullMethodName,
+		FullMethod: Account_GetInfoAccount_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServiceServer).GetInfoAccount(ctx, req.(*GetInfoAccountRequest))
+		return srv.(AccountServer).GetInfoAccount(ctx, req.(*GetInfoAccountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AccountService_RemoveUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RemoveUrlRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AccountServiceServer).RemoveUrl(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AccountService_RemoveUrl_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServiceServer).RemoveUrl(ctx, req.(*RemoveUrlRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
+// Account_ServiceDesc is the grpc.ServiceDesc for Account service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AccountService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "online.gonlink.AccountService",
-	HandlerType: (*AccountServiceServer)(nil),
+var Account_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "online.gonlink.Account",
+	HandlerType: (*AccountServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "getInfoAccount",
-			Handler:    _AccountService_GetInfoAccount_Handler,
-		},
-		{
-			MethodName: "removeUrl",
-			Handler:    _AccountService_RemoveUrl_Handler,
+			Handler:    _Account_GetInfoAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
