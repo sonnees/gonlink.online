@@ -17,6 +17,8 @@ public class ShortUrl {
     @Id
     private String shortCode;
     private String originalUrl;
+    private String owner;
+    private boolean active;
 
     private String alias;
     private String desc;

@@ -45,15 +45,19 @@ func run() error {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
-	err := gw.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := gw.RegisterAccountHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}
-	err = gw.RegisterQRCodeServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err = gw.RegisterQRCodeHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}
-	err = gw.RegisterUrlShortenerServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err = gw.RegisterUrlShortenerHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	if err != nil {
+		return err
+	}
+	err = gw.RegisterTrafficHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}

@@ -1,15 +1,18 @@
 package online.gonlink.service.impl;
 
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import online.gonlink.GenerateShortCodeAccountRequest;
 import online.gonlink.GenerateShortCodeRequest;
 import online.gonlink.GetOriginalUrlRequest;
+import online.gonlink.GetOriginalUrlResponse;
 import online.gonlink.OriginalUrlCheckNeedPasswordRequest;
 import online.gonlink.OriginalUrlCheckNeedPasswordResponse;
+import online.gonlink.RemoveUrlRequest;
+import online.gonlink.RemoveUrlResponse;
 import online.gonlink.ShortCodeCheckExistRequest;
 import online.gonlink.ShortCodeCheckExistResponse;
+import online.gonlink.ShortCodeUpdateRequest;
+import online.gonlink.ShortCodeUpdateResponse;
 import online.gonlink.dto.ShortUrlGenerateDto;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.dto.ResponseGenerateShortCode;
@@ -17,10 +20,8 @@ import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.entity.ShortUrl;
 import online.gonlink.exception.ResourceException;
-import online.gonlink.observer.CreateTrafficSubject;
-import online.gonlink.observer.GeneralTrafficObserver;
-import online.gonlink.observer.RealTimeTrafficObserver;
 import online.gonlink.repository.ShortUrlRepository;
+import online.gonlink.service.AccountService;
 import online.gonlink.service.TrafficService;
 import online.gonlink.util.CheckURL;
 import online.gonlink.util.ShortCodeGenerator;
@@ -37,29 +38,26 @@ import java.time.chrono.ChronoLocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class UrlShortenerServiceImpl implements UrlShortenerService {
-    private final ShortCodeGenerator shortCodeGenerator;
-    private final ShortUrlRepository shortUrlRepository;
-    private final CheckURL checkURL;
-    private final TrafficService trafficService;
-
-    private final CreateTrafficSubject createTrafficSubject;
-    private final GeneralTrafficObserver generalTrafficObserver;
-    private final RealTimeTrafficObserver realTimeTrafficObserver;
-
+    /** Config */
     private final PasswordEncoder passwordEncoder;
 
+    /** Repository */
+    private final ShortUrlRepository shortUrlRepository;
+
+    /** Service */
+    private final TrafficService trafficService;
+    private final AccountService accountService;
+    private final ShortCodeGenerator shortCodeGenerator;
+    private final CheckURL checkURL;
+
+
+    /** Constant */
     private final Boolean IS_OWNER = true;
     private final Boolean HAVE_ACCOUNT = true;
 
-    @PostConstruct
-    public void initObservers() {
-        createTrafficSubject.addObserver(generalTrafficObserver);
-        createTrafficSubject.addObserver(realTimeTrafficObserver);
-    }
 
     @Override
     public ShortCodeCheckExistResponse checkExistShortCode(ShortCodeCheckExistRequest request) {
@@ -114,47 +112,91 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
                 if(shortUrlRepository.existsById(shortCode)) continue;
                 ShortUrl shortUrl = ShortUrlUtil.mapFromShortUrlGenerateDto(shortUrlGenerateDto);
                 shortUrl.setShortCode(shortCode);
-
+                shortUrl.setOwner(email);
+                shortUrl.setActive(true);
                 shortUrlRepository.insert(shortUrl);
-                boolean isCreated = createTrafficSubject.create(new TrafficCreateDto(shortCode, haveAccount?email:"", shortUrlGenerateDto.originalUrl(), shortUrlGenerateDto.dateTime(), shortUrlGenerateDto.zoneId()));
-                if(!isCreated)
-                    throw new ResourceException(ExceptionEnum.INTERNAL.name(), null);
-                else {
-                    response = new ResponseGenerateShortCode(shortCode, IS_OWNER);
-                    break;
-                }
+                trafficService.createsTraffic(new TrafficCreateDto(shortCode, haveAccount?email:"", shortUrlGenerateDto.originalUrl(), shortUrlGenerateDto.dateTime(), shortUrlGenerateDto.zoneId()));
+                response = new ResponseGenerateShortCode(shortCode, IS_OWNER);
+                break;
             }
         }
         return response;
     }
 
     @Override
-    public String getOriginalUrl(GetOriginalUrlRequest request) {
+    public GetOriginalUrlResponse getOriginalUrl(GetOriginalUrlRequest request) {
         ShortUrl shortUrl = shortUrlRepository.findById(request.getShortCode()).orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_URL.name(), null));
         validateUrlAccessibility(shortUrl, request);
-        trafficService.increaseTraffic(request.getShortCode(), request.getClientTime(), request.getZoneId());
-        return shortUrl.getOriginalUrl();
+        trafficService.increasesTraffic(shortUrl.getOwner(), shortUrl.getOriginalUrl(), request);
+        return GetOriginalUrlResponse.newBuilder()
+                .setOriginalUrl(shortUrl.getOriginalUrl())
+                .build();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public RemoveUrlResponse removeByShortCode(RemoveUrlRequest request) {
+        shortUrlRepository.deleteById(request.getShortCode());
+        trafficService.deletesTraffic(request);
+        return RemoveUrlResponse.newBuilder()
+                .setIsRemoved(true)
+                .build();
+    }
+
+    @Override
+    public ShortCodeUpdateResponse updateByID(ShortCodeUpdateRequest request) {
+        ShortUrl shortUrl = shortUrlRepository.findById(request.getShortCode())
+                .orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_URL.name(), null));
+        shortUrl.setAlias(request.getAlias().equals("")?shortUrl.getAlias():request.getAlias());
+        shortUrl.setDesc(request.getDesc().equals("")?shortUrl.getDesc():request.getDesc());
+
+        /* request.getPassword() = 'null' means no password will be used */
+        shortUrl.setPassword(request.getPassword().equals("null")?null: (request.getPassword().equals("")?shortUrl.getPassword():passwordEncoder.encode(request.getPassword())));
+
+        /* request.getTimeExpired() = 'null' means no timeExpired will be used */
+        if(request.getTimeExpired().equals("null")){
+            shortUrl.setTimeExpired(null);
+        } else{
+            if (!request.getTimeExpired().equals("")){
+                ZonedDateTime zonedDateTime = ZonedDateTime.parse(request.getTimeExpired()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
+                LocalDateTime timeExpiredDateTime = LocalDateTime.ofInstant(zonedDateTime.toInstant(), ZoneId.of(request.getZoneId()));
+                shortUrl.setTimeExpired(timeExpiredDateTime);
+            }
+        }
+        shortUrl.setMaxUsage(request.getMaxUsage()==0?shortUrl.getMaxUsage():request.getMaxUsage());
+        shortUrl.setActive(request.getActive());
+
+        ShortUrl shortUrlUpdated = shortUrlRepository.save(shortUrl);
+        return ShortCodeUpdateResponse.newBuilder()
+                .setShortCode(shortUrlUpdated.getShortCode())
+                .setOriginalUrl(shortUrlUpdated.getOriginalUrl())
+                .setAlias(shortUrlUpdated.getAlias())
+                .setDesc(shortUrlUpdated.getDesc())
+                .setPassword(Objects.isNull(shortUrlUpdated.getPassword())?"":shortUrlUpdated.getPassword())
+                .setTimeExpired(Objects.isNull(shortUrlUpdated.getTimeExpired())?"":shortUrlUpdated.getTimeExpired().toString())
+                .setMaxUsage(shortUrlUpdated.getMaxUsage())
+                .setActive(shortUrlUpdated.isActive())
+                .build();
     }
 
     private void validateUrlAccessibility(ShortUrl shortUrl,GetOriginalUrlRequest request) {
+        if(!shortUrl.isActive())
+            throw new ResourceException(ExceptionEnum.NOT_FOUND_URL.name(), null);
+
         if(Objects.nonNull(shortUrl.getPassword()))
             if(!passwordEncoder.matches(request.getPassword(),shortUrl.getPassword()))
                 throw new ResourceException(ExceptionEnum.PASSWORD_NOT_CORRECT.name(), null);
-
-        // note
         if(Objects.nonNull(shortUrl.getTimeExpired())){
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(request.getZoneId()));
             LocalDateTime timeExpired = shortUrl.getTimeExpired();
             if(timeExpired.isBefore(ChronoLocalDateTime.from(now)))
                 throw new ResourceException(ExceptionEnum.TIME_EXPIRED.name(), null);
         }
-
         if(shortUrl.getMaxUsage() != 0){
             GeneralTraffic generalTraffic = trafficService.searchGeneralTrafficByShortCode(shortUrl.getShortCode());
             if(generalTraffic.getTraffic()>=shortUrl.getMaxUsage())
                 throw new ResourceException(ExceptionEnum.MAX_ACCESS.name(), null);
         }
     }
-
 
 }

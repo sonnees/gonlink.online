@@ -1,8 +1,10 @@
 package online.gonlink.observer;
 
-import online.gonlink.dto.TrafficIncreaseDto;
+import online.gonlink.GetOriginalUrlRequest;
+import online.gonlink.dto.TrafficCreateDto;
 
 public interface TrafficObserver {
-    boolean increaseTraffic(TrafficIncreaseDto trafficIncreaseDto);
-    void deleteTraffic(String shortCode);
+    boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request);
+    void deletesTraffic(String shortCode);
+    boolean createsTraffic(TrafficCreateDto trafficCreateDto);
 }

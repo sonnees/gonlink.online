@@ -28,6 +28,18 @@ public class GlobalValue {
     @Value("${gonlink.qr.height}")
     int HEIGHT;
 
+    @Value("${gonlink.qr.scalr.x}")
+    int SCALR_X;
+
+    @Value("${gonlink.qr.scalr.y}")
+    int SCALR_Y;
+
+    @Value("${gonlink.qr.scalr.height}")
+    int SCALR_HEIGHT;
+
+    @Value("${gonlink.qr.scalr.width}")
+    int SCALR_WIDTH;
+
     @Value("${gonlink.jwt.secret-key}")
     String SECRET_KEY;
 

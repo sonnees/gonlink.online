@@ -64,77 +64,57 @@ message GetOriginalUrlRequest{
   string clientTime = 2;
   string zoneId = 3;
   optional string password = 4;
+
+  optional string city = 5;
+  optional string country = 6;
+  optional string timezone = 7;
+  optional string browser = 8;
+  optional string browserVersion = 9;
+  optional string operatingSystem = 10;
+  optional string osVersion = 11;
+  optional string deviceType = 12;
+  optional string deviceManufacturer = 13;
+  optional string deviceName = 14;
 }
 
 message GetOriginalUrlResponse{
   string originalUrl = 1;
 }
 
-
-// === GeneralTraffics ===
-message GeneralTrafficsSearchRequest{
-  optional int32 page = 1;
-  optional int32 size = 2;
-  optional string sortDirection = 3;
+// === RemoveUrl ===
+message RemoveUrlRequest{
+  string shortCode = 1;
+}
+message RemoveUrlResponse{
+  bool isRemoved = 1;
 }
 
-message PageInfo {
-  int32 currentPage = 1;
-  int32 totalPages = 2;
-  int64 totalElements = 3;
-  int32 pageSize = 4;
+// === ShortCodeUpdate ===
+message ShortCodeUpdateRequest{
+  string shortCode = 1;
+  string zoneId = 2;
+  optional string alias = 3;
+  optional string desc = 4;
+  optional string timeExpired = 5;
+  optional string password = 6;
+  optional int64 maxUsage = 7;
+  optional bool active = 8;
 }
 
-message GeneralTraffic{
+message ShortCodeUpdateResponse{
   string shortCode = 1;
   string originalUrl = 2;
-  string trafficDate = 3;
-  int64 traffic = 4;
-}
-
-message GeneralTrafficsSearchResponse{
-  repeated GeneralTraffic generalTraffic = 1;
-  PageInfo pageInfo = 2;
-}
-
-// === MonthTraffics ===
-message MonthTrafficsGetAllRequest{
-  string shortCode = 1;
-}
-
-message TrafficData{
-  string date = 1;
-  int64 data = 2;
-}
-
-message MonthTrafficGetAllResponse{
-  repeated TrafficData trafficData = 1;
-}
-
-// === MonthTraffics ===
-message DayTrafficInRangeRequest{
-  string shortCode = 1;
-  string fromDate = 2;
-  string toDate = 3;
-}
-
-message DayTrafficInRangeResponse{
-  repeated TrafficData trafficData = 1;
-}
-
-// === RealTimeTraffics ===
-message RealTimeTrafficRequest{
-  string shortCode = 1;
-  string clientTime = 2;
-  string zoneId = 3;
-}
-
-message RealTimeTrafficResponse{
-  repeated int32 data = 1;
+  string alias = 3;
+  string desc = 4;
+  string timeExpired = 5;
+  string password = 6;
+  int64 maxUsage = 7;
+  bool active = 8;
 }
 
 
-service UrlShortenerService {
+
+service UrlShortener {
 
   rpc checkExistShortCode(ShortCodeCheckExistRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
@@ -171,30 +151,17 @@ service UrlShortenerService {
     };
   }
 
-  rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.BaseGrpc){
+  rpc removeByID(RemoveUrlRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
-      post: "/api/v1/traffics/general"
+      post: "/api/v1/accounts/remove-url"
+//      post: "/api/v1/shortens/delete"
       body: "*"
     };
   }
 
-  rpc getAllMonthTraffics(MonthTrafficsGetAllRequest) returns(online.gonlink.BaseGrpc){
+  rpc updateByID(ShortCodeUpdateRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
-      post: "/api/v1/traffics/month-all"
-      body: "*"
-    };
-  }
-
-  rpc getDayTrafficInRange(DayTrafficInRangeRequest) returns(online.gonlink.BaseGrpc){
-    option (google.api.http) = {
-      post: "/api/v1/traffics/day-range"
-      body: "*"
-    };
-  }
-
-  rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.BaseGrpc){
-    option (google.api.http) = {
-      post: "/api/v1/traffics/real-time"
+      post: "/api/v1/shortens/update"
       body: "*"
     };
   }

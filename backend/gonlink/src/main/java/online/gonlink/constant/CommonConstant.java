@@ -21,6 +21,9 @@ public final class CommonConstant {
     }
 
     /** Config constant */
+    public static final String STRING_PNG = "png";
+    public static final int COLOR_0 = 0xFF000000;
+    public static final int COLOR_1 = 0xFFFFFFFF;
     public static final String TIME_ZONE = "UTC";
     public static final String SIMPLE_DATE_FORMAT_YM = "yyyy-MM";
     public static final String QUALIFIER_SIMPLE_DATE_FORMAT_YM = "SIMPLE_DATE_FORMAT_YM";

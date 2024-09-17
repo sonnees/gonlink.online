@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "UrlShortenerService"
+      "name": "UrlShortener"
     }
   ],
   "consumes": [
@@ -16,9 +16,41 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/accounts/remove-url": {
+      "post": {
+        "operationId": "UrlShortener_removeByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkBaseGrpc"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkRemoveUrlRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UrlShortener"
+        ]
+      }
+    },
     "/api/v1/shortens/account-gen": {
       "post": {
-        "operationId": "UrlShortenerService_generateShortCodeAccount",
+        "operationId": "UrlShortener_generateShortCodeAccount",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -44,13 +76,13 @@
           }
         ],
         "tags": [
-          "UrlShortenerService"
+          "UrlShortener"
         ]
       }
     },
     "/api/v1/shortens/check-exist-short-code": {
       "post": {
-        "operationId": "UrlShortenerService_checkExistShortCode",
+        "operationId": "UrlShortener_checkExistShortCode",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -76,13 +108,13 @@
           }
         ],
         "tags": [
-          "UrlShortenerService"
+          "UrlShortener"
         ]
       }
     },
     "/api/v1/shortens/check-need-password": {
       "post": {
-        "operationId": "UrlShortenerService_checkNeedPasswordGetOriginalUrl",
+        "operationId": "UrlShortener_checkNeedPasswordGetOriginalUrl",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -108,13 +140,13 @@
           }
         ],
         "tags": [
-          "UrlShortenerService"
+          "UrlShortener"
         ]
       }
     },
     "/api/v1/shortens/gen": {
       "post": {
-        "operationId": "UrlShortenerService_generateShortCode",
+        "operationId": "UrlShortener_generateShortCode",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -140,13 +172,13 @@
           }
         ],
         "tags": [
-          "UrlShortenerService"
+          "UrlShortener"
         ]
       }
     },
     "/api/v1/shortens/get": {
       "post": {
-        "operationId": "UrlShortenerService_getOriginalUrl",
+        "operationId": "UrlShortener_getOriginalUrl",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -172,13 +204,13 @@
           }
         ],
         "tags": [
-          "UrlShortenerService"
+          "UrlShortener"
         ]
       }
     },
-    "/api/v1/traffics/day-range": {
+    "/api/v1/shortens/update": {
       "post": {
-        "operationId": "UrlShortenerService_getDayTrafficInRange",
+        "operationId": "UrlShortener_updateByID",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -199,108 +231,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/gonlinkDayTrafficInRangeRequest"
+              "$ref": "#/definitions/gonlinkShortCodeUpdateRequest"
             }
           }
         ],
         "tags": [
-          "UrlShortenerService"
-        ]
-      }
-    },
-    "/api/v1/traffics/general": {
-      "post": {
-        "operationId": "UrlShortenerService_searchGeneralTraffics",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/gonlinkBaseGrpc"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gonlinkGeneralTrafficsSearchRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UrlShortenerService"
-        ]
-      }
-    },
-    "/api/v1/traffics/month-all": {
-      "post": {
-        "operationId": "UrlShortenerService_getAllMonthTraffics",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/gonlinkBaseGrpc"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gonlinkMonthTrafficsGetAllRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UrlShortenerService"
-        ]
-      }
-    },
-    "/api/v1/traffics/real-time": {
-      "post": {
-        "operationId": "UrlShortenerService_getRealTimeTraffic",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/gonlinkBaseGrpc"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gonlinkRealTimeTrafficRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UrlShortenerService"
+          "UrlShortener"
         ]
       }
     }
@@ -338,21 +274,6 @@
         }
       }
     },
-    "gonlinkDayTrafficInRangeRequest": {
-      "type": "object",
-      "properties": {
-        "shortCode": {
-          "type": "string"
-        },
-        "fromDate": {
-          "type": "string"
-        },
-        "toDate": {
-          "type": "string"
-        }
-      },
-      "title": "=== MonthTraffics ==="
-    },
     "gonlinkErrorDetailGrpc": {
       "type": "object",
       "properties": {
@@ -374,23 +295,6 @@
         }
       },
       "title": "=== ==="
-    },
-    "gonlinkGeneralTrafficsSearchRequest": {
-      "type": "object",
-      "properties": {
-        "page": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "size": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "sortDirection": {
-          "type": "string"
-        }
-      },
-      "title": "=== GeneralTraffics ==="
     },
     "gonlinkGenerateShortCodeAccountRequest": {
       "type": "object",
@@ -473,18 +377,39 @@
         },
         "password": {
           "type": "string"
-        }
-      },
-      "title": "=== GetOriginalUrl ==="
-    },
-    "gonlinkMonthTrafficsGetAllRequest": {
-      "type": "object",
-      "properties": {
-        "shortCode": {
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "browser": {
+          "type": "string"
+        },
+        "browserVersion": {
+          "type": "string"
+        },
+        "operatingSystem": {
+          "type": "string"
+        },
+        "osVersion": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "string"
+        },
+        "deviceManufacturer": {
+          "type": "string"
+        },
+        "deviceName": {
           "type": "string"
         }
       },
-      "title": "=== MonthTraffics ==="
+      "title": "=== GetOriginalUrl ==="
     },
     "gonlinkOriginalUrlCheckNeedPasswordRequest": {
       "type": "object",
@@ -495,20 +420,14 @@
       },
       "title": "=== checkNeedPassword ==="
     },
-    "gonlinkRealTimeTrafficRequest": {
+    "gonlinkRemoveUrlRequest": {
       "type": "object",
       "properties": {
         "shortCode": {
           "type": "string"
-        },
-        "clientTime": {
-          "type": "string"
-        },
-        "zoneId": {
-          "type": "string"
         }
       },
-      "title": "=== RealTimeTraffics ==="
+      "title": "=== RemoveUrl ==="
     },
     "gonlinkShortCodeCheckExistRequest": {
       "type": "object",
@@ -518,6 +437,37 @@
         }
       },
       "title": "=== checkExistShortCode ==="
+    },
+    "gonlinkShortCodeUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "shortCode": {
+          "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "timeExpired": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "maxUsage": {
+          "type": "string",
+          "format": "int64"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "title": "=== ShortCodeUpdate ==="
     },
     "protobufAny": {
       "type": "object",

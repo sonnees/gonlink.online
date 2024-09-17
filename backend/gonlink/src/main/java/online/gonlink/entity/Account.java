@@ -1,6 +1,5 @@
 package online.gonlink.entity;
 
-import online.gonlink.dto.UserInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,15 +20,25 @@ public class Account {
     private String name;
     private String avatar;
     private String role;
-    private LocalDate create;
+    private LocalDate create = LocalDate.now();
 
-    public Account(UserInfoDto userInfoDto) {
-        this.email = userInfoDto.user_email();
-        this.name = userInfoDto.user_name();
-        this.avatar = userInfoDto.user_avatar();
-        this.role = userInfoDto.user_role();
-        this.create = LocalDate.now();
-    }
+    private int totalShortURL = 0;
+    private long totalClick = 0;
+
+    private List<TrafficData> cities = new ArrayList<>();
+    private List<TrafficData> countries = new ArrayList<>();
+//    private List<TrafficData> longitudes = new ArrayList<>();
+//    private List<TrafficData> latitudes = new ArrayList<>();
+    private List<TrafficData> timezones = new ArrayList<>();
+
+    private List<TrafficData> browsers = new ArrayList<>();
+    private List<TrafficData> browserVersions = new ArrayList<>();
+    private List<TrafficData> operatingSystems = new ArrayList<>();
+    private List<TrafficData> osVersions = new ArrayList<>();
+    private List<TrafficData> deviceTypes = new ArrayList<>();
+    private List<TrafficData> deviceManufacturers = new ArrayList<>();
+    private List<TrafficData> deviceNames = new ArrayList<>();
+
     public String getCreate() {
         return this.create.toString();
     }

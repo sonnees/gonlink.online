@@ -1,5 +1,4 @@
-package online.gonlink.util;
-import com.google.common.base.Objects;
+package online.gonlink.service.base.impl;
 import online.gonlink.exception.ResourceException;
 import online.gonlink.exception.enumdef.ExceptionEnum;
 import org.jsoup.Jsoup;
@@ -7,7 +6,7 @@ import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HtmlSanitizer {
+public class HtmlSanitizerServiceImpl {
 
     public String sanitize(String html) {
         return Jsoup.clean(html, Safelist.basic());

@@ -8,7 +8,10 @@ import "common.proto";
 
 // === GetInfoAccount ===
 message GetInfoAccountRequest{}
-
+message DataClient{
+  string name = 1;
+  int64 data = 2;
+}
 message ShortUrl {
   string shortCode = 1;
   string originalUrl = 2;
@@ -19,25 +22,25 @@ message GetInfoAccountResponse{
   string avatar = 3;
   string role = 4;
   string create = 5;
+  int32 totalShortURL = 6;
+  int64 totalClick = 7;
+
+  repeated DataClient cities = 8;
+  repeated DataClient countries = 9;
+  repeated DataClient timezones = 10;
+  repeated DataClient browsers = 11;
+  repeated DataClient browserVersions = 12;
+  repeated DataClient operatingSystems = 13;
+  repeated DataClient osVersions = 14;
+  repeated DataClient deviceTypes = 15;
+  repeated DataClient deviceManufacturers = 16;
+  repeated DataClient deviceNames = 17;
 }
 
-// === RemoveUrl ===
-message RemoveUrlRequest{
-  string shortCode = 1;
-}
-message RemoveUrlResponse{}
-
-service AccountService {
+service Account {
   rpc getInfoAccount(GetInfoAccountRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
       post: "/api/v1/accounts/me"
-      body: "*"
-    };
-  }
-
-  rpc removeUrl(RemoveUrlRequest) returns(online.gonlink.BaseGrpc){
-    option (google.api.http) = {
-      post: "/api/v1/accounts/remove-url"
       body: "*"
     };
   }

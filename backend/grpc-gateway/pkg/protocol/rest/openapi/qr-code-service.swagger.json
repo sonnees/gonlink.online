@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "QRCodeService"
+      "name": "QRCode"
     }
   ],
   "consumes": [
@@ -18,7 +18,7 @@
   "paths": {
     "/api/v1/qr-codes": {
       "post": {
-        "operationId": "QRCodeService_getStringBase64Image",
+        "operationId": "QRCode_getStringBase64Image",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -44,7 +44,7 @@
           }
         ],
         "tags": [
-          "QRCodeService"
+          "QRCode"
         ]
       }
     }
