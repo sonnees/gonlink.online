@@ -9,8 +9,7 @@ import online.gonlink.entity.TrafficID;
 import online.gonlink.exception.ResourceException;
 import online.gonlink.factory.TrafficFactory;
 import online.gonlink.factory.enumdef.TrafficType;
-import online.gonlink.repository.MonthTrafficRepository;
-import online.gonlink.util.DateUtil;
+import online.gonlink.repository.MonthTrafficRep;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +22,13 @@ import java.util.Date;
 
 @Component
 public class MonthTrafficObserver implements TrafficObserver{
-    private final MonthTrafficRepository repository;
+    private final MonthTrafficRep repository;
     private final SimpleDateFormat simpleDateFormat;
     private final SimpleDateFormat simpleDateFormatWithTime;
     private final DateTimeFormatter dateTimeFormatter;
 
     public MonthTrafficObserver(
-            MonthTrafficRepository repository,
+            MonthTrafficRep repository,
             @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YM) SimpleDateFormat simpleDateFormat,
             @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) SimpleDateFormat simpleDateFormatWithTime,
             DateTimeFormatter dateTimeFormatter) {
@@ -42,7 +41,7 @@ public class MonthTrafficObserver implements TrafficObserver{
     @Override
     public boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request){
         boolean isIncreased = true;
-        ZonedDateTime clientTime = ZonedDateTime.parse(request.getClientTime()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
+        ZonedDateTime clientTime = ZonedDateTime.now(ZoneId.of(request.getZoneId()));
         String date = simpleDateFormat.format(Date.from(clientTime.toInstant()));
 
         String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
@@ -51,7 +50,7 @@ public class MonthTrafficObserver implements TrafficObserver{
 
         TrafficID trafficID = new TrafficID(request.getShortCode(), date);
         if(!repository.existsById(trafficID)){
-            TrafficCreateDto trafficCreateDto = new TrafficCreateDto(request.getShortCode(), owner, request.getShortCode(), request.getClientTime(), request.getZoneId());
+            TrafficCreateDto trafficCreateDto = new TrafficCreateDto(request.getShortCode(), owner, request.getShortCode(), clientTime);
             this.createsTraffic(trafficCreateDto);
         }
         long increased = repository.increaseTraffic(trafficID, index);
@@ -66,11 +65,10 @@ public class MonthTrafficObserver implements TrafficObserver{
     }
 
     @Override
-    public boolean createsTraffic(TrafficCreateDto trafficCreateDto) {
+    public boolean createsTraffic(TrafficCreateDto dto) {
         boolean isCreated = true;
-        ZonedDateTime clientTime = DateUtil.getZonedDateTime(trafficCreateDto.trafficDate(), trafficCreateDto.zoneId());
-        String date = simpleDateFormat.format(Date.from(clientTime.toInstant()));
-        MonthTraffic traffic = (MonthTraffic) TrafficFactory.createTraffic(TrafficType.MONTH, trafficCreateDto.shortCode(), date);
+        String date = simpleDateFormat.format(Date.from(dto.time().toInstant()));
+        MonthTraffic traffic = (MonthTraffic) TrafficFactory.createTraffic(TrafficType.MONTH, dto.shortCode(), date);
         repository.insert(traffic);
         return isCreated;
     }

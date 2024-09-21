@@ -7,7 +7,7 @@ import online.gonlink.GetInfoAccountResponse;
 import online.gonlink.constant.AuthConstant;
 import online.gonlink.entity.Account;
 import lombok.AllArgsConstructor;
-import online.gonlink.repository.AccountRepository;
+import online.gonlink.repository.AccountRep;
 import org.springframework.stereotype.Service;
 import online.gonlink.service.AccountService;
 
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 public class AccountServiceImpl implements AccountService {
 
     /** Repository */
-    private final AccountRepository accountRepository;
+    private final AccountRep accountRep;
 
     @Override
     public GetInfoAccountResponse getInfoAccount(GetInfoAccountRequest request){
-        Optional<Account> accountOptional = accountRepository.findById(AuthConstant.USER_EMAIL.get(Context.current()));
+        Optional<Account> accountOptional = accountRep.findById(AuthConstant.USER_EMAIL.get(Context.current()));
         Account account = accountOptional.orElseGet(
                 () -> {
                     Account accountInsert = new Account();
@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
                     accountInsert.setName(AuthConstant.USER_NAME.get(Context.current()));
                     accountInsert.setRole(AuthConstant.USER_ROLE.get(Context.current()));
                     accountInsert.setAvatar(AuthConstant.USER_AVATAR.get(Context.current()));
-                    return accountRepository.insert(accountInsert);
+                    return accountRep.insert(accountInsert);
                 });
         return GetInfoAccountResponse.newBuilder()
                 .setEmail(account.getEmail())
@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
                 .setTotalClick(account.getTotalClick())
                 .addAllCities(account.getCities().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .addAllCountries(account.getCountries().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
-                .addAllTimezones(account.getTimezones().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
+                .addAllZoneIds(account.getZoneIds().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .addAllBrowsers(account.getBrowsers().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .addAllBrowserVersions(account.getBrowserVersions().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .addAllOperatingSystems(account.getOperatingSystems().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))

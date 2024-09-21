@@ -12,7 +12,7 @@ public interface GrpcSuccessHandler {
     default BaseGrpc handleSuccess(Message resObj, long start) {
         long took = System.currentTimeMillis() - start;
         return BaseGrpc.newBuilder()
-                .setStatus(Status.OK.hashCode())
+                .setStatus(Status.OK.getCode().value())
                 .setMessage(Status.OK.getCode().name())
                 .setTitle(CommonConstant.GRPC_SUCCESS)
                 .setTime(LocalDateTime.now().toString())

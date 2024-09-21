@@ -9,10 +9,12 @@ import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GeneralTrafficRepository extends MongoRepository<GeneralTraffic, String> {
+public interface GeneralTrafficRep extends MongoRepository<GeneralTraffic, String> {
     @Query("{shortCode: ?0}")
     @Update("{'$inc': {traffic: 1}}")
     long increaseTraffic(String shortCode);
 
     Page<GeneralTraffic> findAllByOwner(String owner, Pageable pageRequest);
+
+
 }

@@ -2,24 +2,24 @@ package online.gonlink.observer;
 
 import online.gonlink.GetOriginalUrlRequest;
 import online.gonlink.dto.TrafficCreateDto;
-import online.gonlink.repository.AccountRepository;
+import online.gonlink.repository.AccountRep;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class AccountObserver implements TrafficObserver{
-    private final AccountRepository repository;
+    private final AccountRep repository;
 
-    public AccountObserver(AccountRepository repository){
+    public AccountObserver(AccountRep repository){
         this.repository = repository;
     }
 
     @Override
     public boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request) throws RuntimeException {
-        this.increaseCityClick(owner, request.getCity());
-        this.increaseCountryClick(owner, request.getCountry());
-        this.increaseTimezoneClick(owner, request.getTimezone());
+        this.increaseCityClick(owner, "Ho Chi Minh");
+        this.increaseCountryClick(owner, "VietNam");
+        this.increaseZoneIdClick(owner, request.getZoneId());
         this.increaseBrowserClick(owner, request.getBrowser());
         this.increaseBrowserVersionClick(owner, request.getBrowserVersion());
         this.increaseOperatingSystemClick(owner, request.getOperatingSystem());
@@ -60,10 +60,10 @@ public class AccountObserver implements TrafficObserver{
     }
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public long increaseTimezoneClick(String email, String timezone) {
-        long updatedCount = repository.increaseTimezoneClick(email, timezone);
+    public long increaseZoneIdClick(String email, String timezone) {
+        long updatedCount = repository.increaseZoneIdClick(email, timezone);
         if (updatedCount == 0) {
-            return repository.insertNewTimezoneClick(email, timezone);
+            return repository.insertNewZoneIdClick(email, timezone);
         }
         return updatedCount;
     }

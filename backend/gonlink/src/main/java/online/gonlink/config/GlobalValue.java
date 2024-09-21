@@ -16,6 +16,9 @@ public class GlobalValue {
     @Value("${gonlink.paging.page}")
     int PAGE;
 
+    @Value("${spring.jackson.time-zone-default}")
+    String TIME_ZONE_DEFAULT;
+
     @Value("${gonlink.paging.size}")
     int SIZE;
 

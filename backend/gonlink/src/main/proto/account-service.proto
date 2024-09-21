@@ -3,17 +3,17 @@ option java_multiple_files = true;
 
 package online.gonlink;
 import "common.proto";
+import "traffic-service.proto";
 
 // === GetInfoAccount ===
 message GetInfoAccountRequest{}
-message DataClient{
-  string name = 1;
-  int64 data = 2;
-}
+
 message ShortUrl {
   string shortCode = 1;
   string originalUrl = 2;
+  string zoneId = 3;
 }
+
 message GetInfoAccountResponse{
   string email = 1;
   string name = 2;
@@ -25,7 +25,7 @@ message GetInfoAccountResponse{
 
   repeated DataClient cities = 8;
   repeated DataClient countries = 9;
-  repeated DataClient timezones = 10;
+  repeated DataClient zoneIds = 10;
   repeated DataClient browsers = 11;
   repeated DataClient browserVersions = 12;
   repeated DataClient operatingSystems = 13;
