@@ -27,12 +27,13 @@ import online.gonlink.observer.GeneralTrafficObserver;
 import online.gonlink.observer.MonthTrafficObserver;
 import online.gonlink.observer.RealTimeTrafficObserver;
 import online.gonlink.observer.TrafficSubject;
-import online.gonlink.repository.DayTrafficRepository;
-import online.gonlink.repository.GeneralTrafficRepository;
-import online.gonlink.repository.MonthTrafficRepository;
-import online.gonlink.repository.RealTimeTrafficRepository;
-import online.gonlink.repository.ShortUrlRepository;
+import online.gonlink.repository.DayTrafficRep;
+import online.gonlink.repository.GeneralTrafficRep;
+import online.gonlink.repository.MonthTrafficRep;
+import online.gonlink.repository.RealTimeTrafficRep;
+import online.gonlink.repository.ShortUrlRep;
 import online.gonlink.service.TrafficService;
+import online.gonlink.util.DateUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,24 +46,29 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrafficServiceImpl implements TrafficService {
     /** Config */
     private final GlobalValue globalValue;
     private final SimpleDateFormat simpleDateFormatWithTime;
+    private final DateTimeFormatter formatter;
+    private static final DateTimeFormatter FORMATTER_YYYY_MM_DD_HH = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
 
     /** Repository */
-    private final GeneralTrafficRepository generalTrafficRepository;
-    private final MonthTrafficRepository monthTrafficRepository;
-    private final DayTrafficRepository dayTrafficRepository;
-    private final RealTimeTrafficRepository realTimeTrafficRepository;
-    private final ShortUrlRepository shortUrlRepository;
+    private final GeneralTrafficRep generalTrafficRep;
+    private final MonthTrafficRep monthTrafficRep;
+    private final DayTrafficRep dayTrafficRep;
+    private final RealTimeTrafficRep realTimeTrafficRep;
+    private final ShortUrlRep shortUrlRep;
 
     /** Observer */
     private final TrafficSubject trafficSubject;
@@ -72,20 +78,22 @@ public class TrafficServiceImpl implements TrafficService {
     private final DayTrafficObserver dayTrafficObserver;
     private final RealTimeTrafficObserver realTimeTrafficObserver;
 
-    public TrafficServiceImpl(GlobalValue globalValue, GeneralTrafficRepository generalTrafficRepository,
-                              MonthTrafficRepository monthTrafficRepository, DayTrafficRepository dayTrafficRepository,
-                              RealTimeTrafficRepository realTimeTrafficRepository, ShortUrlRepository shortUrlRepository,
+
+    public TrafficServiceImpl(GlobalValue globalValue, DateTimeFormatter formatter, GeneralTrafficRep generalTrafficRep,
+                              MonthTrafficRep monthTrafficRep, DayTrafficRep dayTrafficRep,
+                              RealTimeTrafficRep realTimeTrafficRep, ShortUrlRep shortUrlRep,
                               TrafficSubject trafficSubject, GeneralTrafficObserver generalTrafficObserver,
                               MonthTrafficObserver monthTrafficObserver, DayTrafficObserver dayTrafficObserver,
                               RealTimeTrafficObserver realTimeTrafficObserver, @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)  SimpleDateFormat simpleDateFormatWithTime,
                               AccountObserver accountObserver
                               ) {
         this.globalValue = globalValue;
-        this.generalTrafficRepository = generalTrafficRepository;
-        this.monthTrafficRepository = monthTrafficRepository;
-        this.dayTrafficRepository = dayTrafficRepository;
-        this.realTimeTrafficRepository = realTimeTrafficRepository;
-        this.shortUrlRepository = shortUrlRepository;
+        this.formatter = formatter;
+        this.generalTrafficRep = generalTrafficRep;
+        this.monthTrafficRep = monthTrafficRep;
+        this.dayTrafficRep = dayTrafficRep;
+        this.realTimeTrafficRep = realTimeTrafficRep;
+        this.shortUrlRep = shortUrlRep;
         this.trafficSubject = trafficSubject;
         this.accountObserver = accountObserver;
         this.generalTrafficObserver = generalTrafficObserver;
@@ -119,7 +127,7 @@ public class TrafficServiceImpl implements TrafficService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public RemoveUrlResponse deletesTraffic(RemoveUrlRequest request) {
-        shortUrlRepository.deleteById(request.getShortCode());
+        shortUrlRep.deleteById(request.getShortCode());
         trafficSubject.deletesTraffic(request.getShortCode());
         return RemoveUrlResponse.newBuilder()
                 .build();
@@ -127,39 +135,51 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public Page<GeneralTraffic> searchGeneralTraffics(GeneralTrafficsSearchRequest request){
+        ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
         Page<GeneralTraffic> traffics;
         Context context = Context.current();
         Pageable pageable = PageRequest.of(
                 request.getPage()==0?globalValue.getPAGE():request.getPage(),
                 request.getSize()==0?globalValue.getSIZE():request.getSize()
         );
-        traffics = generalTrafficRepository.findAllByOwner(AuthConstant.USER_EMAIL.get(context), pageable);
+        traffics = generalTrafficRep.findAllByOwner(AuthConstant.USER_EMAIL.get(context), pageable);
+        /* Convert server time to client time */
+        traffics.forEach(gt-> gt.setTrafficDate(DateUtil.getStringZonedDateTime(gt.getTrafficDate(), formatter, zoneId)));
         return traffics;
     }
 
     @Override
     public GeneralTraffic searchGeneralTrafficByShortCode(String shortCode){
-        return generalTrafficRepository.findById(shortCode)
+        return generalTrafficRep.findById(shortCode)
                 .orElseThrow(()-> new ResourceException(ExceptionEnum.SHORT_CODE_NOT_FOUND.name(), null));
     }
 
     @Override
     public List<TrafficDataDto> getAllMonthTraffic(MonthTrafficsGetAllRequest request) {
-        List<TrafficDataDto> trafficDataDtoList = new ArrayList<>();
-        List<MonthTraffic> monthTrafficList = monthTrafficRepository.getAll(request.getShortCode());
-        long cumulativeSum = 0;
-        LocalDate today = LocalDate.now();
+        GeneralTraffic generalTraffic = generalTrafficRep.findById(request.getShortCode()).orElseThrow(
+                () -> new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE, null)
+        );
+        ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
 
+        List<TrafficDataDto> trafficDataDtoList = new ArrayList<>();
+        List<MonthTraffic> monthTrafficList = monthTrafficRep.getAll(request.getShortCode());
+        long cumulativeSum = 0;
+        LocalDate today = LocalDate.now(zoneId);
         LocalDate previousDate = null;
 
+        int dayInMonth = DateUtil.getDayInMonthFromDateFormatter(generalTraffic.getTrafficDate(), formatter, zoneId);
+        int i = dayInMonth-1;
+        /* ### case giao tháng*/
         for (MonthTraffic monthTraffic : monthTrafficList) {
             String trafficDate = monthTraffic.getId().getTrafficDate();
             short[] trafficDays = monthTraffic.getTrafficDays();
-
-            for (int i = 0; i < trafficDays.length; i++) {
+            for (; i < trafficDays.length; i++) {
                 String dateStr = trafficDate + "-" + String.format("%02d", i + 1);
                 LocalDate date = LocalDate.parse(dateStr);
 
+                date = DateUtil.getLocalDateForZoneID(date, zoneId);
+
+                /* not get future date */
                 if (date.isAfter(today)) break;
 
                 if (previousDate != null && !previousDate.plusDays(1).equals(date)) {
@@ -169,11 +189,11 @@ public class TrafficServiceImpl implements TrafficService {
                         missingDate = missingDate.plusDays(1);
                     }
                 }
-
                 cumulativeSum += trafficDays[i];
-                trafficDataDtoList.add(new TrafficDataDto(dateStr, cumulativeSum));
+                trafficDataDtoList.add(new TrafficDataDto(DateUtil.getCusFormatFromLocalDate(date), cumulativeSum));
                 previousDate = date;
             }
+            i = 0;
         }
 
         if (previousDate != null && previousDate.isBefore(today)) {
@@ -188,11 +208,17 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public List<TrafficDataDto> getDayTrafficInRange(DayTrafficInRangeRequest request) {
+        GeneralTraffic generalTraffic = generalTrafficRep.findById(request.getShortCode()).orElseThrow(
+                () -> new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE, null)
+        );
+        ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
         List<TrafficDataDto> trafficDataDtoList = new ArrayList<>();
-        List<DayTraffic> dayTrafficList = dayTrafficRepository.findByShortCodeAndTrafficDate(request.getShortCode(), request.getFromDate(), request.getToDate());
-        LocalDate toDate = LocalDate.parse(request.getToDate());
-        LocalDate curDate = LocalDate.parse(request.getFromDate());
-        LocalDate toDay = LocalDate.now();
+        List<DayTraffic> dayTrafficList = dayTrafficRep.findByShortCodeAndTrafficDate(request.getShortCode(), request.getFromDate(), request.getToDate());
+        LocalDate toDate = DateUtil.getLocalDateForZoneID(LocalDate.parse(request.getToDate()), zoneId);
+        LocalDate curDate = DateUtil.getLocalDateForZoneID(LocalDate.parse(request.getToDate()), zoneId);
+
+        /* Allow more than 1 day to avoid time zone discrepancies, then block future times. */
+        LocalDate toDay = LocalDate.now(zoneId).plusDays(1);
         int index = 0;
         LocalDate indexDate = null;
         short[] trafficHours = null;
@@ -221,7 +247,14 @@ public class TrafficServiceImpl implements TrafficService {
                 }
             }
         }
-
+        String timeCreate = DateUtil.getStringZonedDateTime(generalTraffic.getTrafficDate(), formatter, zoneId).substring(0,13);
+        String timeNow = LocalDateTime.now(zoneId).format(FORMATTER_YYYY_MM_DD_HH);
+        trafficDataDtoList = trafficDataDtoList.stream()
+                .filter(dt ->{
+                    dt.setDate(DateUtil.getStringZonedDateTime(dt.getDate(), formatter, zoneId));
+                    return DateUtil.isBeforeLocalDateTime(timeCreate, dt.getDate().substring(0,13))
+                            && DateUtil.isBeforeLocalDateTime(dt.getDate().substring(0,13), timeNow );
+                    }).collect(Collectors.toList());
         return trafficDataDtoList;
     }
 
@@ -231,7 +264,7 @@ public class TrafficServiceImpl implements TrafficService {
             LocalDateTime dateTime = indexDate.atStartOfDay();
             LocalDateTime currentHour = dateTime.plusHours(i);
             trafficDataDtoList.add(new TrafficDataDto(
-                    currentHour.toLocalDate().toString() + "T" + String.format("%02d", i) + ":00",
+                    currentHour.toLocalDate().toString() + " " + String.format("%02d", i) + ":00:00",
                     trafficHours[i]
             ));
         }
@@ -241,10 +274,10 @@ public class TrafficServiceImpl implements TrafficService {
     @Override
     public short[] getRealTimeTraffic(RealTimeTrafficRequest request) {
         short[] trafficMinute;
-        RealTimeTraffic realTimeTraffic = realTimeTrafficRepository.findById(request.getShortCode())
+        RealTimeTraffic realTimeTraffic = realTimeTrafficRep.findById(request.getShortCode())
                 .orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE.name(), null));
 
-        ZonedDateTime clientTime = ZonedDateTime.parse(request.getClientTime()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
+        ZonedDateTime clientTime = ZonedDateTime.now(ZoneId.of(request.getZoneId()));
         String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
 
         String updateAt = realTimeTraffic.getUpdateAt();

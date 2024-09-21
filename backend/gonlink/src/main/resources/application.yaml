@@ -13,6 +13,7 @@ spring:
     allow-circular-references: true
   jackson:
     time-zone: UTC
+    time-zone-default: Asia/Ho_Chi_Minh
 
 # global value
 gonlink:

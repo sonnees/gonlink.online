@@ -9,28 +9,24 @@ import "common.proto";
 // === GenerateShortCode ===
 message GenerateShortCodeRequest{
   string originalUrl = 1;
-  string trafficDate = 2;
-  string zoneId = 3;
-
-  optional string shortCode = 4;
-  optional string alias = 5;
-  optional string desc = 6;
-  optional string timeExpired = 7;
-  optional string password = 8;
-  optional int64 maxUsage = 9;
+  string zoneId = 2;
+  optional string shortCode = 3;
+  optional string alias = 4;
+  optional string desc = 5;
+  optional string timeExpired = 6;
+  optional string password = 7;
+  optional int64 maxUsage = 8;
 }
 
 message GenerateShortCodeAccountRequest{
   string originalUrl = 1;
-  string trafficDate = 2;
-  string zoneId = 3;
-
-  optional string shortCode = 4;
-  optional string alias = 5;
-  optional string desc = 6;
-  optional string timeExpired = 7;
-  optional string password = 8;
-  optional int64 maxUsage = 9;
+  string zoneId = 2;
+  optional string shortCode = 3;
+  optional string alias = 4;
+  optional string desc = 5;
+  optional string timeExpired = 6;
+  optional string password = 7;
+  optional int64 maxUsage = 8;
 }
 
 message GenerateShortCodeResponse{
@@ -61,20 +57,15 @@ message OriginalUrlCheckNeedPasswordResponse{
 // === GetOriginalUrl ===
 message GetOriginalUrlRequest{
   string shortCode = 1;
-  string clientTime = 2;
-  string zoneId = 3;
-  optional string password = 4;
-
-  optional string city = 5;
-  optional string country = 6;
-  optional string timezone = 7;
-  optional string browser = 8;
-  optional string browserVersion = 9;
-  optional string operatingSystem = 10;
-  optional string osVersion = 11;
-  optional string deviceType = 12;
-  optional string deviceManufacturer = 13;
-  optional string deviceName = 14;
+  string zoneId = 2;
+  optional string password = 3;
+  optional string browser = 4;
+  optional string browserVersion = 5;
+  optional string operatingSystem = 6;
+  optional string osVersion = 7;
+  optional string deviceType = 8;
+  optional string deviceManufacturer = 9;
+  optional string deviceName = 10;
 }
 
 message GetOriginalUrlResponse{

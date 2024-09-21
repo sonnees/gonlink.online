@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountRepository extends MongoRepository<Account, String> {
+public interface AccountRep extends MongoRepository<Account, String> {
     @Query("{email: ?0}")
     @Update("{'$inc': {totalShortURL: 1}}")
     long increaseTotalShortURL(String email);
@@ -30,12 +30,12 @@ public interface AccountRepository extends MongoRepository<Account, String> {
     @Update("{ '$push': { 'countries': { 'name': ?1, 'data': 1 } } }")
     long insertNewCountryClick(String email, String country);
 
-    @Query("{ 'email': ?0, 'timezones.name': ?1 }")
-    @Update("{ '$inc': { 'timezones.$.data': 1 } }")
-    long increaseTimezoneClick(String email, String timezone);
-    @Query("{ 'email': ?0, 'timezones.name': { '$ne': ?1 } }")
-    @Update("{ '$push': { 'timezones': { 'name': ?1, 'data': 1 } } }")
-    long insertNewTimezoneClick(String email, String timezone);
+    @Query("{ 'email': ?0, 'zoneIds.name': ?1 }")
+    @Update("{ '$inc': { 'zoneIds.$.data': 1 } }")
+    long increaseZoneIdClick(String email, String zoneId);
+    @Query("{ 'email': ?0, 'zoneIds.name': { '$ne': ?1 } }")
+    @Update("{ '$push': { 'zoneIds': { 'name': ?1, 'data': 1 } } }")
+    long insertNewZoneIdClick(String email, String zoneId);
 
     @Query("{ 'email': ?0, 'browsers.name': ?1 }")
     @Update("{ '$inc': { 'browsers.$.data': 1 } }")

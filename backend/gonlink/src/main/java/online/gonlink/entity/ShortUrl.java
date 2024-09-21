@@ -22,7 +22,7 @@ public class ShortUrl {
 
     private String alias;
     private String desc;
-    private LocalDateTime timeExpired;
+    private String timeExpired;
     private String password;
     private long maxUsage;
 }

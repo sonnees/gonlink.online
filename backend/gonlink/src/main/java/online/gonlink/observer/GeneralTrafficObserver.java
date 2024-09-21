@@ -8,21 +8,19 @@ import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.exception.ResourceException;
 import online.gonlink.factory.TrafficFactory;
 import online.gonlink.factory.enumdef.TrafficType;
-import online.gonlink.repository.GeneralTrafficRepository;
+import online.gonlink.repository.GeneralTrafficRep;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Component
 public class GeneralTrafficObserver implements TrafficObserver{
-    private final GeneralTrafficRepository repository;
+    private final GeneralTrafficRep repository;
     private final SimpleDateFormat simpleDateFormatWithTime;
 
-    public GeneralTrafficObserver(GeneralTrafficRepository repository,
+    public GeneralTrafficObserver(GeneralTrafficRep repository,
                                   @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) SimpleDateFormat simpleDateFormatWithTime) {
         this.repository = repository;
         this.simpleDateFormatWithTime = simpleDateFormatWithTime;
@@ -43,11 +41,10 @@ public class GeneralTrafficObserver implements TrafficObserver{
     }
 
     @Override
-    public boolean createsTraffic(TrafficCreateDto record) {
+    public boolean createsTraffic(TrafficCreateDto dto) {
         boolean isCreated = true;
-        ZonedDateTime clientTime = ZonedDateTime.parse(record.trafficDate()).withZoneSameInstant(ZoneId.of(record.zoneId()));
-        String date = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
-        GeneralTraffic traffic = (GeneralTraffic) TrafficFactory.createTraffic(TrafficType.GENERAL, record.shortCode(), record.owner(), record.originalUrl(), date);
+        String date = simpleDateFormatWithTime.format(Date.from(dto.time().toInstant()));
+        GeneralTraffic traffic = (GeneralTraffic) TrafficFactory.createTraffic(TrafficType.GENERAL, dto.shortCode(), dto.owner(), dto.originalUrl(), date);
         repository.insert(traffic);
         return isCreated;
     }
