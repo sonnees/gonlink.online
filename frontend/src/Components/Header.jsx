@@ -16,6 +16,10 @@ export default function Header() {
     window.location.href = '/';
   }
 
+  const handleLinkManagement = () => {
+    navigate("/link/linkmanagement");
+  }
+
   return (
     <div className='flex justify-around items-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 p-1'>
       <img src="/src/assets/Logo.png" alt="" className='w-[180px]' onClick={()=>navigate("/")}/>
@@ -24,7 +28,7 @@ export default function Header() {
         {name && <li className='hover:font-bold cursor-pointer'> <Link to={"history"}>Lịch sử</Link> </li>}
         <li className='hover:font-bold cursor-pointer'> <Link to={"contact"}>Liên hệ</Link> </li>
         <li className='hover:font-bold cursor-pointer'> <Link to={"about"}>Thông tin</Link> </li>
-        <li className='hover:font-bold cursor-pointer relative'> 
+        <li className='cursor-pointer relative'> 
           {name?
             <div onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center">
               {name}
@@ -33,8 +37,11 @@ export default function Header() {
 
 
           {dropdownOpen && name && (
-            <ul className="absolute right-0 mt-2 w-28 bg-white shadow-lg rounded-lg">
-              <li className="block px-4 py-2 text-gray-800">
+            <ul className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg">
+              <li className="block px-4 py-2 text-gray-800 hover:bg-slate-400 rounded-lg">
+              <div onClick={handleLinkManagement}>Link của tôi</div>
+              </li>
+              <li className="block px-4 py-2 text-gray-800 hover:bg-slate-400 rounded-lg">
                 <div onClick={handleLogout}>Đăng xuất</div>
               </li>
             </ul>

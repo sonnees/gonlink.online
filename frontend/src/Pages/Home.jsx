@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import Cookies from 'js-cookie';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -9,6 +11,19 @@ export default function Home() {
   const [errorShortLink, setErrorShortLink] = useState(false);
   const [qr, setQr] = useState("");
   const [error, setError] = useState("");
+  const [settingToggle, setSettingToggle] = useState(false);
+
+  const [customLink, setCustomLink] = useState("");
+  const [timeExpired, setTimeExpired] = useState("");
+  const [password, setPassword] = useState("");
+  const [maxUsage, setMaxUsage] = useState(0);
+
+  const [erorExistShortCode, setErorExistShortCode] = useState("");
+
+  console.log(navigator.userAgent);
+  
+
+
 
 
 
@@ -117,6 +132,10 @@ export default function Home() {
     } else {
       await handleGenerateShortLink();
     }
+    setCustomLink("");
+    setTimeExpired("");
+    setPassword("");
+    setMaxUsage(0);
   }
 
   
@@ -127,6 +146,8 @@ export default function Home() {
 
     const now = new Date();
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(timeZone);
+    
 
     try {
       
@@ -141,7 +162,11 @@ export default function Home() {
           body: JSON.stringify({
             originalUrl: link,
             trafficDate: now.toISOString(),
-	          zoneId: timeZone
+	          zoneId: timeZone,
+            shortCode: customLink,
+            timeExpired: timeExpired,
+            password: password,
+            maxUsage: maxUsage,
           }),
         },
       );
@@ -216,7 +241,12 @@ export default function Home() {
           body: JSON.stringify({
             originalUrl: link,
             trafficDate: now.toISOString(),
-	          zoneId: timeZone
+	          zoneId: timeZone,
+
+            shortCode: customLink,
+            timeExpired: timeExpired,
+            password: password,
+            maxUsage: maxUsage,
           }),
         },
       );
@@ -294,7 +324,49 @@ export default function Home() {
 
   const handleSaveImage = () => {
     saveBase64Image(qr, 'qr.png');
-};
+  };  
+
+  const handleSettingToggle = () => {
+    setSettingToggle(!settingToggle);
+  }
+
+  const handleCheckShortCode = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.CHECK_EXIST_SHORT_CODE}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            shortCode: customLink,
+          }),
+        },
+      );
+
+      if (response.ok) {
+        // Xử lý khi API trả về thành công
+        const data = await response.json();
+        if (data.data.isExistShortCode) {
+          setErorExistShortCode("Short Link đã tồn tại.")
+          setCustomLink("")
+        } else {
+          setErorExistShortCode("")
+        }
+
+        
+
+      } else {
+        setCustomLink("")
+        console.error("API call failed");
+        return ;
+      }
+    } catch (error) {
+      console.error("Error calling API:", error);
+    }
+
+  }
 
 
   return (
@@ -314,15 +386,51 @@ export default function Home() {
         )}
 
         {isShortCode ? 
-        <div className='flex justify-between border rounded-full p-3'>
+        <div className='flex justify-between border rounded-md p-3'>
           <input onChange={(e) => setLink(e.target.value)} disabled  type="text" className='w-[70%] focus:outline-none mx-5 bg-white' placeholder='Link cần rút gọn của bạn' value={link}/>
-          <button onClick={handleCopyShortLink} className='font-bold text-xl px-5 py-2 rounded-md bg-sky-600 hover:bg-sky-700' type="button">Copy</button>
-          <button onClick={() => {navigate("/")}} className='font-bold text-xl px-5 py-2 rounded-full bg-sky-600 hover:bg-sky-700 ml-2' type="button">Mới</button>
+          <button onClick={handleCopyShortLink} className='font-bold text-xl px-5 py-2 rounded-md bg-blue-600 hover:bg-blue-700' type="button">Copy</button>
+          <button onClick={() => {navigate("/")}} className='font-bold text-xl px-5 py-2 rounded-md bg-blue-600 hover:bg-blue-700 ml-2' type="button">Mới</button>
         </div>
         : 
-        <div className='flex justify-between border rounded-full p-3'>
-          <input onChange={(e) => setLink(e.target.value)} type="text" className='w-[70%] focus:outline-none mx-5' placeholder='Link cần rút gọn của bạn' value={link}/>
-          <button onClick={handleShortLink} className='font-bold text-xl px-5 py-2 rounded-full bg-sky-600 hover:bg-sky-700' type="button">{isLoading ? 'Đang tạo...' : 'Rút gọn'}</button>
+        <div className='w-[1000px]'>
+          <div className='flex justify-between border rounded-t-md p-3'>
+            <input onChange={(e) => setLink(e.target.value)} type="text" className='w-[70%] focus:outline-none mx-5' placeholder='Link cần rút gọn của bạn' value={link}/>
+            <button onClick={handleShortLink} className='font-bold text-xl px-5 py-2 rounded-md bg-blue-600 hover:bg-blue-700' type="button">{isLoading ? 'Đang tạo...' : 'Rút gọn'}</button>
+          </div>
+          <div className='flex-col justify-between items-center border rounded-b-md p-3'>
+            <div className='flex justify-between items-center'>
+              <button onClick={handleSettingToggle} className='font-bold text-base px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-700' type="button"><FontAwesomeIcon icon={faGear} /> Tùy chọn</button>
+              <p className='pl-10'> Bằng việc bấm vào nút <span className='font-bold'>RÚT GỌN LINK</span>, đồng nghĩa với việc bạn đồng ý với <span className='text-red-500'>Điều khoản sử dụng</span></p>
+            </div>
+            {settingToggle && <div className='flex items-center justify-between p-2 mt-3'>
+              <div className='flex-col'>
+                <p className='font-semibold px-2'> Link tùy chỉnh </p>
+                <p className='text-sm font-thin px-2'> Mặc định, hệ thống sẽ tạo link ngẫu nhiên. Bạn có thể đặt link theo tùy chọn. </p>
+                <p className='text-sm font-thin px-2'> Vui lòng nhập vào giá trị chỉ bao gồm các chữ cái (hoa hoặc thường) và chữ số, không có ký tự đặc biệt. Ví dụ: 'abc123', 'A1B2C3'. </p>
+                <div className='text-sm font-thin px-2 text-red-500'>{erorExistShortCode}</div>
+                <input onBlur={handleCheckShortCode} onChange={(e) => setCustomLink(e.target.value)}   type="text" className='w-[80%] border rounded focus:outline-none p-1 m-2 bg-white' placeholder='Link tùy chọn'/>
+                
+              </div>
+            </div>}
+
+            {settingToggle && <div className='flex items-center justify-between p-2 mt-3'>
+              <div className='flex-col'>
+                <p className='font-semibold px-2'> Giới hạn truy cập </p>
+                <p className='text-sm font-thin px-2'> Mặc định, hệ thống sẽ tạo link không có giới hạn truy cập. Bạn có thể đặt giới hạn đó. </p>
+                <input onChange={(e) => setMaxUsage(e.target.value)}  type="number" className='w-[80%] border rounded focus:outline-none p-1 m-2 bg-white' placeholder='Giới hạn truy cập'/>
+              </div>
+              <div className='flex-col'>
+                <p className='font-semibold px-2'> Thời gian hiệu lực </p>
+                <p className='text-sm font-thin px-2'> Sau 00:00 phút của ngày được chọn, link sẽ không còn hiệu lực. Để trống nếu giữ vĩnh viễn link. </p>
+                <input onChange={(e) => {setTimeExpired(e.target.value+"T00:00:00Z")}}  type="date" className='w-[80%] border rounded focus:outline-none p-1 m-2 bg-white' placeholder='MM/DD/YYYY'/>
+              </div>
+              <div className='flex-col'>
+                <p className='font-semibold px-2'> Mật khẩu bảo vệ </p>
+                <p className='text-sm font-thin px-2'> Đặt mật khẩu để bảo vệ link rút gọn. Để trống nếu bạn không muốn đặt mật khẩu.</p>
+                <input onChange={(e) => setPassword(e.target.value)}  type="text" className='w-[80%] border rounded focus:outline-none p-1 m-2 bg-white' placeholder='Mật khẩu bảo vệ'/>
+              </div>
+            </div>}
+          </div>
         </div>
         }
 
@@ -337,7 +445,7 @@ export default function Home() {
         {isShortCode && (
           <div className='flex border rounded-sm p-2 mt-4'> 
             <div>
-              <button onClick={handleSaveImage} className='font-bold text-xl px-3 py-1 rounded-lg bg-sky-600 hover:bg-sky-700' type="button">Lưu QR code</button>
+              <button onClick={handleSaveImage} className='font-bold text-xl px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700' type="button">Lưu QR code</button>
               <p className='flex p-2 text-red-500'>Lưu ý: Những link gốc có nội dung giả mạo, lừa đảo, tín dụng đen, đồi trụy, vi phạm pháp luật </p>
               <p className='flex p-2 text-red-500'>sẽ bị xóa mà không cần báo trước.</p>
 

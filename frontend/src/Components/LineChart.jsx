@@ -22,6 +22,7 @@ const getData = (type, arrDay, arrMonth) => {
         case 'month':
             return {
                 // ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                // labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,11,12,13,14,15,16,17,18,19,20,11,12,13,14,15,16,17,18,19,20],
                 labels: arrMonth.label,
                 datasets: [{
                     label: 'Mức độ tăng trưởng lượng truy cập trong 1 tuần',
