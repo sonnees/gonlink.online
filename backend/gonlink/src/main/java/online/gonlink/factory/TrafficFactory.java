@@ -2,7 +2,6 @@ package online.gonlink.factory;
 
 import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.entity.RealTimeTraffic;
-import online.gonlink.entity.Traffic;
 import online.gonlink.factory.enumdef.TrafficType;
 import online.gonlink.entity.DayTraffic;
 import online.gonlink.entity.MonthTraffic;

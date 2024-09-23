@@ -4,11 +4,19 @@ option java_multiple_files = true;
 package online.gonlink;
 import "common.proto";
 
+// === Constant ===
+message DataClient{
+  string name = 1;
+  int64 data = 2;
+}
+
 // === GeneralTraffics ===
 message GeneralTrafficsSearchRequest{
   optional int32 page = 1;
   optional int32 size = 2;
   optional string sortDirection = 3;
+
+  string zoneId = 4;
 }
 
 message PageInfo {
@@ -33,6 +41,8 @@ message GeneralTrafficsSearchResponse{
 // === MonthTraffics ===
 message MonthTrafficsGetAllRequest{
   string shortCode = 1;
+
+  string zoneId = 2;
 }
 
 message TrafficData{
@@ -44,11 +54,13 @@ message MonthTrafficGetAllResponse{
   repeated TrafficData trafficData = 1;
 }
 
-// === MonthTraffics ===
+// === DayTraffics ===
 message DayTrafficInRangeRequest{
   string shortCode = 1;
   string fromDate = 2;
   string toDate = 3;
+
+  string zoneId = 4;
 }
 
 message DayTrafficInRangeResponse{
@@ -58,8 +70,8 @@ message DayTrafficInRangeResponse{
 // === RealTimeTraffics ===
 message RealTimeTrafficRequest{
   string shortCode = 1;
-  string clientTime = 2;
-  string zoneId = 3;
+  string zoneId = 2;
+
 }
 
 message RealTimeTrafficResponse{

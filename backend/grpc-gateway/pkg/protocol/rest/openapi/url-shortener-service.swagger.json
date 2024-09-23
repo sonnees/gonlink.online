@@ -302,9 +302,6 @@
         "originalUrl": {
           "type": "string"
         },
-        "trafficDate": {
-          "type": "string"
-        },
         "zoneId": {
           "type": "string"
         },
@@ -333,9 +330,6 @@
       "type": "object",
       "properties": {
         "originalUrl": {
-          "type": "string"
-        },
-        "trafficDate": {
           "type": "string"
         },
         "zoneId": {
@@ -369,22 +363,10 @@
         "shortCode": {
           "type": "string"
         },
-        "clientTime": {
-          "type": "string"
-        },
         "zoneId": {
           "type": "string"
         },
         "password": {
-          "type": "string"
-        },
-        "city": {
-          "type": "string"
-        },
-        "country": {
-          "type": "string"
-        },
-        "timezone": {
           "type": "string"
         },
         "browser": {

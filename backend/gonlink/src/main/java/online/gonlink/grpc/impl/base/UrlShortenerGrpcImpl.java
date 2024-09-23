@@ -54,7 +54,7 @@ public class UrlShortenerGrpcImpl extends UrlShortenerImplBase implements Common
     @Override
     public void generateShortCode(GenerateShortCodeRequest request, StreamObserver<BaseGrpc> responseObserver) {
         long startTime = System.currentTimeMillis();
-        htmlSanitizerServiceImpl.sanitizeStrict(request.getOriginalUrl());
+        htmlSanitizerServiceImpl.sanitize(request.getOriginalUrl());
         ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(request);
 
         String base64Image = qrCodeService.getStringBase64Image(config.getFRONTEND_DOMAIN() + responseGenerateShortCode.shortCode());
@@ -73,7 +73,7 @@ public class UrlShortenerGrpcImpl extends UrlShortenerImplBase implements Common
         long startTime = System.currentTimeMillis();
         Context context = Context.current();
         String email = AuthConstant.USER_EMAIL.get(context);
-        htmlSanitizerServiceImpl.sanitizeStrict(request.getOriginalUrl());
+        htmlSanitizerServiceImpl.sanitize(request.getOriginalUrl());
         ResponseGenerateShortCode responseGenerateShortCode = urlShortenerService.generateShortCode(email, request);
 
         String base64Image = qrCodeService.getStringBase64Image(config.getFRONTEND_DOMAIN() + responseGenerateShortCode.shortCode());

@@ -189,9 +189,12 @@
         },
         "toDate": {
           "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
         }
       },
-      "title": "=== MonthTraffics ==="
+      "title": "=== DayTraTraffics ==="
     },
     "gonlinkErrorDetailGrpc": {
       "type": "object",
@@ -228,6 +231,9 @@
         },
         "sortDirection": {
           "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
         }
       },
       "title": "=== GeneralTraffics ==="
@@ -237,6 +243,9 @@
       "properties": {
         "shortCode": {
           "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
         }
       },
       "title": "=== MonthTraffics ==="
@@ -245,9 +254,6 @@
       "type": "object",
       "properties": {
         "shortCode": {
-          "type": "string"
-        },
-        "clientTime": {
           "type": "string"
         },
         "zoneId": {

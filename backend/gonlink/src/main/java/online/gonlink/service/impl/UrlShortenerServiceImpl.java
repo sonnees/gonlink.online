@@ -20,8 +20,7 @@ import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.entity.ShortUrl;
 import online.gonlink.exception.ResourceException;
-import online.gonlink.repository.ShortUrlRepository;
-import online.gonlink.service.AccountService;
+import online.gonlink.repository.ShortUrlRep;
 import online.gonlink.service.TrafficService;
 import online.gonlink.util.CheckURL;
 import online.gonlink.util.ShortCodeGenerator;
@@ -31,10 +30,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,11 +42,10 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     private final PasswordEncoder passwordEncoder;
 
     /** Repository */
-    private final ShortUrlRepository shortUrlRepository;
+    private final ShortUrlRep shortUrlRep;
 
     /** Service */
     private final TrafficService trafficService;
-    private final AccountService accountService;
     private final ShortCodeGenerator shortCodeGenerator;
     private final CheckURL checkURL;
 
@@ -62,18 +58,18 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     @Override
     public ShortCodeCheckExistResponse checkExistShortCode(ShortCodeCheckExistRequest request) {
        return ShortCodeCheckExistResponse.newBuilder()
-               .setIsExistShortCode(shortUrlRepository.existsById(request.getShortCode()))
+               .setIsExistShortCode(shortUrlRep.existsById(request.getShortCode()))
                .build();
     }
 
     @Override
     public boolean checkExistShortCode(String shortCode) {
-        return shortUrlRepository.existsById(shortCode);
+        return shortUrlRep.existsById(shortCode);
     }
 
     @Override
     public OriginalUrlCheckNeedPasswordResponse checkNeedPassword(OriginalUrlCheckNeedPasswordRequest request){
-        ShortUrl shortUrl = this.shortUrlRepository.findById(request.getShortCode())
+        ShortUrl shortUrl = this.shortUrlRep.findById(request.getShortCode())
                 .orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE, null));
         return OriginalUrlCheckNeedPasswordResponse.newBuilder()
                 .setIsNeedPassword(Objects.nonNull(shortUrl.getPassword()))
@@ -99,7 +95,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
         checkURL.isNotForbidden(shortUrlGenerateDto.originalUrl());
         checkURL.isExits(shortUrlGenerateDto.originalUrl());
 
-        Optional<ShortUrl> existingShortUrl = shortUrlRepository.findShortUrlsByOriginalUrl(shortUrlGenerateDto.originalUrl());
+        Optional<ShortUrl> existingShortUrl = shortUrlRep.findShortUrlsByOriginalUrl(shortUrlGenerateDto.originalUrl());
 
         if (existingShortUrl.isPresent())
             response = new ResponseGenerateShortCode(existingShortUrl.get().getShortCode(), !IS_OWNER);
@@ -109,13 +105,13 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
                         ? shortUrlGenerateDto.shortCode()
                         : shortCodeGenerator.generateShortCode();
 
-                if(shortUrlRepository.existsById(shortCode)) continue;
+                if(shortUrlRep.existsById(shortCode)) continue;
                 ShortUrl shortUrl = ShortUrlUtil.mapFromShortUrlGenerateDto(shortUrlGenerateDto);
                 shortUrl.setShortCode(shortCode);
                 shortUrl.setOwner(email);
                 shortUrl.setActive(true);
-                shortUrlRepository.insert(shortUrl);
-                trafficService.createsTraffic(new TrafficCreateDto(shortCode, haveAccount?email:"", shortUrlGenerateDto.originalUrl(), shortUrlGenerateDto.dateTime(), shortUrlGenerateDto.zoneId()));
+                shortUrlRep.insert(shortUrl);
+                trafficService.createsTraffic(new TrafficCreateDto(shortCode, haveAccount?email:"", shortUrlGenerateDto.originalUrl(), shortUrlGenerateDto.time()));
                 response = new ResponseGenerateShortCode(shortCode, IS_OWNER);
                 break;
             }
@@ -125,7 +121,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 
     @Override
     public GetOriginalUrlResponse getOriginalUrl(GetOriginalUrlRequest request) {
-        ShortUrl shortUrl = shortUrlRepository.findById(request.getShortCode()).orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_URL.name(), null));
+        ShortUrl shortUrl = shortUrlRep.findById(request.getShortCode()).orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_URL.name(), null));
         validateUrlAccessibility(shortUrl, request);
         trafficService.increasesTraffic(shortUrl.getOwner(), shortUrl.getOriginalUrl(), request);
         return GetOriginalUrlResponse.newBuilder()
@@ -136,7 +132,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public RemoveUrlResponse removeByShortCode(RemoveUrlRequest request) {
-        shortUrlRepository.deleteById(request.getShortCode());
+        shortUrlRep.deleteById(request.getShortCode());
         trafficService.deletesTraffic(request);
         return RemoveUrlResponse.newBuilder()
                 .setIsRemoved(true)
@@ -145,7 +141,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 
     @Override
     public ShortCodeUpdateResponse updateByID(ShortCodeUpdateRequest request) {
-        ShortUrl shortUrl = shortUrlRepository.findById(request.getShortCode())
+        ShortUrl shortUrl = shortUrlRep.findById(request.getShortCode())
                 .orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_URL.name(), null));
         shortUrl.setAlias(request.getAlias().equals("")?shortUrl.getAlias():request.getAlias());
         shortUrl.setDesc(request.getDesc().equals("")?shortUrl.getDesc():request.getDesc());
@@ -155,18 +151,17 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 
         /* request.getTimeExpired() = 'null' means no timeExpired will be used */
         if(request.getTimeExpired().equals("null")){
-            shortUrl.setTimeExpired(null);
+            shortUrl.setTimeExpired("");
         } else{
             if (!request.getTimeExpired().equals("")){
                 ZonedDateTime zonedDateTime = ZonedDateTime.parse(request.getTimeExpired()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
-                LocalDateTime timeExpiredDateTime = LocalDateTime.ofInstant(zonedDateTime.toInstant(), ZoneId.of(request.getZoneId()));
-                shortUrl.setTimeExpired(timeExpiredDateTime);
+                shortUrl.setTimeExpired(zonedDateTime.toString());
             }
         }
         shortUrl.setMaxUsage(request.getMaxUsage()==0?shortUrl.getMaxUsage():request.getMaxUsage());
         shortUrl.setActive(request.getActive());
 
-        ShortUrl shortUrlUpdated = shortUrlRepository.save(shortUrl);
+        ShortUrl shortUrlUpdated = shortUrlRep.save(shortUrl);
         return ShortCodeUpdateResponse.newBuilder()
                 .setShortCode(shortUrlUpdated.getShortCode())
                 .setOriginalUrl(shortUrlUpdated.getOriginalUrl())
@@ -188,8 +183,8 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
                 throw new ResourceException(ExceptionEnum.PASSWORD_NOT_CORRECT.name(), null);
         if(Objects.nonNull(shortUrl.getTimeExpired())){
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(request.getZoneId()));
-            LocalDateTime timeExpired = shortUrl.getTimeExpired();
-            if(timeExpired.isBefore(ChronoLocalDateTime.from(now)))
+            ZonedDateTime timeExpired = ZonedDateTime.parse(shortUrl.getTimeExpired()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
+            if(timeExpired.isBefore(now))
                 throw new ResourceException(ExceptionEnum.TIME_EXPIRED.name(), null);
         }
         if(shortUrl.getMaxUsage() != 0){
