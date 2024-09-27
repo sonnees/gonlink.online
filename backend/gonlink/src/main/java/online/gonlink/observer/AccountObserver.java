@@ -1,6 +1,8 @@
 package online.gonlink.observer;
 
+import io.grpc.Context;
 import online.gonlink.GetOriginalUrlRequest;
+import online.gonlink.constant.AuthConstant;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.repository.AccountRep;
 import org.springframework.stereotype.Component;
@@ -23,16 +25,15 @@ public class AccountObserver implements TrafficObserver{
         this.increaseBrowserClick(owner, request.getBrowser());
         this.increaseBrowserVersionClick(owner, request.getBrowserVersion());
         this.increaseOperatingSystemClick(owner, request.getOperatingSystem());
-        this.increaseOsVersionClick(owner, request.getOsVersion());
         this.increaseDeviceTypeClick(owner, request.getDeviceType());
-        this.increaseDeviceManufacturerClick(owner, request.getDeviceManufacturer());
-        this.increaseDeviceNameClick(owner, request.getDeviceName());
         repository.increaseTotalClick(owner);
         return true;
     }
 
     @Override
-    public void deletesTraffic(String shortCode) throws RuntimeException {}
+    public void deletesTraffic(String shortCode) throws RuntimeException {
+        repository.minusTotalShortURL(AuthConstant.USER_EMAIL.get(Context.current()));
+    }
 
     @Override
     public boolean createsTraffic(TrafficCreateDto record) throws RuntimeException {
@@ -95,38 +96,12 @@ public class AccountObserver implements TrafficObserver{
         return updatedCount;
     }
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public long increaseOsVersionClick(String email, String osVersion) {
-        long updatedCount = repository.increaseOsVersionClick(email, osVersion);
-        if (updatedCount == 0) {
-            return repository.insertNewOsVersionClick(email, osVersion);
-        }
-        return updatedCount;
-    }
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public long increaseDeviceTypeClick(String email, String deviceType) {
         long updatedCount = repository.increaseDeviceTypeClick(email, deviceType);
         if (updatedCount == 0) {
             return repository.insertNewDeviceTypeClick(email, deviceType);
-        }
-        return updatedCount;
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public long increaseDeviceManufacturerClick(String email, String deviceManufacturer) {
-        long updatedCount = repository.increaseDeviceManufacturerClick(email, deviceManufacturer);
-        if (updatedCount == 0) {
-            return repository.insertNewDeviceManufacturerClick(email, deviceManufacturer);
-        }
-        return updatedCount;
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public long increaseDeviceNameClick(String email, String deviceName) {
-        long updatedCount = repository.increaseDeviceNameClick(email, deviceName);
-        if (updatedCount == 0) {
-            return repository.insertNewDeviceNameClick(email, deviceName);
         }
         return updatedCount;
     }

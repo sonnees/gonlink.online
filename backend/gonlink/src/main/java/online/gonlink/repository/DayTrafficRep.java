@@ -63,31 +63,10 @@ public interface DayTrafficRep extends MongoRepository<DayTraffic, TrafficID> {
     @Update("{ '$push': { 'operatingSystems': { 'name': ?1, 'data': 1 } } }")
     long insertNewOperatingSystemClick(TrafficID id, String operatingSystem);
 
-    @Query("{ 'id': ?0, 'osVersions.name': ?1 }")
-    @Update("{ '$inc': { 'osVersions.$.data': 1 } }")
-    long increaseOsVersionClick(TrafficID id, String osVersion);
-    @Query("{ 'id': ?0, 'osVersions.name': { '$ne': ?1 } }")
-    @Update("{ '$push': { 'osVersions': { 'name': ?1, 'data': 1 } } }")
-    long insertNewOsVersionClick(TrafficID id, String osVersion);
-
     @Query("{ 'id': ?0, 'deviceTypes.name': ?1 }")
     @Update("{ '$inc': { 'deviceTypes.$.data': 1 } }")
     long increaseDeviceTypeClick(TrafficID id, String deviceType);
     @Query("{ 'id': ?0, 'deviceTypes.name': { '$ne': ?1 } }")
     @Update("{ '$push': { 'deviceTypes': { 'name': ?1, 'data': 1 } } }")
     long insertNewDeviceTypeClick(TrafficID id, String deviceType);
-
-    @Query("{ 'id': ?0, 'deviceManufacturers.name': ?1 }")
-    @Update("{ '$inc': { 'deviceManufacturers.$.data': 1 } }")
-    long increaseDeviceManufacturerClick(TrafficID id, String deviceManufacturer);
-    @Query("{ 'id': ?0, 'deviceManufacturers.name': { '$ne': ?1 } }")
-    @Update("{ '$push': { 'deviceManufacturers': { 'name': ?1, 'data': 1 } } }")
-    long insertNewDeviceManufacturerClick(TrafficID id, String deviceManufacturer);
-
-    @Query("{ 'id': ?0, 'deviceNames.name': ?1 }")
-    @Update("{ '$inc': { 'deviceNames.$.data': 1 } }")
-    long increaseDeviceNameClick(TrafficID id, String deviceName);
-    @Query("{ 'id': ?0, 'deviceNames.name': { '$ne': ?1 } }")
-    @Update("{ '$push': { 'deviceNames': { 'name': ?1, 'data': 1 } } }")
-    long insertNewDeviceNameClick(TrafficID id, String deviceName);
 }

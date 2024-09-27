@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 public final class ShortUrlUtil {
 
@@ -22,7 +23,7 @@ public final class ShortUrlUtil {
     }
 
     private static ShortUrlGenerateDto getShortUrlGenerateDto(PasswordEncoder passwordEncoder, String zoneId, String shortCode, String originalUrl, String alias, String desc, String timeExpired, String password, long maxUsage) {
-        String exp = "";
+        String exp = null;
         if(!timeExpired.equals("")){
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(zoneId));
             ZonedDateTime timeExpiredZonedDateTime = ZonedDateTime.parse(timeExpired).withZoneSameInstant(ZoneId.of(zoneId));
@@ -53,6 +54,5 @@ public final class ShortUrlUtil {
         shortUrl.setTimeExpired(dto.timeExpired());
         return shortUrl;
     }
-
 
 }

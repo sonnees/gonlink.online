@@ -9,6 +9,7 @@ import online.gonlink.RemoveUrlRequest;
 import online.gonlink.RemoveUrlResponse;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.dto.TrafficDataDto;
+import online.gonlink.dto.TrafficDayDto;
 import online.gonlink.entity.GeneralTraffic;
 import org.springframework.data.domain.Page;
 
@@ -21,6 +22,6 @@ public interface TrafficService {
     Page<GeneralTraffic> searchGeneralTraffics(GeneralTrafficsSearchRequest request);
     GeneralTraffic searchGeneralTrafficByShortCode(String shortCode);
     List<TrafficDataDto> getAllMonthTraffic(MonthTrafficsGetAllRequest request);
-    List<TrafficDataDto> getDayTrafficInRange(DayTrafficInRangeRequest request);
+    TrafficDayDto getDayTrafficInRange(DayTrafficInRangeRequest request);
     short[] getRealTimeTraffic(RealTimeTrafficRequest request);
 }

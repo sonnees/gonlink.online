@@ -14,6 +14,7 @@ import online.gonlink.config.GlobalValue;
 import online.gonlink.constant.CommonConstant;
 import online.gonlink.constant.AuthConstant;
 import online.gonlink.dto.TrafficCreateDto;
+import online.gonlink.dto.TrafficDayDto;
 import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.dto.TrafficDataDto;
 import online.gonlink.entity.DayTraffic;
@@ -31,7 +32,6 @@ import online.gonlink.repository.DayTrafficRep;
 import online.gonlink.repository.GeneralTrafficRep;
 import online.gonlink.repository.MonthTrafficRep;
 import online.gonlink.repository.RealTimeTrafficRep;
-import online.gonlink.repository.ShortUrlRep;
 import online.gonlink.service.TrafficService;
 import online.gonlink.util.DateUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,7 +52,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +71,6 @@ public class TrafficServiceImpl implements TrafficService {
     private final MonthTrafficRep monthTrafficRep;
     private final DayTrafficRep dayTrafficRep;
     private final RealTimeTrafficRep realTimeTrafficRep;
-    private final ShortUrlRep shortUrlRep;
 
     /** Observer */
     private final TrafficSubject trafficSubject;
@@ -81,7 +83,7 @@ public class TrafficServiceImpl implements TrafficService {
 
     public TrafficServiceImpl(GlobalValue globalValue, DateTimeFormatter formatter, GeneralTrafficRep generalTrafficRep,
                               MonthTrafficRep monthTrafficRep, DayTrafficRep dayTrafficRep,
-                              RealTimeTrafficRep realTimeTrafficRep, ShortUrlRep shortUrlRep,
+                              RealTimeTrafficRep realTimeTrafficRep,
                               TrafficSubject trafficSubject, GeneralTrafficObserver generalTrafficObserver,
                               MonthTrafficObserver monthTrafficObserver, DayTrafficObserver dayTrafficObserver,
                               RealTimeTrafficObserver realTimeTrafficObserver, @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)  SimpleDateFormat simpleDateFormatWithTime,
@@ -93,7 +95,6 @@ public class TrafficServiceImpl implements TrafficService {
         this.monthTrafficRep = monthTrafficRep;
         this.dayTrafficRep = dayTrafficRep;
         this.realTimeTrafficRep = realTimeTrafficRep;
-        this.shortUrlRep = shortUrlRep;
         this.trafficSubject = trafficSubject;
         this.accountObserver = accountObserver;
         this.generalTrafficObserver = generalTrafficObserver;
@@ -127,7 +128,6 @@ public class TrafficServiceImpl implements TrafficService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public RemoveUrlResponse deletesTraffic(RemoveUrlRequest request) {
-        shortUrlRep.deleteById(request.getShortCode());
         trafficSubject.deletesTraffic(request.getShortCode());
         return RemoveUrlResponse.newBuilder()
                 .build();
@@ -207,15 +207,25 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     @Override
-    public List<TrafficDataDto> getDayTrafficInRange(DayTrafficInRangeRequest request) {
+    public TrafficDayDto getDayTrafficInRange(DayTrafficInRangeRequest request) {
+        TrafficDayDto trafficDayDto = new TrafficDayDto();
         GeneralTraffic generalTraffic = generalTrafficRep.findById(request.getShortCode()).orElseThrow(
                 () -> new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE, null)
         );
-        ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
+
         List<TrafficDataDto> trafficDataDtoList = new ArrayList<>();
+        Map<String, Long>  cities = new HashMap<>();
+        Map<String, Long>  countries = new HashMap<>();
+        Map<String, Long>  zoneIds = new HashMap<>();
+        Map<String, Long>  browsers = new HashMap<>();
+        Map<String, Long>  browserVersions = new HashMap<>();
+        Map<String, Long>  operatingSystems = new HashMap<>();
+        Map<String, Long>  deviceTypes = new HashMap<>();
+
+        ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
         List<DayTraffic> dayTrafficList = dayTrafficRep.findByShortCodeAndTrafficDate(request.getShortCode(), request.getFromDate(), request.getToDate());
         LocalDate toDate = DateUtil.getLocalDateForZoneID(LocalDate.parse(request.getToDate()), zoneId);
-        LocalDate curDate = DateUtil.getLocalDateForZoneID(LocalDate.parse(request.getToDate()), zoneId);
+        LocalDate curDate = DateUtil.getLocalDateForZoneID(LocalDate.parse(request.getFromDate()), zoneId);
 
         /* Allow more than 1 day to avoid time zone discrepancies, then block future times. */
         LocalDate toDay = LocalDate.now(zoneId).plusDays(1);
@@ -239,7 +249,15 @@ public class TrafficServiceImpl implements TrafficService {
                 if(index < dayTrafficList.size()){
                     DayTraffic dayTraffic = dayTrafficList.get(index);
                     indexDate = LocalDate.parse(dayTraffic.getId().getTrafficDate());
+
                     trafficHours = dayTraffic.getTrafficHours();
+                    dayTraffic.getCities().forEach(i -> cities.merge(i.getName(), 1L, Long::sum));
+                    dayTraffic.getCountries().forEach(i -> countries.merge(i.getName(), 1L, Long::sum));
+                    dayTraffic.getZoneIds().forEach(i -> zoneIds.merge(i.getName(), 1L, Long::sum));
+                    dayTraffic.getBrowsers().forEach(i -> browsers.merge(i.getName(), 1L, Long::sum));
+                    dayTraffic.getBrowserVersions().forEach(i -> browserVersions.merge(i.getName(), 1L, Long::sum));
+                    dayTraffic.getOperatingSystems().forEach(i -> operatingSystems.merge(i.getName(), 1L, Long::sum));
+                    dayTraffic.getDeviceTypes().forEach(i -> deviceTypes.merge(i.getName(), 1L, Long::sum));
                     index++;
                 } else {
                     trafficDataDtoList.addAll(appendData(curDate, new short[24]));
@@ -255,7 +273,16 @@ public class TrafficServiceImpl implements TrafficService {
                     return DateUtil.isBeforeLocalDateTime(timeCreate, dt.getDate().substring(0,13))
                             && DateUtil.isBeforeLocalDateTime(dt.getDate().substring(0,13), timeNow );
                     }).collect(Collectors.toList());
-        return trafficDataDtoList;
+
+        trafficDayDto.setTrafficDataDtoList(trafficDataDtoList);
+        trafficDayDto.setCities(cities);
+        trafficDayDto.setCountries(countries);
+        trafficDayDto.setZoneIds(zoneIds);
+        trafficDayDto.setBrowsers(browsers);
+        trafficDayDto.setBrowserVersions(browserVersions);
+        trafficDayDto.setOperatingSystems(operatingSystems);
+        trafficDayDto.setDeviceTypes(deviceTypes);
+        return trafficDayDto;
     }
 
     private List<TrafficDataDto> appendData(LocalDate indexDate, short[] trafficHours) {

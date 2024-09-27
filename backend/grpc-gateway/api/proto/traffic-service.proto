@@ -54,7 +54,7 @@ message MonthTrafficGetAllResponse{
   repeated Click trafficData = 1;
 }
 
-// === DayTraTraffics ===
+// === DayTraffics ===
 message DayTrafficInRangeRequest{
   string shortCode = 1;
   string fromDate = 2;
@@ -64,6 +64,13 @@ message DayTrafficInRangeRequest{
 
 message DayTrafficInRangeResponse{
   repeated Click click = 1;
+  repeated Click cities = 2;
+  repeated Click countries = 3;
+  repeated Click zoneIds = 4;
+  repeated Click browsers = 5;
+  repeated Click browserVersions = 6;
+  repeated Click operatingSystems = 7;
+  repeated Click deviceTypes = 8;
 }
 
 // === RealTimeTraffics ===
