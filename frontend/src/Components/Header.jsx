@@ -25,7 +25,7 @@ export default function Header() {
       <img src="/src/assets/Logo.png" alt="" className='w-[180px]' onClick={()=>navigate("/")}/>
       <ul className='flex gap-4 md:gap-14'>
         <li className='hover:font-bold cursor-pointer'> <Link to={"home"}>Trang chủ</Link> </li>
-        {name && <li className='hover:font-bold cursor-pointer'> <Link to={"history"}>Lịch sử</Link> </li>}
+        {/* {name && <li className='hover:font-bold cursor-pointer'> <Link to={"history"}>Lịch sử</Link> </li>} */}
         <li className='hover:font-bold cursor-pointer'> <Link to={"contact"}>Liên hệ</Link> </li>
         <li className='hover:font-bold cursor-pointer'> <Link to={"about"}>Thông tin</Link> </li>
         <li className='cursor-pointer relative'> 

@@ -40,6 +40,9 @@ export default function Router() {
             element: <AdminLayout/>,
             children: [
                 { path: "linkmanagement", element: <LinkManagement/> },
+                { path: "history", element: <History /> },
+                { path: "detailLink", element: <DetailLink/> },
+                { path: "notfound", element: <PageNotFound/> },
 
             ],
         },

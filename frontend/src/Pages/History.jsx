@@ -69,7 +69,8 @@ export default function History() {
 
 
   return (
-    <div className='justify-center h-screen'>
+    <div className='justify-center h-[calc(100vh-70px)]'>
+
         
         <h1 className='flex justify-center pt-12 font-bold text-xl'>Lịch sử rút gọn link</h1>
         {historyShortLink && <div className='flex justify-center'>

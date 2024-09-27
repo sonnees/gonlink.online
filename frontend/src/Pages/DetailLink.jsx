@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink, faQrcode } from '@fortawesome/free-solid-svg-icons';
-import LineChart from '../Components/LineChart';
+import LineChartCustom from '../Components/LineChartCustom';
 
 
 export default function DetailLink() {
@@ -36,7 +36,7 @@ export default function DetailLink() {
 
 
     return (
-        <div className='flex flex-col items-center h-screen'>
+        <div className='h-[calc(100vh-70px)] flex flex-col items-center'>
             <div className='w-[70rem] h-36 flex-col justify-between items-center border border-gray-300 p-4 rounded-md mt-8 shadow-lg'> 
                 <div className='flex'>
                     <div className='pl-20'>
@@ -64,7 +64,7 @@ export default function DetailLink() {
 
             {/* <div className='w-[80rem] h-96 flex-col justify-between items-center border border-gray-300 p-4 rounded-md mt-8 shadow-lg'> */}
             <div className='w-[70rem] h-[30rem] flex-col justify-between items-center border border-gray-300 p-4 rounded-md mt-8 shadow-lg'>
-                {Cookies.get('token') && <LineChart token={Cookies.get('token')} shortCode={link.shortCode}/>}
+                {Cookies.get('token') && <LineChartCustom token={Cookies.get('token')} shortCode={link.shortCode}/>}
             </div>
 
 

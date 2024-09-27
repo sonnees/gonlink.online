@@ -19,8 +19,6 @@ export default function Home() {
   const [maxUsage, setMaxUsage] = useState(0);
 
   const [erorExistShortCode, setErorExistShortCode] = useState("");
-
-  console.log(navigator.userAgent);
   
 
 
@@ -141,7 +139,7 @@ export default function Home() {
   
 
   const handleGenerateShortLink = async () => {
-    console.log(link);
+    console.log(timeExpired);
     setIsLoading(true);
 
     const now = new Date();
@@ -192,7 +190,10 @@ export default function Home() {
         setIsShortCode(true);
         setQr("data:image/png;base64," + data.data.base64Image);
         // console.log(qr);
-        // console.log(data.data);
+        // console.log(data.data.isOwner)
+        if (!data.data.isOwner) {
+          alert("Bạn không phải là chủ sở hữu đường dẫn này!")
+        }
         
 
       } else {
@@ -274,6 +275,10 @@ export default function Home() {
         console.log(data.qr);
         getInfo(Cookies.get('token'));
 
+        if (!data.data.isOwner) { 
+          alert("Bạn không phải là chủ sở hữu đường dẫn này!")
+        }
+
       } else {
         // Xử lý khi API trả về lỗi
         // navigate("/");
@@ -351,6 +356,7 @@ export default function Home() {
         if (data.data.isExistShortCode) {
           setErorExistShortCode("Short Link đã tồn tại.")
           setCustomLink("")
+          // alert("Short Link đã tồn tại.")
         } else {
           setErorExistShortCode("")
         }
@@ -382,6 +388,14 @@ export default function Home() {
           <div className="flex justify-center items-center">
             {/* <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10"></div> */}
             <div className='flex justify-center p-2 text-red-500'>{error}</div>
+          </div>
+        )}
+
+        {isLoading && (
+          <div className="my-2 flex justify-center items-center">
+            <div className="h-10 w-10 rounded-full border-4 border-t-transparent border-b-transparent border-r-transparent animate-spin"
+              style={{background: 'linear-gradient(90deg, #ff7e5f, #feb47b)', clipPath: 'circle(50%)'}}>
+            </div>
           </div>
         )}
 
@@ -422,7 +436,7 @@ export default function Home() {
               <div className='flex-col'>
                 <p className='font-semibold px-2'> Thời gian hiệu lực </p>
                 <p className='text-sm font-thin px-2'> Sau 00:00 phút của ngày được chọn, link sẽ không còn hiệu lực. Để trống nếu giữ vĩnh viễn link. </p>
-                <input onChange={(e) => {setTimeExpired(e.target.value+"T00:00:00Z")}}  type="date" className='w-[80%] border rounded focus:outline-none p-1 m-2 bg-white' placeholder='MM/DD/YYYY'/>
+                <input onChange={(e) => {setTimeExpired(e.target.value+"T00:00:00Z"); console.log(e.target.value+timeExpired);}}  type="date" className='w-[80%] border rounded focus:outline-none p-1 m-2 bg-white' placeholder='MM/DD/YYYY'/>
               </div>
               <div className='flex-col'>
                 <p className='font-semibold px-2'> Mật khẩu bảo vệ </p>
@@ -433,14 +447,6 @@ export default function Home() {
           </div>
         </div>
         }
-
-        {isLoading && (
-          <div className="mt-4 flex justify-center items-center">
-            <div className="h-10 w-10 rounded-full border-4 border-t-transparent border-b-transparent border-r-transparent animate-spin"
-              style={{background: 'linear-gradient(90deg, #ff7e5f, #feb47b)', clipPath: 'circle(50%)'}}>
-            </div>
-          </div>
-        )}
 
         {isShortCode && (
           <div className='flex border rounded-sm p-2 mt-4'> 

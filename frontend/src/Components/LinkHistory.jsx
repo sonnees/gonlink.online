@@ -16,7 +16,7 @@ export default function LinkHistory({link}) {
     };
 
     const handleClick = () => {
-        navigate('/page/detailLink', { state: { link } });
+        navigate('/link/detailLink', { state: { link } });
     };
 
   return (

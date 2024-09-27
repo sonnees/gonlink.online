@@ -2,10 +2,19 @@ import React from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { UserProvider } from '../context/UserContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faHouse, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'js-cookie';
 
 export default function AdminLayout() {
     const navigate = useNavigate();
+
+    const handleLogout = () => {
+        Cookies.remove('token');
+        Cookies.remove('sonnees-auth');
+        localStorage.clear();
+        // navigate("/page/home");
+        window.location.href = '/';
+    }
 
   return (
     <div className='flex flex-col h-screen'>
@@ -18,16 +27,19 @@ export default function AdminLayout() {
             <div className='w-[20%] bg-black text-white h-[calc(100vh-70px)]'>
                 <ul className='flex flex-col items-center justify-center p-2 my-5'>
                     <li className='hover:font-bold cursor-pointer p-2 hover:bg-blue-500 w-[80%] rounded-md m-1'>
-                        <Link to={"home"}><FontAwesomeIcon icon={faHouse} /> Trang chủ</Link> 
+                        <Link to={"linkmanagement"}><FontAwesomeIcon icon={faHouse} /> Trang chủ</Link> 
                     </li>
                     <li className='hover:font-bold cursor-pointer p-2 hover:bg-blue-500 w-[80%] rounded-md m-1'>
                         <Link to={"history"}><FontAwesomeIcon icon={faCalendarDays} /> Lịch sử</Link>
                     </li>
-                    <li className='hover:font-bold cursor-pointer p-2 hover:bg-blue-500 w-[80%] rounded-md m-1'>
+                    {/* <li className='hover:font-bold cursor-pointer p-2 hover:bg-blue-500 w-[80%] rounded-md m-1'>
                         <Link to={"contact"}>Liên hệ</Link>
                     </li>
                     <li className='hover:font-bold cursor-pointer p-2 hover:bg-blue-500 w-[80%] rounded-md m-1'>
                         <Link to={"about"}>Thông tin</Link>
+                    </li> */}
+                    <li className='hover:font-bold cursor-pointer p-2 hover:bg-blue-500 w-[80%] rounded-md m-1'>
+                        <div onClick={handleLogout}> <FontAwesomeIcon icon={faRightFromBracket} /> Đăng xuất</div>
                     </li>
                 </ul>
             </div>
