@@ -29,10 +29,7 @@ message GetInfoAccountResponse{
   repeated DataClient browsers = 11;
   repeated DataClient browserVersions = 12;
   repeated DataClient operatingSystems = 13;
-  repeated DataClient osVersions = 14;
-  repeated DataClient deviceTypes = 15;
-  repeated DataClient deviceManufacturers = 16;
-  repeated DataClient deviceNames = 17;
+  repeated DataClient deviceTypes = 14;
 }
 
 service Account {

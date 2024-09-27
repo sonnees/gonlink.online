@@ -13,6 +13,10 @@ public interface AccountRep extends MongoRepository<Account, String> {
     long increaseTotalShortURL(String email);
 
     @Query("{email: ?0}")
+    @Update("{'$inc': {totalShortURL: -1}}")
+    long minusTotalShortURL(String email);
+
+    @Query("{email: ?0}")
     @Update("{'$inc': {totalClick: 1}}")
     long increaseTotalClick(String email);
 
@@ -58,31 +62,10 @@ public interface AccountRep extends MongoRepository<Account, String> {
     @Update("{ '$push': { 'operatingSystems': { 'name': ?1, 'data': 1 } } }")
     long insertNewOperatingSystemClick(String email, String operatingSystem);
 
-    @Query("{ 'email': ?0, 'osVersions.name': ?1 }")
-    @Update("{ '$inc': { 'osVersions.$.data': 1 } }")
-    long increaseOsVersionClick(String email, String osVersion);
-    @Query("{ 'email': ?0, 'osVersions.name': { '$ne': ?1 } }")
-    @Update("{ '$push': { 'osVersions': { 'name': ?1, 'data': 1 } } }")
-    long insertNewOsVersionClick(String email, String osVersion);
-
     @Query("{ 'email': ?0, 'deviceTypes.name': ?1 }")
     @Update("{ '$inc': { 'deviceTypes.$.data': 1 } }")
     long increaseDeviceTypeClick(String email, String deviceType);
     @Query("{ 'email': ?0, 'deviceTypes.name': { '$ne': ?1 } }")
     @Update("{ '$push': { 'deviceTypes': { 'name': ?1, 'data': 1 } } }")
     long insertNewDeviceTypeClick(String email, String deviceType);
-
-    @Query("{ 'email': ?0, 'deviceManufacturers.name': ?1 }")
-    @Update("{ '$inc': { 'deviceManufacturers.$.data': 1 } }")
-    long increaseDeviceManufacturerClick(String email, String deviceManufacturer);
-    @Query("{ 'email': ?0, 'deviceManufacturers.name': { '$ne': ?1 } }")
-    @Update("{ '$push': { 'deviceManufacturers': { 'name': ?1, 'data': 1 } } }")
-    long insertNewDeviceManufacturerClick(String email, String deviceManufacturer);
-
-    @Query("{ 'email': ?0, 'deviceNames.name': ?1 }")
-    @Update("{ '$inc': { 'deviceNames.$.data': 1 } }")
-    long increaseDeviceNameClick(String email, String deviceName);
-    @Query("{ 'email': ?0, 'deviceNames.name': { '$ne': ?1 } }")
-    @Update("{ '$push': { 'deviceNames': { 'name': ?1, 'data': 1 } } }")
-    long insertNewDeviceNameClick(String email, String deviceName);
 }
