@@ -19,8 +19,8 @@ public class AccountObserver implements TrafficObserver{
 
     @Override
     public boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request) throws RuntimeException {
-        this.increaseCityClick(owner, "Ho Chi Minh");
-        this.increaseCountryClick(owner, "VietNam");
+        this.increaseCityClick(owner, request.getCity());
+        this.increaseCountryClick(owner,  request.getCountry());
         this.increaseZoneIdClick(owner, request.getZoneId());
         this.increaseBrowserClick(owner, request.getBrowser());
         this.increaseBrowserVersionClick(owner, request.getBrowserVersion());
