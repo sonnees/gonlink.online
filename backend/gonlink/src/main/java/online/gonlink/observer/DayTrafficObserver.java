@@ -1,6 +1,8 @@
 package online.gonlink.observer;
 
+import io.grpc.Context;
 import online.gonlink.GetOriginalUrlRequest;
+import online.gonlink.constant.AuthConstant;
 import online.gonlink.constant.CommonConstant;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.exception.enumdef.ExceptionEnum;
@@ -76,8 +78,8 @@ public class DayTrafficObserver implements TrafficObserver{
     }
 
     private void increaseAdvance(GetOriginalUrlRequest request, TrafficID trafficID) {
-        this.increaseCityClick(trafficID, "Ho Chi Minh");
-        this.increaseCountryClick(trafficID, "VietNam");
+        this.increaseCityClick(trafficID, request.getCity());
+        this.increaseCountryClick(trafficID, request.getCountry());
         this.increaseZoneIdClick(trafficID, request.getZoneId());
         this.increaseBrowserClick(trafficID, request.getBrowser());
         this.increaseBrowserVersionClick(trafficID, request.getBrowserVersion());

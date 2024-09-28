@@ -22,7 +22,7 @@ import online.gonlink.dto.ResponseGenerateShortCode;
 import online.gonlink.service.UrlShortenerService;
 import online.gonlink.service.QRCodeService;
 import online.gonlink.service.base.impl.HtmlSanitizerServiceImpl;
-import online.gonlink.service.base.impl.IPGeolocationServiceImpl;
+import online.gonlink.service.base.impl.IPInfoServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 @GrpcService
@@ -35,7 +35,7 @@ public class UrlShortenerGrpcImpl extends UrlShortenerImplBase implements Common
     private final UrlShortenerService urlShortenerService;
     private final QRCodeService qrCodeService;
     private final HtmlSanitizerServiceImpl htmlSanitizerServiceImpl;
-    private final IPGeolocationServiceImpl ipGeolocationService;
+    private final IPInfoServiceImpl ipGeolocationService;
 
     @Override
     public void checkExistShortCode(ShortCodeCheckExistRequest request, StreamObserver<BaseGrpc> responseObserver) {
@@ -89,6 +89,22 @@ public class UrlShortenerGrpcImpl extends UrlShortenerImplBase implements Common
 
     @Override
     public void getOriginalUrl(GetOriginalUrlRequest request, StreamObserver<BaseGrpc> responseObserver) {
+        Context context = Context.current();
+        request = GetOriginalUrlRequest.newBuilder()
+                .setShortCode(request.getShortCode())
+                .setZoneId((request.getZoneId()))
+                .setPassword(request.getPassword())
+                .setIp(AuthConstant.IP.get(context))
+                .setHostname(AuthConstant.HOST_NAME.get(context))
+                .setCity(AuthConstant.CITY.get(context))
+                .setRegion(AuthConstant.REGION.get(context))
+                .setCountry(AuthConstant.COUNTRY.get(context))
+                .setLoc(AuthConstant.LOC.get(context))
+                .setOrg(AuthConstant.ORG.get(context))
+                .setPostal(AuthConstant.POSTAL.get(context))
+                .setTimezone(AuthConstant.TIMEZONE.get(context))
+                .build();
+
         long startTime = System.currentTimeMillis();
         responseObserver.onNext(this.handleSuccess(urlShortenerService.getOriginalUrl(request), startTime));
         responseObserver.onCompleted();

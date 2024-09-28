@@ -54,10 +54,9 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     private final Boolean IS_OWNER = true;
     private final Boolean HAVE_ACCOUNT = true;
 
-
     @Override
     public ShortCodeCheckExistResponse checkExistShortCode(ShortCodeCheckExistRequest request) {
-       return ShortCodeCheckExistResponse.newBuilder()
+        return ShortCodeCheckExistResponse.newBuilder()
                .setIsExistShortCode(shortUrlRep.existsById(request.getShortCode()))
                .build();
     }
@@ -135,8 +134,6 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
         GeneralTraffic generalTraffic = trafficService.searchGeneralTrafficByShortCode(request.getShortCode());
         if(Objects.isNull(generalTraffic))
             throw new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE, null);
-
-
 
         shortUrlRep.deleteById(request.getShortCode());
         trafficService.deletesTraffic(request);

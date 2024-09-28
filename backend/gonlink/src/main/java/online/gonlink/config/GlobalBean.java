@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import online.gonlink.constant.CommonConstant;
 import online.gonlink.exception.GrpcExceptionInterceptor;
+import online.gonlink.service.base.impl.IPInfoServiceImpl;
 import online.gonlink.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +21,8 @@ import java.util.TimeZone;
 public class GlobalBean {
 
     @GrpcGlobalServerInterceptor
-    AuthInterceptor authInterceptor(GlobalValue globalValue, JwtUtil jwtUtil) {
-        return new AuthInterceptor(globalValue, jwtUtil);
+    AuthInterceptor authInterceptor(GlobalValue globalValue, JwtUtil jwtUtil, IPInfoServiceImpl ipGeolocationService) {
+        return new AuthInterceptor(globalValue, jwtUtil, ipGeolocationService);
     }
 
     @GrpcGlobalServerInterceptor

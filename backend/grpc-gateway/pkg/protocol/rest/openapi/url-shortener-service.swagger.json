@@ -378,16 +378,7 @@
         "operatingSystem": {
           "type": "string"
         },
-        "osVersion": {
-          "type": "string"
-        },
         "deviceType": {
-          "type": "string"
-        },
-        "deviceManufacturer": {
-          "type": "string"
-        },
-        "deviceName": {
           "type": "string"
         }
       },
