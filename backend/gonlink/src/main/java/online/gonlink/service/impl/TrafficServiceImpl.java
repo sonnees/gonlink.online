@@ -1,6 +1,6 @@
 package online.gonlink.service.impl;
 
-import com.google.common.base.Objects;
+import java.util.Objects;
 import io.grpc.Context;
 import jakarta.annotation.PostConstruct;
 import online.gonlink.DayTrafficInRangeRequest;
@@ -13,8 +13,10 @@ import online.gonlink.RemoveUrlResponse;
 import online.gonlink.config.GlobalValue;
 import online.gonlink.constant.CommonConstant;
 import online.gonlink.constant.AuthConstant;
+import online.gonlink.dto.GeneralTrafficDto;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.dto.TrafficDayDto;
+import online.gonlink.entity.ShortUrl;
 import online.gonlink.exception.enumdef.ExceptionEnum;
 import online.gonlink.dto.TrafficDataDto;
 import online.gonlink.entity.DayTraffic;
@@ -33,7 +35,9 @@ import online.gonlink.repository.GeneralTrafficRep;
 import online.gonlink.repository.MonthTrafficRep;
 import online.gonlink.repository.RealTimeTrafficRep;
 import online.gonlink.service.TrafficService;
+import online.gonlink.service.UrlShortenerService;
 import online.gonlink.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,14 +50,12 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -80,6 +82,9 @@ public class TrafficServiceImpl implements TrafficService {
     private final DayTrafficObserver dayTrafficObserver;
     private final RealTimeTrafficObserver realTimeTrafficObserver;
 
+    /** Service */
+    @Autowired
+    private UrlShortenerService urlShortenerService;
 
     public TrafficServiceImpl(GlobalValue globalValue, DateTimeFormatter formatter, GeneralTrafficRep generalTrafficRep,
                               MonthTrafficRep monthTrafficRep, DayTrafficRep dayTrafficRep,
@@ -87,8 +92,7 @@ public class TrafficServiceImpl implements TrafficService {
                               TrafficSubject trafficSubject, GeneralTrafficObserver generalTrafficObserver,
                               MonthTrafficObserver monthTrafficObserver, DayTrafficObserver dayTrafficObserver,
                               RealTimeTrafficObserver realTimeTrafficObserver, @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS)  SimpleDateFormat simpleDateFormatWithTime,
-                              AccountObserver accountObserver
-                              ) {
+                              AccountObserver accountObserver) {
         this.globalValue = globalValue;
         this.formatter = formatter;
         this.generalTrafficRep = generalTrafficRep;
@@ -134,7 +138,7 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     @Override
-    public Page<GeneralTraffic> searchGeneralTraffics(GeneralTrafficsSearchRequest request){
+    public Page<GeneralTrafficDto> searchGeneralTraffics(GeneralTrafficsSearchRequest request){
         ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
         Page<GeneralTraffic> traffics;
         Context context = Context.current();
@@ -145,7 +149,19 @@ public class TrafficServiceImpl implements TrafficService {
         traffics = generalTrafficRep.findAllByOwner(AuthConstant.USER_EMAIL.get(context), pageable);
         /* Convert server time to client time */
         traffics.forEach(gt-> gt.setTrafficDate(DateUtil.getStringZonedDateTime(gt.getTrafficDate(), formatter, zoneId)));
-        return traffics;
+
+        /* Convert to GeneralTrafficDto */
+        return traffics.map(gt->{
+            ShortUrl shortUrl = urlShortenerService.search(gt.getShortCode());
+            GeneralTrafficDto generalTrafficDto = new GeneralTrafficDto(gt);
+            generalTrafficDto.setActive(shortUrl.isActive());
+            generalTrafficDto.setAlias(shortUrl.getAlias());
+            generalTrafficDto.setDesc(shortUrl.getDesc());
+            generalTrafficDto.setDesc(shortUrl.getDesc());
+            generalTrafficDto.setTimeExpired(Objects.nonNull(shortUrl.getTimeExpired())?DateUtil.getStringZonedDateTime(shortUrl.getTimeExpired(), formatter, zoneId):"");
+            generalTrafficDto.setUsingPassword(Objects.nonNull(shortUrl.getPassword()));
+            return generalTrafficDto;
+        });
     }
 
     @Override
@@ -234,8 +250,8 @@ public class TrafficServiceImpl implements TrafficService {
         short[] trafficHours = null;
 
         while (curDate.isEqual(toDate) || curDate.isBefore(toDate)){
-            if(!Objects.equal(null, indexDate)){
-                if(Objects.equal(indexDate, curDate)){
+            if(!Objects.equals(null, indexDate)){
+                if(Objects.equals(indexDate, curDate)){
                     trafficDataDtoList.addAll(appendData(curDate, trafficHours));
                     indexDate = null;
                 } else {

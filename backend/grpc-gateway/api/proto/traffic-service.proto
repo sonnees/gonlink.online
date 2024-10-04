@@ -12,11 +12,6 @@ message DataClient{
   int64 data = 2;
 }
 
-message Click{
-  string date = 1;
-  int64 data = 2;
-}
-
 // === GeneralTraffics ===
 message GeneralTrafficsSearchRequest{
   optional int32 page = 1;
@@ -37,6 +32,13 @@ message GeneralTraffic{
   string originalUrl = 2;
   string trafficDate = 3;
   int64 traffic = 4;
+
+  bool active = 5;
+  string alias = 6;
+  string desc = 7;
+  string timeExpired = 8;
+  bool isUsingPassword = 9;
+  int64 maxUsage = 10;
 }
 
 message GeneralTrafficsSearchResponse{
@@ -51,7 +53,7 @@ message MonthTrafficsGetAllRequest{
 }
 
 message MonthTrafficGetAllResponse{
-  repeated Click trafficData = 1;
+  repeated DataClient trafficData = 1;
 }
 
 // === DayTraffics ===
@@ -63,14 +65,14 @@ message DayTrafficInRangeRequest{
 }
 
 message DayTrafficInRangeResponse{
-  repeated Click click = 1;
-  repeated Click cities = 2;
-  repeated Click countries = 3;
-  repeated Click zoneIds = 4;
-  repeated Click browsers = 5;
-  repeated Click browserVersions = 6;
-  repeated Click operatingSystems = 7;
-  repeated Click deviceTypes = 8;
+  repeated DataClient click = 1;
+  repeated DataClient cities = 2;
+  repeated DataClient countries = 3;
+  repeated DataClient zoneIds = 4;
+  repeated DataClient browsers = 5;
+  repeated DataClient browserVersions = 6;
+  repeated DataClient operatingSystems = 7;
+  repeated DataClient deviceTypes = 8;
 }
 
 // === RealTimeTraffics ===

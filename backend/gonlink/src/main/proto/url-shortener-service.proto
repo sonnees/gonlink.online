@@ -65,7 +65,6 @@ message GetOriginalUrlRequest{
   optional string postal = 11;
   optional string timezone = 12;
 
-
   // frontend
   string browser = 13;
   string browserVersion = 14;
