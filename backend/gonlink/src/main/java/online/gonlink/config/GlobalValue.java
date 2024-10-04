@@ -13,6 +13,12 @@ import java.util.Set;
 @Configuration
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GlobalValue {
+    @Value("${gonlink.ipinfo.key}")
+    String IP_IPINFO_KEY;
+
+    @Value("${gonlink.ipinfo.default_ip}")
+    String DEFAULT_IP;
+
     @Value("${gonlink.paging.page}")
     int PAGE;
 
@@ -60,6 +66,9 @@ public class GlobalValue {
 
     @Value("${gonlink.public-method}")
     Set<String> PUBLIC_METHODS;
+
+    @Value("${gonlink.public-method-get-origin}")
+    Set<String> PUBLIC_METHODS_GET_ORIGIN;
 
     @Value("${gonlink.thread.fix-pool}")
     int THREAD_FIX_POOL;

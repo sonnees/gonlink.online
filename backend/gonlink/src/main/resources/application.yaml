@@ -18,6 +18,7 @@ spring:
 # global value
 gonlink:
   public-method: online.gonlink.UrlShortener/generateShortCode, online.gonlink.UrlShortener/getOriginalUrl, online.gonlink.UrlShortener/getStringBase64Image, online.gonlink.UrlShortener/checkExistShortCode, online.gonlink.UrlShortener/checkNeedPasswordGetOriginalUrl
+  public-method-get-origin: online.gonlink.UrlShortener/getOriginalUrl
   allowed-characters: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
   length-short-code: 6
   url-forbidden: rutlink.online, bom.to, bit.ly, bitly.com, ow.ly, shorturl.at, tinyurl.com, vnlink.top, Is.gd, rebrandly.com, tiny.cc, AdF.ly, MegaURL.in, Shrtfly.com, Shorte.st, Ouo.io, bit.do, s.pro.vn, short.com.vn, by.com.vn
@@ -37,6 +38,9 @@ gonlink:
     sort-direction: ASC
   thread:
     fix-pool: 5
+  ipinfo:
+    key: 9dc0fbe4b149e4
+    default_ip: 14.186.165.140
 
 front-end:
   domain: http://localhost:5173/

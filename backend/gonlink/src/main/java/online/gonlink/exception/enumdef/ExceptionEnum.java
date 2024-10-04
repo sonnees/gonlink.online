@@ -44,6 +44,8 @@ public enum ExceptionEnum {
     TIME_EXPIRED(Status.PERMISSION_DENIED, "TIME_EXPIRED"),
     MAX_ACCESS(Status.PERMISSION_DENIED, "MAX_ACCESS"),
 
+    /** IP */
+    IP_ERROR(Status.UNAVAILABLE, "IP_ERROR!"),
 
 
     ;

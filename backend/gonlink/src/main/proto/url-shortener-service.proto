@@ -54,13 +54,23 @@ message GetOriginalUrlRequest{
   string shortCode = 1;
   string zoneId = 2;
   optional string password = 3;
-  optional string browser = 4;
-  optional string browserVersion = 5;
-  optional string operatingSystem = 6;
-  optional string osVersion = 7;
-  optional string deviceType = 8;
-  optional string deviceManufacturer = 9;
-  optional string deviceName = 10;
+
+  optional string ip = 4;
+  optional string hostname = 5;
+  optional string city = 6;
+  optional string region = 7;
+  optional string country = 8;
+  optional string loc = 9;
+  optional string org = 10;
+  optional string postal = 11;
+  optional string timezone = 12;
+
+
+  // frontend
+  string browser = 13;
+  string browserVersion = 14;
+  string operatingSystem = 15;
+  string deviceType = 16;
 }
 message GetOriginalUrlResponse{
   string originalUrl = 1;

@@ -47,10 +47,7 @@ public class AccountServiceImpl implements AccountService {
                 .addAllBrowsers(account.getBrowsers().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .addAllBrowserVersions(account.getBrowserVersions().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .addAllOperatingSystems(account.getOperatingSystems().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
-                .addAllOsVersions(account.getOsVersions().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .addAllDeviceTypes(account.getDeviceTypes().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
-                .addAllDeviceManufacturers(account.getDeviceManufacturers().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
-                .addAllDeviceNames(account.getDeviceNames().stream().map(i -> DataClient.newBuilder().setName(i.getName()).setData(i.getData()).build()).collect(Collectors.toList()))
                 .build();
     }
 }

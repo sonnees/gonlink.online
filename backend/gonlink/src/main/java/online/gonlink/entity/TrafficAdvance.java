@@ -14,8 +14,5 @@ public class TrafficAdvance {
     private List<TrafficData> browsers = new ArrayList<>();
     private List<TrafficData> browserVersions = new ArrayList<>();
     private List<TrafficData> operatingSystems = new ArrayList<>();
-    private List<TrafficData> osVersions = new ArrayList<>();
     private List<TrafficData> deviceTypes = new ArrayList<>();
-    private List<TrafficData> deviceManufacturers = new ArrayList<>();
-    private List<TrafficData> deviceNames = new ArrayList<>();
 }

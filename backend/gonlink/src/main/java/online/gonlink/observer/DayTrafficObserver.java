@@ -1,6 +1,8 @@
 package online.gonlink.observer;
 
+import io.grpc.Context;
 import online.gonlink.GetOriginalUrlRequest;
+import online.gonlink.constant.AuthConstant;
 import online.gonlink.constant.CommonConstant;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.exception.enumdef.ExceptionEnum;
@@ -76,16 +78,13 @@ public class DayTrafficObserver implements TrafficObserver{
     }
 
     private void increaseAdvance(GetOriginalUrlRequest request, TrafficID trafficID) {
-        this.increaseCityClick(trafficID, "Ho Chi Minh");
-        this.increaseCountryClick(trafficID, "VietNam");
+        this.increaseCityClick(trafficID, request.getCity());
+        this.increaseCountryClick(trafficID, request.getCountry());
         this.increaseZoneIdClick(trafficID, request.getZoneId());
         this.increaseBrowserClick(trafficID, request.getBrowser());
         this.increaseBrowserVersionClick(trafficID, request.getBrowserVersion());
         this.increaseOperatingSystemClick(trafficID, request.getOperatingSystem());
-        this.increaseOsVersionClick(trafficID, request.getOsVersion());
         this.increaseDeviceTypeClick(trafficID, request.getDeviceType());
-        this.increaseDeviceManufacturerClick(trafficID, request.getDeviceManufacturer());
-        this.increaseDeviceNameClick(trafficID, request.getDeviceName());
     }
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -143,15 +142,6 @@ public class DayTrafficObserver implements TrafficObserver{
     }
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public long increaseOsVersionClick(TrafficID id, String osVersion) {
-        long updatedCount = repository.increaseOsVersionClick(id, osVersion);
-        if (updatedCount == 0) {
-            return repository.insertNewOsVersionClick(id, osVersion);
-        }
-        return updatedCount;
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public long increaseDeviceTypeClick(TrafficID id, String deviceType) {
         long updatedCount = repository.increaseDeviceTypeClick(id, deviceType);
         if (updatedCount == 0) {
@@ -160,21 +150,4 @@ public class DayTrafficObserver implements TrafficObserver{
         return updatedCount;
     }
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public long increaseDeviceManufacturerClick(TrafficID id, String deviceManufacturer) {
-        long updatedCount = repository.increaseDeviceManufacturerClick(id, deviceManufacturer);
-        if (updatedCount == 0) {
-            return repository.insertNewDeviceManufacturerClick(id, deviceManufacturer);
-        }
-        return updatedCount;
-    }
-
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public long increaseDeviceNameClick(TrafficID id, String deviceName) {
-        long updatedCount = repository.increaseDeviceNameClick(id, deviceName);
-        if (updatedCount == 0) {
-            return repository.insertNewDeviceNameClick(id, deviceName);
-        }
-        return updatedCount;
-    }
 }

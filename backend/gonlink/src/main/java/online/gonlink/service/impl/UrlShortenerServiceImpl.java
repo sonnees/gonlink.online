@@ -54,10 +54,9 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     private final Boolean IS_OWNER = true;
     private final Boolean HAVE_ACCOUNT = true;
 
-
     @Override
     public ShortCodeCheckExistResponse checkExistShortCode(ShortCodeCheckExistRequest request) {
-       return ShortCodeCheckExistResponse.newBuilder()
+        return ShortCodeCheckExistResponse.newBuilder()
                .setIsExistShortCode(shortUrlRep.existsById(request.getShortCode()))
                .build();
     }
@@ -132,6 +131,10 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public RemoveUrlResponse removeByShortCode(RemoveUrlRequest request) {
+        GeneralTraffic generalTraffic = trafficService.searchGeneralTrafficByShortCode(request.getShortCode());
+        if(Objects.isNull(generalTraffic))
+            throw new ResourceException(ExceptionEnum.NOT_FOUND_SHORT_CODE, null);
+
         shortUrlRep.deleteById(request.getShortCode());
         trafficService.deletesTraffic(request);
         return RemoveUrlResponse.newBuilder()
@@ -151,7 +154,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 
         /* request.getTimeExpired() = 'null' means no timeExpired will be used */
         if(request.getTimeExpired().equals("null")){
-            shortUrl.setTimeExpired("");
+            shortUrl.setTimeExpired(null);
         } else{
             if (!request.getTimeExpired().equals("")){
                 ZonedDateTime zonedDateTime = ZonedDateTime.parse(request.getTimeExpired()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
@@ -167,8 +170,8 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
                 .setOriginalUrl(shortUrlUpdated.getOriginalUrl())
                 .setAlias(shortUrlUpdated.getAlias())
                 .setDesc(shortUrlUpdated.getDesc())
-                .setPassword(Objects.isNull(shortUrlUpdated.getPassword())?"":shortUrlUpdated.getPassword())
-                .setTimeExpired(Objects.isNull(shortUrlUpdated.getTimeExpired())?"":shortUrlUpdated.getTimeExpired().toString())
+                .setPassword(Objects.isNull(shortUrlUpdated.getPassword())?null:shortUrlUpdated.getPassword())
+                .setTimeExpired(Objects.isNull(shortUrlUpdated.getTimeExpired())?null:shortUrlUpdated.getTimeExpired().toString())
                 .setMaxUsage(shortUrlUpdated.getMaxUsage())
                 .setActive(shortUrlUpdated.isActive())
                 .build();
