@@ -369,8 +369,36 @@
         "password": {
           "type": "string"
         },
-        "browser": {
+        "ip": {
           "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "loc": {
+          "type": "string"
+        },
+        "org": {
+          "type": "string"
+        },
+        "postal": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "browser": {
+          "type": "string",
+          "title": "frontend"
         },
         "browserVersion": {
           "type": "string"

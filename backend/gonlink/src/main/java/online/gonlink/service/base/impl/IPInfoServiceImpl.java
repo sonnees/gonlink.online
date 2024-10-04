@@ -21,7 +21,7 @@ public class IPInfoServiceImpl {
     public IpInfoDto get(String ip){
         HttpURLConnection conn = null;
         try{
-            if(ip.equals("::1")) ip = config.getDEFAULT_IP();
+            if(ip.equals("::1") || ip.equals("127.0.0.1")) ip = config.getDEFAULT_IP();
 
             String apiUrl = String.format("https://ipinfo.io/%s/json?token=%s", ip, config.getIP_IPINFO_KEY());
             URL url = new URL(apiUrl);

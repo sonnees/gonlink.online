@@ -15,6 +15,7 @@ import online.gonlink.ShortCodeCheckExistResponse;
 import online.gonlink.ShortCodeUpdateRequest;
 import online.gonlink.ShortCodeUpdateResponse;
 import online.gonlink.dto.ResponseGenerateShortCode;
+import online.gonlink.entity.ShortUrl;
 
 public interface UrlShortenerService {
     OriginalUrlCheckNeedPasswordResponse checkNeedPassword(OriginalUrlCheckNeedPasswordRequest request);
@@ -23,6 +24,7 @@ public interface UrlShortenerService {
     ResponseGenerateShortCode generateShortCode(GenerateShortCodeRequest request);
     ResponseGenerateShortCode generateShortCode(String email, GenerateShortCodeAccountRequest request);
     GetOriginalUrlResponse getOriginalUrl(GetOriginalUrlRequest request);
+    ShortUrl search(String shortCode);
     RemoveUrlResponse removeByShortCode(RemoveUrlRequest request);
     ShortCodeUpdateResponse updateByID(ShortCodeUpdateRequest request);
 }

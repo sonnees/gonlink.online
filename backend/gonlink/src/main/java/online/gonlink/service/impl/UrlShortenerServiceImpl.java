@@ -129,6 +129,11 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     }
 
     @Override
+    public ShortUrl search(String shortCode) {
+        return shortUrlRep.findById(shortCode).orElseThrow(() -> new ResourceException(ExceptionEnum.NOT_FOUND_URL.name(), null));
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public RemoveUrlResponse removeByShortCode(RemoveUrlRequest request) {
         GeneralTraffic generalTraffic = trafficService.searchGeneralTrafficByShortCode(request.getShortCode());

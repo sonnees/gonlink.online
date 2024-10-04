@@ -31,6 +31,13 @@ message GeneralTraffic{
   string originalUrl = 2;
   string trafficDate = 3;
   int64 traffic = 4;
+
+  bool active = 5;
+  string alias = 6;
+  string desc = 7;
+  string timeExpired = 8;
+  bool isUsingPassword = 9;
+  int64 maxUsage = 10;
 }
 
 message GeneralTrafficsSearchResponse{
@@ -45,13 +52,8 @@ message MonthTrafficsGetAllRequest{
   string zoneId = 2;
 }
 
-message TrafficData{
-  string date = 1;
-  int64 data = 2;
-}
-
 message MonthTrafficGetAllResponse{
-  repeated TrafficData trafficData = 1;
+  repeated DataClient trafficData = 1;
 }
 
 // === DayTraffics ===
@@ -63,14 +65,14 @@ message DayTrafficInRangeRequest{
 }
 
 message DayTrafficInRangeResponse{
-  repeated TrafficData trafficData = 1;
-  repeated TrafficData cities = 2;
-  repeated TrafficData countries = 3;
-  repeated TrafficData zoneIds = 4;
-  repeated TrafficData browsers = 5;
-  repeated TrafficData browserVersions = 6;
-  repeated TrafficData operatingSystems = 7;
-  repeated TrafficData deviceTypes = 8;
+  repeated DataClient trafficData = 1;
+  repeated DataClient cities = 2;
+  repeated DataClient countries = 3;
+  repeated DataClient zoneIds = 4;
+  repeated DataClient browsers = 5;
+  repeated DataClient browserVersions = 6;
+  repeated DataClient operatingSystems = 7;
+  repeated DataClient deviceTypes = 8;
 }
 
 // === RealTimeTraffics ===

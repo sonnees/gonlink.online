@@ -90,7 +90,7 @@ public class UrlShortenerGrpcImpl extends UrlShortenerImplBase implements Common
     @Override
     public void getOriginalUrl(GetOriginalUrlRequest request, StreamObserver<BaseGrpc> responseObserver) {
         Context context = Context.current();
-        request = GetOriginalUrlRequest.newBuilder()
+        GetOriginalUrlRequest requestBuilder = GetOriginalUrlRequest.newBuilder()
                 .setShortCode(request.getShortCode())
                 .setZoneId((request.getZoneId()))
                 .setPassword(request.getPassword())
@@ -103,10 +103,14 @@ public class UrlShortenerGrpcImpl extends UrlShortenerImplBase implements Common
                 .setOrg(AuthConstant.ORG.get(context))
                 .setPostal(AuthConstant.POSTAL.get(context))
                 .setTimezone(AuthConstant.TIMEZONE.get(context))
+                .setBrowser(request.getBrowser())
+                .setBrowserVersion(request.getBrowserVersion())
+                .setOperatingSystem(request.getOperatingSystem())
+                .setDeviceType(request.getDeviceType())
                 .build();
 
         long startTime = System.currentTimeMillis();
-        responseObserver.onNext(this.handleSuccess(urlShortenerService.getOriginalUrl(request), startTime));
+        responseObserver.onNext(this.handleSuccess(urlShortenerService.getOriginalUrl(requestBuilder), startTime));
         responseObserver.onCompleted();
     }
 

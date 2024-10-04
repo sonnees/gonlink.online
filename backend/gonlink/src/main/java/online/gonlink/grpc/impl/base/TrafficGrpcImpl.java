@@ -16,9 +16,9 @@ import online.gonlink.RealTimeTrafficRequest;
 import online.gonlink.RealTimeTrafficResponse;
 import online.gonlink.TrafficGrpc.TrafficImplBase;
 import online.gonlink.common.CommonHandler;
+import online.gonlink.dto.GeneralTrafficDto;
 import online.gonlink.dto.TrafficDataDto;
 import online.gonlink.dto.TrafficDayDto;
-import online.gonlink.entity.GeneralTraffic;
 import online.gonlink.service.TrafficService;
 import org.springframework.data.domain.Page;
 
@@ -37,7 +37,7 @@ public class TrafficGrpcImpl extends TrafficImplBase implements CommonHandler {
     @Override
     public void searchGeneralTraffics(GeneralTrafficsSearchRequest request, StreamObserver<BaseGrpc> responseObserver) {
         long startTime = System.currentTimeMillis();
-        Page<GeneralTraffic> traffics = trafficService.searchGeneralTraffics(request);
+        Page<GeneralTrafficDto> traffics = trafficService.searchGeneralTraffics(request);
         GeneralTrafficsSearchResponse response = GeneralTrafficsSearchResponse
                 .newBuilder()
                 .addAllGeneralTraffic(
@@ -49,6 +49,12 @@ public class TrafficGrpcImpl extends TrafficImplBase implements CommonHandler {
                                         .setOriginalUrl(o.getOriginalUrl())
                                         .setTrafficDate(o.getTrafficDate())
                                         .setTraffic(o.getTraffic())
+                                        .setActive(o.isActive())
+                                        .setAlias(o.getAlias())
+                                        .setDesc(o.getDesc())
+                                        .setTimeExpired(o.getTimeExpired())
+                                        .setIsUsingPassword(o.isUsingPassword())
+                                        .setMaxUsage(o.getMaxUsage())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
@@ -72,9 +78,9 @@ public class TrafficGrpcImpl extends TrafficImplBase implements CommonHandler {
                 .newBuilder()
                 .addAllTrafficData(
                         traffics.stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getDate())
+                                        .setName(o.getDate())
                                         .setData(o.getData())
                                         .build()
                                 )
@@ -95,72 +101,72 @@ public class TrafficGrpcImpl extends TrafficImplBase implements CommonHandler {
                 .newBuilder()
                 .addAllTrafficData(
                         traffics.getTrafficDataDtoList().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getDate())
+                                        .setName(o.getDate())
                                         .setData(o.getData())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
                 ).addAllCities(
                         traffics.getCities().entrySet().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getKey())
+                                        .setName(o.getKey())
                                         .setData(o.getValue())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
                 ).addAllCountries(
                         traffics.getCountries().entrySet().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getKey())
+                                        .setName(o.getKey())
                                         .setData(o.getValue())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
                 ).addAllZoneIds(
                         traffics.getZoneIds().entrySet().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getKey())
+                                        .setName(o.getKey())
                                         .setData(o.getValue())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
                 ).addAllBrowsers(
                         traffics.getBrowsers().entrySet().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getKey())
+                                        .setName(o.getKey())
                                         .setData(o.getValue())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
                 ).addAllBrowserVersions(
                         traffics.getBrowserVersions().entrySet().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getKey())
+                                        .setName(o.getKey())
                                         .setData(o.getValue())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
                 ).addAllOperatingSystems(
                         traffics.getOperatingSystems().entrySet().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getKey())
+                                        .setName(o.getKey())
                                         .setData(o.getValue())
                                         .build()
                                 )
                                 .collect(Collectors.toList())
                 ).addAllDeviceTypes(
                         traffics.getDeviceTypes().entrySet().stream()
-                                .map(o -> online.gonlink.TrafficData
+                                .map(o -> online.gonlink.DataClient
                                         .newBuilder()
-                                        .setDate(o.getKey())
+                                        .setName(o.getKey())
                                         .setData(o.getValue())
                                         .build()
                                 )

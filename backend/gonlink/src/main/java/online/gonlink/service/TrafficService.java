@@ -7,6 +7,7 @@ import online.gonlink.MonthTrafficsGetAllRequest;
 import online.gonlink.RealTimeTrafficRequest;
 import online.gonlink.RemoveUrlRequest;
 import online.gonlink.RemoveUrlResponse;
+import online.gonlink.dto.GeneralTrafficDto;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.dto.TrafficDataDto;
 import online.gonlink.dto.TrafficDayDto;
@@ -19,7 +20,7 @@ public interface TrafficService {
     boolean createsTraffic(TrafficCreateDto trafficCreateDto);
     boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request);
     RemoveUrlResponse deletesTraffic(RemoveUrlRequest request);
-    Page<GeneralTraffic> searchGeneralTraffics(GeneralTrafficsSearchRequest request);
+    Page<GeneralTrafficDto> searchGeneralTraffics(GeneralTrafficsSearchRequest request);
     GeneralTraffic searchGeneralTrafficByShortCode(String shortCode);
     List<TrafficDataDto> getAllMonthTraffic(MonthTrafficsGetAllRequest request);
     TrafficDayDto getDayTrafficInRange(DayTrafficInRangeRequest request);
