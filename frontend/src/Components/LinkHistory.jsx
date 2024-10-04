@@ -21,7 +21,7 @@ export default function LinkHistory({link}) {
 
   return (
     <div className='flex justify-center'>
-        <div className='w-[64rem] flex justify-between items-center border border-gray-300 p-4 rounded-md m-2 hover:bg-slate-100'>
+        <div className='w-[74rem] flex justify-between items-center border border-gray-300 p-2 hover:bg-slate-100'>
             
             <div>
                 <a href={link.originalUrl}><p className='truncate w-80'>{link.originalUrl}</p></a>

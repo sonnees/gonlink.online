@@ -26,6 +26,7 @@ export default function DynamicPage() {
                 operatingSystem: platform || 'Unknown OS',
                 deviceType: mobile ? 'Mobile' : 'Desktop',
             });
+
         } else {
             // Fallback nếu `navigator.userAgentData` không hỗ trợ
             setBrowserInfo({
@@ -35,6 +36,8 @@ export default function DynamicPage() {
                 deviceType: 'Unknown',
             });
         }
+        console.log(browserInfo);
+        
     }, []);
 
     console.log(browserInfo);
@@ -59,10 +62,6 @@ export default function DynamicPage() {
                     },
                     body: JSON.stringify({
                         shortCode: dynamicPath,
-                        browser: browserInfo.browser,
-                        browserVersion: browserInfo.browserVersion,
-                        operatingSystem: browserInfo.operatingSystem,
-                        deviceType: browserInfo.deviceType,
                     }),
                 },
             );
@@ -108,7 +107,11 @@ export default function DynamicPage() {
                     body: JSON.stringify({
                         shortCode: dynamicPath,
                         zoneId: timeZone,
-                        password: password
+                        password: password,
+                        browser: browserInfo.browser,
+                        browserVersion: browserInfo.browserVersion,
+                        operatingSystem: browserInfo.operatingSystem,
+                        deviceType: browserInfo.deviceType,
                     }),
                 },
             );
@@ -179,7 +182,11 @@ export default function DynamicPage() {
                     },
                     body: JSON.stringify({
                         shortCode: dynamicPath,
-                        zoneId: timeZone
+                        zoneId: timeZone,
+                        browser: browserInfo.browser,
+                        browserVersion: browserInfo.browserVersion,
+                        operatingSystem: browserInfo.operatingSystem,
+                        deviceType: browserInfo.deviceType,
                     }),
                 },
             );

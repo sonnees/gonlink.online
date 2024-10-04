@@ -109,6 +109,7 @@ export default function Home() {
         setUserObject(data.data)
         localStorage.setItem('userObj', JSON.stringify(data.data));
         setName(data.data.name)
+        setAvatar(data.data.avatar)
         
         
 

@@ -113,6 +113,20 @@ export default function LinkManagement() {
             </div>
           ) 
         }
+
+        {objData && (
+            <div className='w-72 h-80 bg-white m-2 rounded-lg'>
+              <PieChart label={"Biểu đồ hệ điều hành truy cập"} labels={objData.operatingSystems.map(item => item.name || "Không xác định")} data={objData.operatingSystems.map(item => item.data)}/>
+            </div>
+          ) 
+        }
+
+        {objData && (
+            <div className='w-72 h-80 bg-white m-2 rounded-lg'>
+              <PieChart label={"Biểu đồ loại thiết bị truy cập"} labels={objData.deviceTypes.map(item => item.name || "Không xác định")} data={objData.deviceTypes.map(item => item.data)}/>
+            </div>
+          ) 
+        }
       </div>
 
 
