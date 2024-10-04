@@ -1,8 +1,8 @@
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto'; // Đảm bảo Chart.js được tự động đăng ký
 
-const LineChart = ({ label, data, labels }) => {
+const BarChart = ({ label, data, labels }) => {
 
   const chartData = {
     labels: labels, // Nhận nhãn từ props
@@ -10,12 +10,9 @@ const LineChart = ({ label, data, labels }) => {
       {
         label: label, // Nhận label từ props
         data: data,   // Nhận data từ props
-        borderColor: 'rgba(75, 192, 192, 1)', // Màu đường biểu đồ
-        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Màu nền cho vùng dưới đường
-        tension: 0.4, // Độ cong của đường biểu đồ
-        pointBackgroundColor: 'rgba(75, 192, 192, 1)', // Màu của các điểm
-        pointBorderColor: '#fff', // Màu viền của các điểm
-        fill: true, // Có lấp đầy dưới đường hay không
+        backgroundColor: 'rgba(75, 192, 192, 0.5)', // Màu nền cho các cột
+        borderColor: 'rgba(75, 192, 192, 1)',       // Màu viền cho các cột
+        borderWidth: 1,
       },
     ],
   };
@@ -40,20 +37,13 @@ const LineChart = ({ label, data, labels }) => {
         align: 'center',
       },
       legend: {
-        display: true, // Hiển thị chú thích
-        position: 'top',
-        labels: {
-          font: {
-            size: 14,
-          },
-          color: '#333',
-        },
+        display: false, // Ẩn chú thích
       },
       tooltip: {
         enabled: true,
         callbacks: {
           label: function (tooltipItem) {
-            return ` ${tooltipItem.label}: ${tooltipItem.raw}`; // Nội dung khi hover vào từng điểm
+            return ` ${tooltipItem.label}: ${tooltipItem.raw}`; // Nội dung khi hover vào cột
           },
         },
       },
@@ -62,7 +52,7 @@ const LineChart = ({ label, data, labels }) => {
       x: {
         title: {
           display: true,
-          text: 'Thời gian',
+          text: 'Thời gian', // Tiêu đề cho trục X
           font: {
             size: 14,
             weight: 'bold',
@@ -72,18 +62,18 @@ const LineChart = ({ label, data, labels }) => {
       y: {
         title: {
           display: true,
-          text: 'Giá trị',
+          text: 'Giá trị', // Tiêu đề cho trục Y
           font: {
             size: 14,
             weight: 'bold',
           },
         },
         ticks: {
-        stepSize: 5, // Khoảng cách giữa các giá trị trên trục Y
-        font: {
-            size: 12, // Kích thước chữ của các giá trị
-        },
-        color: '#333', // Màu của các giá trị trên trục Y
+          stepSize: 5, // Khoảng cách giữa các giá trị trên trục Y
+          font: {
+            size: 12,
+          },
+          color: '#333',
         },
         beginAtZero: true, // Bắt đầu trục Y từ giá trị 0
       },
@@ -93,10 +83,10 @@ const LineChart = ({ label, data, labels }) => {
   return (
     <div className="flex justify-center items-center">
       <div className="w-[68rem] h-96">
-        <Line data={chartData} options={options} />
+        <Bar data={chartData} options={options} />
       </div>
     </div>
   );
 };
 
-export default LineChart;
+export default BarChart;

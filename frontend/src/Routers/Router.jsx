@@ -9,6 +9,8 @@ import DynamicPage from '../Pages/DynamicPage'
 import Login from '../Login/Login'
 import History from '../Pages/History'
 import DetailLink from '../Pages/DetailLink'
+import LinkManagement from '../Pages/LinkManagement'
+import AdminLayout from '../Layouts/AdminLayout'
 
 export default function Router() {
     return useRoutes([
@@ -33,6 +35,17 @@ export default function Router() {
             path: "/login",
             element: <Login/>,
         }, 
+        {
+            path: "/link",
+            element: <AdminLayout/>,
+            children: [
+                { path: "linkmanagement", element: <LinkManagement/> },
+                { path: "history", element: <History /> },
+                { path: "detailLink", element: <DetailLink/> },
+                { path: "notfound", element: <PageNotFound/> },
+
+            ],
+        },
         // {
         //     path: "/fnf",
         //     element: <Layout/>,
