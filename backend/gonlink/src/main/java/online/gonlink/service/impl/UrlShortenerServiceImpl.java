@@ -170,13 +170,17 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
         shortUrl.setActive(request.getActive());
 
         ShortUrl shortUrlUpdated = shortUrlRep.save(shortUrl);
-        return ShortCodeUpdateResponse.newBuilder()
+        ShortCodeUpdateResponse.Builder shortCodeUpdateResponseBuilder = ShortCodeUpdateResponse.newBuilder();
+        if(Objects.nonNull(shortUrlUpdated.getPassword()))
+            shortCodeUpdateResponseBuilder.setPassword(shortUrlUpdated.getPassword());
+        if(Objects.nonNull(shortUrlUpdated.getTimeExpired()))
+            shortCodeUpdateResponseBuilder.setTimeExpired(shortUrlUpdated.getTimeExpired());
+        return
+                shortCodeUpdateResponseBuilder
                 .setShortCode(shortUrlUpdated.getShortCode())
                 .setOriginalUrl(shortUrlUpdated.getOriginalUrl())
                 .setAlias(shortUrlUpdated.getAlias())
                 .setDesc(shortUrlUpdated.getDesc())
-                .setPassword(Objects.isNull(shortUrlUpdated.getPassword())?null:shortUrlUpdated.getPassword())
-                .setTimeExpired(Objects.isNull(shortUrlUpdated.getTimeExpired())?null:shortUrlUpdated.getTimeExpired().toString())
                 .setMaxUsage(shortUrlUpdated.getMaxUsage())
                 .setActive(shortUrlUpdated.isActive())
                 .build();
