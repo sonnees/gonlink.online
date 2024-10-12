@@ -91,7 +91,7 @@ export default function LinkManagement() {
         </div>
         <div className='flex flex-col p-2 w-[20] m-5 text-center rounded-lg bg-white'>
           <div className='font-bold'>Tổng lượt truy cập</div>
-          <div>{totalClick}</div>
+          <div>{parseInt(totalClick)+1}</div>
         </div>
         <div className='flex flex-col p-2 w-[20] m-5 text-center rounded-lg bg-white'>
           <div className='font-bold'>Trung bình truy cập / link</div>
@@ -102,7 +102,7 @@ export default function LinkManagement() {
       <div className='flex'>
         {objData && (
             <div className='w-72 h-80 bg-white m-2 rounded-lg'>
-              <PieChart label={"Biểu đồ khu vực truy cập"} labels={objData.cities.map(item => item.name || "Không xác định")} data={objData.cities.map(item => item.data)}/>
+              <PieChart label={"Biểu đồ khu vực truy cập"} labels={objData.zoneIds.map(item => item.name || "Không xác định")} data={objData.zoneIds.map(item => item.data)}/>
             </div>
           ) 
         }
