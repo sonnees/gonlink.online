@@ -386,6 +386,7 @@ public class TrafficServiceImpl implements TrafficService {
         for (short value : realTimeTrafficMain) {
             realTimeTrafficAsIntegers.add((int) value);
         }
+        newBuilder.getGeneralTrafficsList().sort((o1, o2) -> Long.compare(o2.getTraffic(), o1.getTraffic()));
         newBuilder.addAllData(realTimeTrafficAsIntegers);
         return newBuilder.build();
     }
