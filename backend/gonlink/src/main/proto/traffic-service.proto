@@ -85,10 +85,21 @@ message RealTimeTrafficResponse{
   repeated int32 data = 1;
 }
 
+// === RealTimeTrafficsAccount ===
+message RealTimeTrafficAccountRequest{
+  string zoneId = 1;
+}
+
+message RealTimeTrafficAccountResponse{
+  repeated int32 data = 1;
+  repeated GeneralTraffic generalTraffics = 2;
+}
+
 service Traffic {
   rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.BaseGrpc){}
   rpc getAllMonthTraffics(MonthTrafficsGetAllRequest) returns(online.gonlink.BaseGrpc){}
   rpc getDayTrafficInRange(DayTrafficInRangeRequest) returns(online.gonlink.BaseGrpc){}
   rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.BaseGrpc){}
+  rpc getRealTimeTrafficAccount(RealTimeTrafficAccountRequest) returns(online.gonlink.BaseGrpc){}
 }
 

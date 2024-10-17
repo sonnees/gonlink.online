@@ -96,7 +96,6 @@ public class AccountObserver implements TrafficObserver{
         return updatedCount;
     }
 
-
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public long increaseDeviceTypeClick(String email, String deviceType) {
         long updatedCount = repository.increaseDeviceTypeClick(email, deviceType);

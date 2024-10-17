@@ -4,6 +4,8 @@ import online.gonlink.DayTrafficInRangeRequest;
 import online.gonlink.GeneralTrafficsSearchRequest;
 import online.gonlink.GetOriginalUrlRequest;
 import online.gonlink.MonthTrafficsGetAllRequest;
+import online.gonlink.RealTimeTrafficAccountRequest;
+import online.gonlink.RealTimeTrafficAccountResponse;
 import online.gonlink.RealTimeTrafficRequest;
 import online.gonlink.RemoveUrlRequest;
 import online.gonlink.RemoveUrlResponse;
@@ -25,4 +27,6 @@ public interface TrafficService {
     List<TrafficDataDto> getAllMonthTraffic(MonthTrafficsGetAllRequest request);
     TrafficDayDto getDayTrafficInRange(DayTrafficInRangeRequest request);
     short[] getRealTimeTraffic(RealTimeTrafficRequest request);
+    public RealTimeTrafficAccountResponse getRealTimeTrafficByAccountId(RealTimeTrafficAccountRequest request);
+
 }

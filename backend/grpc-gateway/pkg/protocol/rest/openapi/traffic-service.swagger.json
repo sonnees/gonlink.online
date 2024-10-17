@@ -143,6 +143,38 @@
           "Traffic"
         ]
       }
+    },
+    "/api/v1/traffics/real-time-account": {
+      "post": {
+        "operationId": "Traffic_getRealTimeTrafficAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkBaseGrpc"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkRealTimeTrafficAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Traffic"
+        ]
+      }
     }
   },
   "definitions": {
@@ -249,6 +281,15 @@
         }
       },
       "title": "=== MonthTraffics ==="
+    },
+    "gonlinkRealTimeTrafficAccountRequest": {
+      "type": "object",
+      "properties": {
+        "zoneId": {
+          "type": "string"
+        }
+      },
+      "title": "=== RealTimeTrafficsAccount ==="
     },
     "gonlinkRealTimeTrafficRequest": {
       "type": "object",

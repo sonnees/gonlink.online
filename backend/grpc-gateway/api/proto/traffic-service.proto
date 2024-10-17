@@ -85,6 +85,16 @@ message RealTimeTrafficResponse{
   repeated int32 data = 1;
 }
 
+// === RealTimeTrafficsAccount ===
+message RealTimeTrafficAccountRequest{
+  string zoneId = 1;
+}
+
+message RealTimeTrafficAccountResponse{
+  repeated int32 data = 1;
+  repeated GeneralTraffic generalTraffics = 2;
+}
+
 
 service Traffic {
 
@@ -112,6 +122,13 @@ service Traffic {
   rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
       post: "/api/v1/traffics/real-time"
+      body: "*"
+    };
+  }
+
+  rpc getRealTimeTrafficAccount(RealTimeTrafficAccountRequest) returns(online.gonlink.BaseGrpc){
+    option (google.api.http) = {
+      post: "/api/v1/traffics/real-time-account"
       body: "*"
     };
   }
