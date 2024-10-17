@@ -37,6 +37,7 @@ export default function DynamicPage() {
             });
         }
         console.log(browserInfo);
+        // checkPassword();
         
     }, []);
 
@@ -45,10 +46,12 @@ export default function DynamicPage() {
     // window.location.href = 'https://www.youtube.com/watch?v=Ehy3OftSHLs';
 
     useEffect(() => {
-        checkPassword();
+        if (browserInfo.browser!=="") {
+            checkPassword();
+        }
 
         // fetchLink(password);
-    }, [])
+    }, [browserInfo])
 
 
     const checkPassword = async () => {
@@ -157,6 +160,7 @@ export default function DynamicPage() {
                 window.location.href = link.data.originalUrl;
 
             } else {
+                alert('Liên kết không tồn tại.');
                 console.error("Failed API");
                 return;
             }
@@ -172,6 +176,8 @@ export default function DynamicPage() {
         const now = new Date();
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+        console.log(browserInfo.browser);
+        
         try {
             const response = await fetch(
                 `${process.env.OG_URL}`,
@@ -238,7 +244,7 @@ export default function DynamicPage() {
 
             } else {
                 // Xử lý khi API trả về lỗi
-
+                alert('Liên kết không tồn tại.');
                 const link = await response.json();
                 console.log(link.data.message);
 
