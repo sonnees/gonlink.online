@@ -1,12 +1,15 @@
 package online.gonlink.service.impl;
 
 import java.util.Objects;
+
 import io.grpc.Context;
 import jakarta.annotation.PostConstruct;
 import online.gonlink.DayTrafficInRangeRequest;
 import online.gonlink.GeneralTrafficsSearchRequest;
 import online.gonlink.GetOriginalUrlRequest;
 import online.gonlink.MonthTrafficsGetAllRequest;
+import online.gonlink.RealTimeTrafficAccountRequest;
+import online.gonlink.RealTimeTrafficAccountResponse;
 import online.gonlink.RealTimeTrafficRequest;
 import online.gonlink.RemoveUrlRequest;
 import online.gonlink.RemoveUrlResponse;
@@ -343,5 +346,47 @@ public class TrafficServiceImpl implements TrafficService {
             trafficMinute = trafficMinuteShorts;
         }
         return trafficMinute;
+    }
+
+    @Override
+    public RealTimeTrafficAccountResponse getRealTimeTrafficByAccountId(RealTimeTrafficAccountRequest request){
+        RealTimeTrafficAccountResponse.Builder newBuilder = RealTimeTrafficAccountResponse.newBuilder();
+
+        Context context = Context.current();
+        List<GeneralTraffic> allByOwner = generalTrafficRep.findAllByOwner(AuthConstant.USER_EMAIL.get(context));
+        short[] realTimeTrafficMain =  new short[60];
+        allByOwner.forEach(generalTraffic ->{
+            short[] realTimeTraffic = this.getRealTimeTraffic(
+                    RealTimeTrafficRequest.newBuilder()
+                            .setShortCode(generalTraffic.getShortCode())
+                            .setZoneId(request.getZoneId()).build()
+            );
+            long sum = 0;
+            for (int i = 0; i < 60; i++) {
+                sum += realTimeTraffic[i];
+            }
+            for (int i = 0; i < 60; i++) {
+                realTimeTrafficMain[i] += realTimeTraffic[i];
+            }
+            generalTraffic.setTraffic(sum);
+
+            ShortUrl shortUrl = urlShortenerService.search(generalTraffic.getShortCode());
+            newBuilder.addGeneralTraffics(
+                    online.gonlink.GeneralTraffic.newBuilder()
+                            .setShortCode(generalTraffic.getShortCode())
+                            .setAlias(shortUrl.getAlias())
+                            .setOriginalUrl(shortUrl.getOriginalUrl())
+                            .setDesc(shortUrl.getDesc()).build()
+
+            );
+        });
+
+        List<Integer> realTimeTrafficAsIntegers = new ArrayList<>();
+
+        for (short value : realTimeTrafficMain) {
+            realTimeTrafficAsIntegers.add((int) value);
+        }
+        newBuilder.addAllData(realTimeTrafficAsIntegers);
+        return newBuilder.build();
     }
 }

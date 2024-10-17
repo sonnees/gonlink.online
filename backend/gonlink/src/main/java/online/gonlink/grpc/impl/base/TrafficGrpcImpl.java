@@ -12,6 +12,8 @@ import online.gonlink.GeneralTrafficsSearchResponse;
 import online.gonlink.MonthTrafficGetAllResponse;
 import online.gonlink.MonthTrafficsGetAllRequest;
 import online.gonlink.PageInfo;
+import online.gonlink.RealTimeTrafficAccountRequest;
+import online.gonlink.RealTimeTrafficAccountResponse;
 import online.gonlink.RealTimeTrafficRequest;
 import online.gonlink.RealTimeTrafficResponse;
 import online.gonlink.TrafficGrpc.TrafficImplBase;
@@ -173,6 +175,14 @@ public class TrafficGrpcImpl extends TrafficImplBase implements CommonHandler {
                                 .collect(Collectors.toList())
                 )
                 .build();
+        responseObserver.onNext(this.handleSuccess(response, startTime));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getRealTimeTrafficAccount(RealTimeTrafficAccountRequest request, StreamObserver<BaseGrpc> responseObserver) {
+        long startTime = System.currentTimeMillis();
+        RealTimeTrafficAccountResponse response = trafficService.getRealTimeTrafficByAccountId(request);
         responseObserver.onNext(this.handleSuccess(response, startTime));
         responseObserver.onCompleted();
     }
