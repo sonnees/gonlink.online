@@ -355,6 +355,7 @@ public class TrafficServiceImpl implements TrafficService {
         Context context = Context.current();
         List<GeneralTraffic> allByOwner = generalTrafficRep.findAllByOwner(AuthConstant.USER_EMAIL.get(context));
         short[] realTimeTrafficMain =  new short[60];
+        List<online.gonlink.GeneralTraffic> trafficsList = new ArrayList<>();
         allByOwner.forEach(generalTraffic ->{
             short[] realTimeTraffic = this.getRealTimeTraffic(
                     RealTimeTrafficRequest.newBuilder()
@@ -371,7 +372,7 @@ public class TrafficServiceImpl implements TrafficService {
             generalTraffic.setTraffic(sum);
 
             ShortUrl shortUrl = urlShortenerService.search(generalTraffic.getShortCode());
-            newBuilder.addGeneralTraffics(
+            trafficsList.add(
                     online.gonlink.GeneralTraffic.newBuilder()
                             .setShortCode(generalTraffic.getShortCode())
                             .setAlias(shortUrl.getAlias())
@@ -386,7 +387,9 @@ public class TrafficServiceImpl implements TrafficService {
         for (short value : realTimeTrafficMain) {
             realTimeTrafficAsIntegers.add((int) value);
         }
-        newBuilder.getGeneralTrafficsList().sort((o1, o2) -> Long.compare(o2.getTraffic(), o1.getTraffic()));
+        trafficsList.sort((o1, o2) -> Long.compare(o2.getTraffic(), o1.getTraffic()));
+
+        newBuilder.addAllGeneralTraffics(trafficsList);
         newBuilder.addAllData(realTimeTrafficAsIntegers);
         return newBuilder.build();
     }
