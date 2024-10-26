@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/traffics/day-account": {
+      "post": {
+        "operationId": "Traffic_getDayTrafficAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/gonlinkBaseGrpc"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gonlinkDayTrafficAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Traffic"
+        ]
+      }
+    },
     "/api/v1/traffics/day-range": {
       "post": {
         "operationId": "Traffic_getDayTrafficInRange",
@@ -209,6 +241,21 @@
           "$ref": "#/definitions/protobufAny"
         }
       }
+    },
+    "gonlinkDayTrafficAccountRequest": {
+      "type": "object",
+      "properties": {
+        "zoneId": {
+          "type": "string"
+        },
+        "fromDate": {
+          "type": "string"
+        },
+        "toDate": {
+          "type": "string"
+        }
+      },
+      "title": "=== DayTrafficsAccount ==="
     },
     "gonlinkDayTrafficInRangeRequest": {
       "type": "object",

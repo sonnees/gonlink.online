@@ -1,5 +1,7 @@
 package online.gonlink.service;
 
+import online.gonlink.DayTrafficAccountRequest;
+import online.gonlink.DayTrafficAccountResponse;
 import online.gonlink.DayTrafficInRangeRequest;
 import online.gonlink.GeneralTrafficsSearchRequest;
 import online.gonlink.GetOriginalUrlRequest;
@@ -27,6 +29,6 @@ public interface TrafficService {
     List<TrafficDataDto> getAllMonthTraffic(MonthTrafficsGetAllRequest request);
     TrafficDayDto getDayTrafficInRange(DayTrafficInRangeRequest request);
     short[] getRealTimeTraffic(RealTimeTrafficRequest request);
-    public RealTimeTrafficAccountResponse getRealTimeTrafficByAccountId(RealTimeTrafficAccountRequest request);
-
+    RealTimeTrafficAccountResponse getRealTimeTrafficByAccountId(RealTimeTrafficAccountRequest request);
+    DayTrafficAccountResponse getDayTrafficAccount(DayTrafficAccountRequest request);
 }

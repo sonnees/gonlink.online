@@ -4,6 +4,9 @@ import java.util.Objects;
 
 import io.grpc.Context;
 import jakarta.annotation.PostConstruct;
+import online.gonlink.DayTrafficAccount;
+import online.gonlink.DayTrafficAccountRequest;
+import online.gonlink.DayTrafficAccountResponse;
 import online.gonlink.DayTrafficInRangeRequest;
 import online.gonlink.GeneralTrafficsSearchRequest;
 import online.gonlink.GetOriginalUrlRequest;
@@ -385,4 +388,149 @@ public class TrafficServiceImpl implements TrafficService {
         newBuilder.addAllData(realTimeTrafficAsIntegers);
         return newBuilder.build();
     }
+
+    @Override
+    public DayTrafficAccountResponse getDayTrafficAccount(DayTrafficAccountRequest request){
+        DayTrafficAccountResponse.Builder newBuilder = DayTrafficAccountResponse.newBuilder();
+        Context context = Context.current();
+        List<GeneralTraffic> allByOwner = generalTrafficRep.findAllByOwner(AuthConstant.USER_EMAIL.get(context));
+
+        TrafficDayDto response = null;
+        Map<String, Long>  cities = new HashMap<>();
+        Map<String, Long>  countries = new HashMap<>();
+        Map<String, Long>  zoneIds = new HashMap<>();
+        Map<String, Long>  browsers = new HashMap<>();
+        Map<String, Long>  browserVersions = new HashMap<>();
+        Map<String, Long>  operatingSystems = new HashMap<>();
+        Map<String, Long>  deviceTypes = new HashMap<>();
+
+        List<online.gonlink.GeneralTraffic> trafficsList = new ArrayList<>();
+        for (GeneralTraffic gt : allByOwner){
+            int sum = 0;
+            DayTrafficInRangeRequest dayTrafficInRangeRequest = DayTrafficInRangeRequest.newBuilder()
+                    .setShortCode(gt.getShortCode())
+                    .setZoneId(request.getZoneId())
+                    .setFromDate(request.getFromDate())
+                    .setToDate(request.getToDate())
+                    .build();
+            TrafficDayDto dayTrafficInRange = this.getDayTrafficInRange(dayTrafficInRangeRequest);
+            if(response==null){
+                response = dayTrafficInRange;
+                for (int i = 0; i < response.getTrafficDataDtoList().size(); i++){
+                    sum += dayTrafficInRange.getTrafficDataDtoList().get(i).getData();
+                }
+            } else {
+                for (int i = 0; i < response.getTrafficDataDtoList().size(); i++){
+                    response.getTrafficDataDtoList().get(i).setData(
+                            response.getTrafficDataDtoList().get(i).getData() + dayTrafficInRange.getTrafficDataDtoList().get(i).getData()
+                    );
+                    sum += dayTrafficInRange.getTrafficDataDtoList().get(i).getData();
+                }
+            }
+            dayTrafficInRange.getCities().forEach((k,v)  -> cities.merge(k, v, Long::sum));
+            dayTrafficInRange.getCountries().forEach((k,v)  -> countries.merge(k, v, Long::sum));
+            dayTrafficInRange.getZoneIds().forEach((k,v)  -> zoneIds.merge(k, v, Long::sum));
+            dayTrafficInRange.getBrowsers().forEach((k,v)  -> browsers.merge(k, v, Long::sum));
+            dayTrafficInRange.getBrowserVersions().forEach((k,v)  -> browserVersions.merge(k, v, Long::sum));
+            dayTrafficInRange.getOperatingSystems().forEach((k,v)  -> operatingSystems.merge(k, v, Long::sum));
+            dayTrafficInRange.getDeviceTypes().forEach((k,v)  -> deviceTypes.merge(k, v, Long::sum));
+
+            ShortUrl shortUrl = urlShortenerService.search(gt.getShortCode());
+            trafficsList.add(
+                    online.gonlink.GeneralTraffic.newBuilder()
+                            .setShortCode(gt.getShortCode())
+                            .setAlias(shortUrl.getAlias())
+                            .setOriginalUrl(shortUrl.getOriginalUrl())
+                            .setDesc(shortUrl.getDesc())
+                            .setTraffic(sum)
+                            .build()
+            );
+        }
+        if(response != null){
+            response.setCities(cities);
+            response.setCountries(countries);
+            response.setZoneIds(zoneIds);
+            response.setBrowsers(browsers);
+            response.setBrowserVersions(browserVersions);
+            response.setOperatingSystems(operatingSystems);
+            response.setDeviceTypes(deviceTypes);
+        }
+
+        trafficsList.sort((o1, o2) -> Long.compare(o2.getTraffic(), o1.getTraffic()));
+        newBuilder.addAllData(
+                response.getTrafficDataDtoList().stream()
+                .map(o -> online.gonlink.DataClient
+                        .newBuilder()
+                        .setName(o.getDate())
+                        .setData(o.getData())
+                        .build()
+                )
+                .collect(Collectors.toList())
+        );
+        newBuilder.addAllGeneralTraffics(trafficsList);
+        newBuilder.setDayTrafficAccount(
+                DayTrafficAccount.newBuilder()
+                        .addAllCities(cities.entrySet().stream()
+                                .map(o -> online.gonlink.DataClient
+                                        .newBuilder()
+                                        .setName(o.getKey())
+                                        .setData(o.getValue())
+                                        .build()
+                                )
+                                .collect(Collectors.toList()))
+                        .addAllCountries(countries.entrySet().stream()
+                                .map(o -> online.gonlink.DataClient
+                                        .newBuilder()
+                                        .setName(o.getKey())
+                                        .setData(o.getValue())
+                                        .build()
+                                )
+                                .collect(Collectors.toList()))
+                        .addAllZoneIds(zoneIds.entrySet().stream()
+                                .map(o -> online.gonlink.DataClient
+                                        .newBuilder()
+                                        .setName(o.getKey())
+                                        .setData(o.getValue())
+                                        .build()
+                                )
+                                .collect(Collectors.toList()))
+                        .addAllBrowsers(browsers.entrySet().stream()
+                                .map(o -> online.gonlink.DataClient
+                                        .newBuilder()
+                                        .setName(o.getKey())
+                                        .setData(o.getValue())
+                                        .build()
+                                )
+                                .collect(Collectors.toList()))
+                        .addAllBrowserVersions(browserVersions.entrySet().stream()
+                                .map(o -> online.gonlink.DataClient
+                                        .newBuilder()
+                                        .setName(o.getKey())
+                                        .setData(o.getValue())
+                                        .build()
+                                )
+                                .collect(Collectors.toList()))
+                        .addAllOperatingSystems(operatingSystems.entrySet().stream()
+                                .map(o -> online.gonlink.DataClient
+                                        .newBuilder()
+                                        .setName(o.getKey())
+                                        .setData(o.getValue())
+                                        .build()
+                                )
+                                .collect(Collectors.toList()))
+                        .addAllDeviceTypes(deviceTypes.entrySet().stream()
+                                .map(o -> online.gonlink.DataClient
+                                        .newBuilder()
+                                        .setName(o.getKey())
+                                        .setData(o.getValue())
+                                        .build()
+                                )
+                                .collect(Collectors.toList()))
+                        .build()
+        );
+        return newBuilder.build();
+    }
+
+
+
 }
