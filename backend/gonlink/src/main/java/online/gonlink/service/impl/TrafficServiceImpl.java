@@ -251,11 +251,18 @@ public class TrafficServiceImpl implements TrafficService {
         int index = 0;
         LocalDate indexDate = null;
         short[] trafficHours = null;
-
+        DayTraffic dayTraffic = null;
         while (curDate.isEqual(toDate) || curDate.isBefore(toDate)){
             if(!Objects.equals(null, indexDate)){
                 if(Objects.equals(indexDate, curDate)){
                     trafficDataDtoList.addAll(appendData(curDate, trafficHours));
+                    dayTraffic.getCities().forEach(i -> cities.merge(i.getName(), i.getData(), Long::sum));
+                    dayTraffic.getCountries().forEach(i -> countries.merge(i.getName(), i.getData(), Long::sum));
+                    dayTraffic.getZoneIds().forEach(i -> zoneIds.merge(i.getName(), i.getData(), Long::sum));
+                    dayTraffic.getBrowsers().forEach(i -> browsers.merge(i.getName(), i.getData(), Long::sum));
+                    dayTraffic.getBrowserVersions().forEach(i -> browserVersions.merge(i.getName(), i.getData(), Long::sum));
+                    dayTraffic.getOperatingSystems().forEach(i -> operatingSystems.merge(i.getName(), i.getData(), Long::sum));
+                    dayTraffic.getDeviceTypes().forEach(i -> deviceTypes.merge(i.getName(), i.getData(), Long::sum));
                     indexDate = null;
                 } else {
                     trafficDataDtoList.addAll(appendData(curDate, new short[24]));
@@ -266,17 +273,9 @@ public class TrafficServiceImpl implements TrafficService {
                 if(curDate.isAfter(toDay)) break;
 
                 if(index < dayTrafficList.size()){
-                    DayTraffic dayTraffic = dayTrafficList.get(index);
+                    dayTraffic = dayTrafficList.get(index);
                     indexDate = LocalDate.parse(dayTraffic.getId().getTrafficDate());
-
                     trafficHours = dayTraffic.getTrafficHours();
-                    dayTraffic.getCities().forEach(i -> cities.merge(i.getName(), 1L, Long::sum));
-                    dayTraffic.getCountries().forEach(i -> countries.merge(i.getName(), 1L, Long::sum));
-                    dayTraffic.getZoneIds().forEach(i -> zoneIds.merge(i.getName(), 1L, Long::sum));
-                    dayTraffic.getBrowsers().forEach(i -> browsers.merge(i.getName(), 1L, Long::sum));
-                    dayTraffic.getBrowserVersions().forEach(i -> browserVersions.merge(i.getName(), 1L, Long::sum));
-                    dayTraffic.getOperatingSystems().forEach(i -> operatingSystems.merge(i.getName(), 1L, Long::sum));
-                    dayTraffic.getDeviceTypes().forEach(i -> deviceTypes.merge(i.getName(), 1L, Long::sum));
                     index++;
                 } else {
                     trafficDataDtoList.addAll(appendData(curDate, new short[24]));
@@ -325,12 +324,10 @@ public class TrafficServiceImpl implements TrafficService {
 
         ZonedDateTime clientTime = ZonedDateTime.now(ZoneId.of(request.getZoneId()));
         String dateTime = simpleDateFormatWithTime.format(Date.from(clientTime.toInstant()));
-
         String updateAt = realTimeTraffic.getUpdateAt();
         LocalDateTime oldTime = LocalDateTime.parse(updateAt.replace(' ', 'T'));
         LocalDateTime newTime = LocalDateTime.parse(dateTime.replace(' ', 'T'));
         int offset = (int) Duration.between(oldTime, newTime).getSeconds()/60;
-
         short[] trafficMinuteShorts = realTimeTraffic.getTrafficMinute();
         if(offset > 0 && offset < 60){
             trafficMinute = new short[60];
@@ -351,7 +348,6 @@ public class TrafficServiceImpl implements TrafficService {
     @Override
     public RealTimeTrafficAccountResponse getRealTimeTrafficByAccountId(RealTimeTrafficAccountRequest request){
         RealTimeTrafficAccountResponse.Builder newBuilder = RealTimeTrafficAccountResponse.newBuilder();
-
         Context context = Context.current();
         List<GeneralTraffic> allByOwner = generalTrafficRep.findAllByOwner(AuthConstant.USER_EMAIL.get(context));
         short[] realTimeTrafficMain =  new short[60];
@@ -369,26 +365,22 @@ public class TrafficServiceImpl implements TrafficService {
             for (int i = 0; i < 60; i++) {
                 realTimeTrafficMain[i] += realTimeTraffic[i];
             }
-            generalTraffic.setTraffic(sum);
-
             ShortUrl shortUrl = urlShortenerService.search(generalTraffic.getShortCode());
             trafficsList.add(
                     online.gonlink.GeneralTraffic.newBuilder()
                             .setShortCode(generalTraffic.getShortCode())
                             .setAlias(shortUrl.getAlias())
                             .setOriginalUrl(shortUrl.getOriginalUrl())
-                            .setDesc(shortUrl.getDesc()).build()
-
+                            .setDesc(shortUrl.getDesc())
+                            .setTraffic(sum)
+                            .build()
             );
         });
-
         List<Integer> realTimeTrafficAsIntegers = new ArrayList<>();
-
         for (short value : realTimeTrafficMain) {
             realTimeTrafficAsIntegers.add((int) value);
         }
         trafficsList.sort((o1, o2) -> Long.compare(o2.getTraffic(), o1.getTraffic()));
-
         newBuilder.addAllGeneralTraffics(trafficsList);
         newBuilder.addAllData(realTimeTrafficAsIntegers);
         return newBuilder.build();
