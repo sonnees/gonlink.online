@@ -58,8 +58,9 @@ public class DayTrafficObserver implements TrafficObserver{
         }
         this.increaseAdvance(request, trafficID);
         long increased = repository.increaseTraffic(trafficID, index);
-        if(increased<=0)
+        if(increased<=0){
             throw new ResourceException(ExceptionEnum.DAY_TRAFFIC_INCREASE_FAIL.name(), null);
+        }
         return isIncreased;
     }
 
