@@ -24,6 +24,7 @@ const (
 	Traffic_GetDayTrafficInRange_FullMethodName      = "/online.gonlink.Traffic/getDayTrafficInRange"
 	Traffic_GetRealTimeTraffic_FullMethodName        = "/online.gonlink.Traffic/getRealTimeTraffic"
 	Traffic_GetRealTimeTrafficAccount_FullMethodName = "/online.gonlink.Traffic/getRealTimeTrafficAccount"
+	Traffic_GetDayTrafficAccount_FullMethodName      = "/online.gonlink.Traffic/getDayTrafficAccount"
 )
 
 // TrafficClient is the client API for Traffic service.
@@ -35,6 +36,7 @@ type TrafficClient interface {
 	GetDayTrafficInRange(ctx context.Context, in *DayTrafficInRangeRequest, opts ...grpc.CallOption) (*BaseGrpc, error)
 	GetRealTimeTraffic(ctx context.Context, in *RealTimeTrafficRequest, opts ...grpc.CallOption) (*BaseGrpc, error)
 	GetRealTimeTrafficAccount(ctx context.Context, in *RealTimeTrafficAccountRequest, opts ...grpc.CallOption) (*BaseGrpc, error)
+	GetDayTrafficAccount(ctx context.Context, in *DayTrafficAccountRequest, opts ...grpc.CallOption) (*BaseGrpc, error)
 }
 
 type trafficClient struct {
@@ -95,6 +97,16 @@ func (c *trafficClient) GetRealTimeTrafficAccount(ctx context.Context, in *RealT
 	return out, nil
 }
 
+func (c *trafficClient) GetDayTrafficAccount(ctx context.Context, in *DayTrafficAccountRequest, opts ...grpc.CallOption) (*BaseGrpc, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BaseGrpc)
+	err := c.cc.Invoke(ctx, Traffic_GetDayTrafficAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TrafficServer is the server API for Traffic service.
 // All implementations must embed UnimplementedTrafficServer
 // for forward compatibility
@@ -104,6 +116,7 @@ type TrafficServer interface {
 	GetDayTrafficInRange(context.Context, *DayTrafficInRangeRequest) (*BaseGrpc, error)
 	GetRealTimeTraffic(context.Context, *RealTimeTrafficRequest) (*BaseGrpc, error)
 	GetRealTimeTrafficAccount(context.Context, *RealTimeTrafficAccountRequest) (*BaseGrpc, error)
+	GetDayTrafficAccount(context.Context, *DayTrafficAccountRequest) (*BaseGrpc, error)
 	mustEmbedUnimplementedTrafficServer()
 }
 
@@ -125,6 +138,9 @@ func (UnimplementedTrafficServer) GetRealTimeTraffic(context.Context, *RealTimeT
 }
 func (UnimplementedTrafficServer) GetRealTimeTrafficAccount(context.Context, *RealTimeTrafficAccountRequest) (*BaseGrpc, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRealTimeTrafficAccount not implemented")
+}
+func (UnimplementedTrafficServer) GetDayTrafficAccount(context.Context, *DayTrafficAccountRequest) (*BaseGrpc, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDayTrafficAccount not implemented")
 }
 func (UnimplementedTrafficServer) mustEmbedUnimplementedTrafficServer() {}
 
@@ -229,6 +245,24 @@ func _Traffic_GetRealTimeTrafficAccount_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Traffic_GetDayTrafficAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DayTrafficAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TrafficServer).GetDayTrafficAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Traffic_GetDayTrafficAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TrafficServer).GetDayTrafficAccount(ctx, req.(*DayTrafficAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Traffic_ServiceDesc is the grpc.ServiceDesc for Traffic service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -255,6 +289,10 @@ var Traffic_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getRealTimeTrafficAccount",
 			Handler:    _Traffic_GetRealTimeTrafficAccount_Handler,
+		},
+		{
+			MethodName: "getDayTrafficAccount",
+			Handler:    _Traffic_GetDayTrafficAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

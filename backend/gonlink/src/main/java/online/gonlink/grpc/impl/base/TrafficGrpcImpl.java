@@ -5,6 +5,8 @@ import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import online.gonlink.BaseGrpc;
+import online.gonlink.DayTrafficAccountRequest;
+import online.gonlink.DayTrafficAccountResponse;
 import online.gonlink.DayTrafficInRangeRequest;
 import online.gonlink.DayTrafficInRangeResponse;
 import online.gonlink.GeneralTrafficsSearchRequest;
@@ -182,6 +184,14 @@ public class TrafficGrpcImpl extends TrafficImplBase implements CommonHandler {
     public void getRealTimeTrafficAccount(RealTimeTrafficAccountRequest request, StreamObserver<BaseGrpc> responseObserver) {
         long startTime = System.currentTimeMillis();
         RealTimeTrafficAccountResponse response = trafficService.getRealTimeTrafficByAccountId(request);
+        responseObserver.onNext(this.handleSuccess(response, startTime));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getDayTrafficAccount(DayTrafficAccountRequest request, StreamObserver<BaseGrpc> responseObserver) {
+        long startTime = System.currentTimeMillis();
+        DayTrafficAccountResponse response = trafficService.getDayTrafficAccount(request);
         responseObserver.onNext(this.handleSuccess(response, startTime));
         responseObserver.onCompleted();
     }

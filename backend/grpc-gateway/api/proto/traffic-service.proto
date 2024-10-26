@@ -85,6 +85,7 @@ message RealTimeTrafficResponse{
   repeated int32 data = 1;
 }
 
+
 // === RealTimeTrafficsAccount ===
 message RealTimeTrafficAccountRequest{
   string zoneId = 1;
@@ -93,6 +94,29 @@ message RealTimeTrafficAccountRequest{
 message RealTimeTrafficAccountResponse{
   repeated int32 data = 1;
   repeated GeneralTraffic generalTraffics = 2;
+}
+
+// === DayTrafficsAccount ===
+message DayTrafficAccountRequest{
+  string zoneId = 1;
+  string fromDate = 2;
+  string toDate = 3;
+}
+
+message DayTrafficAccount{
+  repeated DataClient cities = 2;
+  repeated DataClient countries = 3;
+  repeated DataClient zoneIds = 4;
+  repeated DataClient browsers = 5;
+  repeated DataClient browserVersions = 6;
+  repeated DataClient operatingSystems = 7;
+  repeated DataClient deviceTypes = 8;
+}
+
+message DayTrafficAccountResponse{
+  repeated DataClient data = 1;
+  repeated GeneralTraffic generalTraffics = 2;
+  DayTrafficAccount dayTrafficAccount = 3;
 }
 
 
@@ -129,6 +153,13 @@ service Traffic {
   rpc getRealTimeTrafficAccount(RealTimeTrafficAccountRequest) returns(online.gonlink.BaseGrpc){
     option (google.api.http) = {
       post: "/api/v1/traffics/real-time-account"
+      body: "*"
+    };
+  }
+
+  rpc getDayTrafficAccount(DayTrafficAccountRequest) returns(online.gonlink.BaseGrpc){
+    option (google.api.http) = {
+      post: "/api/v1/traffics/day-account"
       body: "*"
     };
   }

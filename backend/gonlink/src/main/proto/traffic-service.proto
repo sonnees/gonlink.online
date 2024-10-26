@@ -95,11 +95,36 @@ message RealTimeTrafficAccountResponse{
   repeated GeneralTraffic generalTraffics = 2;
 }
 
+// === DayTrafficsAccount ===
+message DayTrafficAccountRequest{
+  string zoneId = 1;
+  string fromDate = 2;
+  string toDate = 3;
+}
+
+message DayTrafficAccount{
+  repeated DataClient cities = 2;
+  repeated DataClient countries = 3;
+  repeated DataClient zoneIds = 4;
+  repeated DataClient browsers = 5;
+  repeated DataClient browserVersions = 6;
+  repeated DataClient operatingSystems = 7;
+  repeated DataClient deviceTypes = 8;
+}
+
+message DayTrafficAccountResponse{
+  repeated DataClient data = 1;
+  repeated GeneralTraffic generalTraffics = 2;
+  DayTrafficAccount dayTrafficAccount = 3;
+}
+
+
 service Traffic {
   rpc searchGeneralTraffics(GeneralTrafficsSearchRequest) returns(online.gonlink.BaseGrpc){}
   rpc getAllMonthTraffics(MonthTrafficsGetAllRequest) returns(online.gonlink.BaseGrpc){}
   rpc getDayTrafficInRange(DayTrafficInRangeRequest) returns(online.gonlink.BaseGrpc){}
   rpc getRealTimeTraffic(RealTimeTrafficRequest) returns(online.gonlink.BaseGrpc){}
   rpc getRealTimeTrafficAccount(RealTimeTrafficAccountRequest) returns(online.gonlink.BaseGrpc){}
+  rpc getDayTrafficAccount(DayTrafficAccountRequest) returns(online.gonlink.BaseGrpc){}
 }
 
