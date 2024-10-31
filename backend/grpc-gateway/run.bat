@@ -1,1 +1,1 @@
-docker build -t gonlink-gateway .
+docker build -t gonlink-gateway . --no-cache

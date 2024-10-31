@@ -3,10 +3,12 @@ package online.gonlink.service.base.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import online.gonlink.config.GlobalValue;
 import online.gonlink.dto.IpInfoDto;
 import online.gonlink.exception.ResourceException;
 import online.gonlink.exception.enumdef.ExceptionEnum;
+import online.gonlink.util.IPUtils;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
@@ -21,7 +23,7 @@ public class IPInfoServiceImpl {
     public IpInfoDto get(String ip){
         HttpURLConnection conn = null;
         try{
-            if(ip.equals("::1") || ip.equals("127.0.0.1")) ip = config.getDEFAULT_IP();
+            ip = IPUtils.validateAndGetIP(ip, config.getDEFAULT_IP());
 
             String apiUrl = String.format("https://ipinfo.io/%s/json?token=%s", ip, config.getIP_IPINFO_KEY());
             URL url = new URL(apiUrl);
@@ -30,7 +32,6 @@ public class IPInfoServiceImpl {
 
             if (conn.getResponseCode() != 200)
                 throw new ResourceException(ExceptionEnum.IP_ERROR.name(), null);
-
             return objectMapper.readValue(conn.getInputStream(), IpInfoDto.class);
         } catch (Exception e){
             throw new ResourceException(ExceptionEnum.IP_ERROR.name(), null);

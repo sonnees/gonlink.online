@@ -131,6 +131,7 @@ func HandleGithubLogin() http.HandlerFunc {
 
 func HandleGithubCallback() http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
+        println("HandleGithubCallback")
         state := r.URL.Query().Get("state")
         originalURL, valid := stateStore.Verify(state)
         if !valid {
@@ -161,15 +162,17 @@ func HandleGithubCallback() http.HandlerFunc {
         }
 
         if originalURL == "" {
-            originalURL = "http://localhost:5173/page/home"
+            originalURL =  os.Getenv("DOMAIN_FE")
         }
-
+        originalURL +=  os.Getenv("PAGE_HOME")
         redirectURL := fmt.Sprintf("%s?token=%s", originalURL, tokenJWT)
+        println("redirectURL: ", redirectURL)
         http.Redirect(w, r, redirectURL, http.StatusFound)
     }
 }
 
 func fetchGithubUserInfo(client *http.Client) (map[string]interface{}, string, error) {
+    println("fetchGithubUserInfo")
     // Fetch user profile
     resp, err := client.Get("https://api.github.com/user")
     if err != nil {

@@ -31,15 +31,14 @@ WORKDIR /root/
 COPY --from=builder /app/grpc-gateway .
 COPY --from=builder /app/.env .
 
-# Set necessary environment variables
 ENV GITHUB_CLIENT_ID="Ov23linxe63dBqWDk4fJ"
 ENV GITHUB_CLIENT_SECRET="932406842c0a0f27e52990b3c5211a8854c3ef70"
 ENV REDIRECT_URL="http://localhost:8080/auth/github/login/callback"
 ENV JWT_SECRET="7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce"
-ENV GRPC_SERVER_ENDPOINT="7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce"
+ENV GRPC_SERVER_ENDPOINT="gonlink:9090"
+ENV DOMAIN_FE="http://localhost:5173"
+ENV PAGE_HOME="page/home"
 
-# Expose the port
 EXPOSE 8080
 
-# Run the application
 CMD ["./grpc-gateway"]

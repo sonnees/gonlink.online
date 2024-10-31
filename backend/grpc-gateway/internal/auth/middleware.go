@@ -16,6 +16,7 @@ var unprotectedPaths = []string{
 }
 
 func comparativePaths(paths []string, path string) bool {
+	print(path)
 	for _, p := range paths {
 		if strings.HasPrefix(path, p) {
 			return true
@@ -26,6 +27,7 @@ func comparativePaths(paths []string, path string) bool {
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		println(r.URL.Path)
 		if comparativePaths(unprotectedPaths, r.URL.Path) {
 			next.ServeHTTP(w, r)
 			return
