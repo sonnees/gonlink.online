@@ -1,81 +1,76 @@
 package main
 
 import (
-	"context"
-	"flag"
-	"net/http"
-	"os"
+    "context"
+    "flag"
+    "net/http"
+    "os"
+    "log"
 
-	"github.com/gorilla/sessions"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/joho/godotenv"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/grpclog"
+    "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+    "github.com/joho/godotenv"
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/credentials/insecure"
+    "google.golang.org/grpc/grpclog"
 
-	"github.com/sonnees/grpc-gateway/internal/auth"
-	"github.com/sonnees/grpc-gateway/internal/session"
-	"github.com/sonnees/grpc-gateway/pkg/cors"
+    "github.com/sonnees/grpc-gateway/internal/auth"
+    "github.com/sonnees/grpc-gateway/pkg/cors"
 
-	gw "github.com/sonnees/grpc-gateway/api/generated"
-)
-
-var (
-    grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
+    gw "github.com/sonnees/grpc-gateway/api/generated"
 )
 
 func run() error {
-	godotenv.Load()
-    sessionKey := os.Getenv("SESSION_SECRET")
-    store := sessions.NewCookieStore([]byte(sessionKey))
-    store.Options = &sessions.Options{
-        Path:     "/",
-        MaxAge:   3600 * 24, // 24 giờ
-        HttpOnly: true,
-        Secure:   false, // Đặt thành true khi sử dụng HTTPS
-        SameSite: http.SameSiteLaxMode,
+    // Load environment variables
+    godotenv.Load()
+
+    // Get gRPC server endpoint from environment or use default
+    grpcServerEndpoint := os.Getenv("GRPC_SERVER_ENDPOINT")
+    if grpcServerEndpoint == "" {
+        grpcServerEndpoint = "gonlink:9090"
     }
-    session.Setup(store)
+    log.Printf("Connecting to gRPC server at: %s", grpcServerEndpoint)
 
+    ctx := context.Background()
+    ctx, cancel := context.WithCancel(ctx)
+    defer cancel()
 
-	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
+    mux := runtime.NewServeMux()
+    opts := []grpc.DialOption{
+        grpc.WithTransportCredentials(insecure.NewCredentials()),
+        grpc.WithBlock(), // Make the dial blocking
+    }
 
-	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+    // Initialize all handlers with error checking
+    services := []struct {
+        name     string
+        register func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error
+    }{
+        {"Account", gw.RegisterAccountHandlerFromEndpoint},
+        {"QRCode", gw.RegisterQRCodeHandlerFromEndpoint},
+        {"UrlShortener", gw.RegisterUrlShortenerHandlerFromEndpoint},
+        {"Traffic", gw.RegisterTrafficHandlerFromEndpoint},
+    }
 
-	err := gw.RegisterAccountHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
-	}
-	err = gw.RegisterQRCodeHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
-	}
-	err = gw.RegisterUrlShortenerHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
-	}
-	err = gw.RegisterTrafficHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
-	}
+    for _, service := range services {
+        if err := service.register(ctx, mux, grpcServerEndpoint, opts); err != nil {
+            log.Printf("Failed to register %s handler: %v", service.name, err)
+            return err
+        }
+        log.Printf("Successfully registered %s handler", service.name)
+    }
 
+    httpMux := http.NewServeMux()
+    httpMux.HandleFunc("/auth/github/login", auth.HandleGithubLogin())
+    httpMux.HandleFunc("/auth/github/login/callback", auth.HandleGithubCallback())
+    httpMux.Handle("/", auth.AuthMiddleware(cors.SetupCORS(mux)))
 
-
-	httpMux := http.NewServeMux()
-	httpMux.HandleFunc("/auth/github/login", auth.HandleGithubLogin())
-	httpMux.HandleFunc("/auth/github/login/callback", auth.HandleGithubCallback())
-
-	httpMux.Handle("/", auth.AuthMiddleware(cors.SetupCORS(mux)))
-
-	return http.ListenAndServe(":8080", cors.SetupCORS(httpMux))
+    log.Printf("Starting HTTP server on :8080")
+    return http.ListenAndServe(":8080", cors.SetupCORS(httpMux))
 }
 
 func main() {
-	flag.Parse()
-	if err := run(); err != nil {
-		grpclog.Fatal(err)
-	}
+    flag.Parse()
+    if err := run(); err != nil {
+        grpclog.Fatal(err)
+    }
 }

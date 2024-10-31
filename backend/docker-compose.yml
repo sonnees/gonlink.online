@@ -1,0 +1,31 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  grpc-service:
+    image: gonlink
+    container_name: grpc-service
+    networks:
+      - gonlink-network
+    ports:
+      - "9090:9090"
+
+  grpc-gateway:
+    image: gonlink-gateway
+    container_name: grpc-gateway
+    networks:
+      - gonlink-network
+    ports:
+      - "8080:8080"
+    environment:
+      - GRPC_SERVER_ENDPOINT=grpc-service:9090
+      - GITHUB_CLIENT_ID=Ov23linxe63dBqWDk4fJ
+      - GITHUB_CLIENT_SECRET=932406842c0a0f27e52990b3c5211a8854c3ef70
+      - REDIRECT_URL=http://localhost:8080/auth/github/login/callback
+      - JWT_SECRET=7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
+    depends_on:
+      - grpc-service
+
+networks:
+  gonlink-network:
+    name: gonlink-network

@@ -1,1 +1,1 @@
-make all
+docker build -t gonlink-gateway .
