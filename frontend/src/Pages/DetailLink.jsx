@@ -20,6 +20,9 @@ export default function DetailLink() {
         if (Cookies.get('token')) {
             setName(JSON.parse(localStorage.getItem('userObj')).name)
         }
+        console.log(link);
+        
+        localStorage.setItem("link", JSON.stringify(link))
     }, [])
 
     const formatDate = (dateString) => {
@@ -64,7 +67,7 @@ export default function DetailLink() {
 
             {/* <div className='w-[80rem] h-96 flex-col justify-between items-center border border-gray-300 p-4 rounded-md mt-8 shadow-lg'> */}
             <div className='w-[70rem] h-[30rem] flex-col justify-between items-center border border-gray-300 p-4 rounded-md mt-8 shadow-lg'>
-                {Cookies.get('token') && <LineChartCustom token={Cookies.get('token')} shortCode={link.shortCode}/>}
+                {Cookies.get('token') && <LineChartCustom token={Cookies.get('token')} link={link}/>}
             </div>
 
 
