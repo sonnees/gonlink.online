@@ -18,6 +18,7 @@ export default function History() {
   const getHistoryAccount = async (token, page) => {
     console.log(page);
     setLoading(true);
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
       const response = await fetch(
         `${process.env.ACCOUNT_GET_HISTORY}`,
@@ -30,7 +31,8 @@ export default function History() {
           body: JSON.stringify({
             "page": page - 1,
             "size": 7,
-            "sortDirection": "ASC"
+            "sortDirection": "ASC",
+            "zoneId": timeZone,
           }),
         },
       );
@@ -177,7 +179,7 @@ export default function History() {
             <div>
               <p>Ngày tạo</p>
             </div>
-            <div>
+            <div className='w-[10rem] text-center'>
               <p>Trạng thái</p>
             </div>
             <div>

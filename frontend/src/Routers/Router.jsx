@@ -11,6 +11,7 @@ import History from '../Pages/History'
 import DetailLink from '../Pages/DetailLink'
 import LinkManagement from '../Pages/LinkManagement'
 import AdminLayout from '../Layouts/AdminLayout'
+import Statistic from '../Pages/Statistic'
 
 export default function Router() {
     return useRoutes([
@@ -46,13 +47,10 @@ export default function Router() {
 
             ],
         },
-        // {
-        //     path: "/fnf",
-        //     element: <Layout/>,
-        //     children: [
-        //         { path: "", element: <PageNotFound/> },
-        //     ],
-        // },
+        {
+            path: "/statistic",
+            element: <Statistic/>,
+        },
         { path: "*", element: <DynamicPage /> }
     ])
 }

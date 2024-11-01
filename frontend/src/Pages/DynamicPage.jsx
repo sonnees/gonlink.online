@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { Await, useParams } from 'react-router-dom';
+import {
+    isMobile,
+    isTablet,
+    isDesktop,
+    browserName,
+    browserVersion,
+    osName,
+    osVersion,
+    engineName,
+} from 'react-device-detect';
 import Home from './Home';
+
+import { toast } from 'react-toastify';
 
 export default function DynamicPage() {
     const { '*': dynamicPath } = useParams();
@@ -16,34 +28,26 @@ export default function DynamicPage() {
     useEffect(() => {
         // Lấy thông tin từ navigator
         const userAgentData = navigator.userAgentData;
+        console.log(isMobile,
+            isTablet,
+            isDesktop,
+            browserName,
+            browserVersion,
+            osName,
+            osVersion,
+            engineName);
+        
 
-        if (userAgentData) {
-            const { brands, platform, mobile } = userAgentData;
 
-            setBrowserInfo({
-                browser: brands[0]?.brand || 'Unknown Browser',
-                browserVersion: brands[0]?.version || 'Unknown Version',
-                operatingSystem: platform || 'Unknown OS',
-                deviceType: mobile ? 'Mobile' : 'Desktop',
-            });
 
-        } else {
-            // Fallback nếu `navigator.userAgentData` không hỗ trợ
-            setBrowserInfo({
-                browser: 'Unknown',
-                browserVersion: 'Unknown',
-                operatingSystem: 'Unknown',
-                deviceType: 'Unknown',
-            });
-        }
-        console.log(browserInfo);
-        // checkPassword();
+        setBrowserInfo({
+            browser: browserName || 'Unknown Browser',
+            browserVersion: browserVersion || 'Unknown Version',
+            operatingSystem: osName || 'Unknown OS',
+            deviceType: isMobile ? 'Mobile' : 'Desktop',
+        });
         
     }, []);
-
-    console.log(browserInfo);
-
-    // window.location.href = 'https://www.youtube.com/watch?v=Ehy3OftSHLs';
 
     useEffect(() => {
         if (browserInfo.browser!=="") {
@@ -82,7 +86,8 @@ export default function DynamicPage() {
 
             } else {
                 // Xử lý khi API trả về lỗi
-                alert("Link không còn tồn tại!")
+                // alert("Link không còn tồn tại!")
+                toast.error("Link không còn tồn tại!");
                 console.error("Failed API");
                 return;
             }
@@ -136,16 +141,20 @@ export default function DynamicPage() {
 
                     switch (link.message) {
                         case 'TIME_EXPIRED':
-                            alert('Liên kết đã hết hạn. Vui lòng thử lại.');
+                            // alert('Liên kết đã hết hạn. Vui lòng thử lại.');
+                            toast.error("Liên kết đã hết hạn. Vui lòng thử lại.");
                             break;
                         case 'PASSWORD_NOT_CORRECT':
-                            alert('Mật khẩu không đúng. Vui lòng thử lại.');
+                            // alert('Mật khẩu không đúng. Vui lòng thử lại.');
+                            toast.error("Mật khẩu không đúng. Vui lòng thử lại.");
                             break;
                         case 'MAX_ACCESS':
-                            alert('Đã đạt giới hạn truy cập tối đa.');
+                            // alert('Đã đạt giới hạn truy cập tối đa.');
+                            toast.error("Đã đạt giới hạn truy cập tối đa!");
                             break;
                         default:
-                            alert('Link không còn tồn tại');
+                            // alert('Link không còn tồn tại');
+                            toast.error("Link không còn tồn tại!");
                             // console.log(`Error code: ${link.code}, Message: ${link.message}`);
                     }
 
@@ -160,7 +169,8 @@ export default function DynamicPage() {
                 window.location.href = link.data.originalUrl;
 
             } else {
-                alert('Liên kết không tồn tại.');
+                // alert('Liên kết không tồn tại.');
+                toast("Link không còn tồn tại!");
                 console.error("Failed API");
                 return;
             }
@@ -219,16 +229,20 @@ export default function DynamicPage() {
 
                     switch (link.message) {
                         case 'TIME_EXPIRED':
-                            alert('Liên kết đã hết hạn. Vui lòng thử lại.');
+                            // alert('Liên kết đã hết hạn. Vui lòng thử lại.');
+                            toast.error("Liên kết đã hết hạn. Vui lòng thử lại.");
                             break;
                         case 'PASSWORD_NOT_CORRECT':
-                            alert('Mật khẩu không đúng. Vui lòng thử lại.');
+                            // alert('Mật khẩu không đúng. Vui lòng thử lại.');
+                            toast.error("Mật khẩu không đúng. Vui lòng thử lại.");
                             break;
                         case 'MAX_ACCESS':
-                            alert('Đã đạt giới hạn truy cập tối đa.');
+                            // alert('Đã đạt giới hạn truy cập tối đa.');
+                            toast.error("Đã đạt giới hạn truy cập tối đa!");
                             break;
                         default:
-                            alert('Link không còn tồn tại');
+                            // alert('Link không còn tồn tại');
+                            toast.error("Link không còn tồn tại!");
                             // console.log(`Error code: ${link.code}, Message: ${link.message}`);
                     }
 
@@ -244,7 +258,8 @@ export default function DynamicPage() {
 
             } else {
                 // Xử lý khi API trả về lỗi
-                alert('Liên kết không tồn tại.');
+                // alert('Liên kết không tồn tại.');
+                toast.error("Liên kết không tồn tại.");
                 const link = await response.json();
                 console.log(link.data.message);
 
@@ -258,6 +273,8 @@ export default function DynamicPage() {
         }
     
     }
+
+
 
     return (
         <div></div>
