@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"flag"
+	"log"
 	"net/http"
 	"os"
 
-	"github.com/gorilla/sessions"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
@@ -14,62 +14,59 @@ import (
 	"google.golang.org/grpc/grpclog"
 
 	"github.com/sonnees/grpc-gateway/internal/auth"
-	"github.com/sonnees/grpc-gateway/internal/session"
 	"github.com/sonnees/grpc-gateway/pkg/cors"
 
 	gw "github.com/sonnees/grpc-gateway/api/generated"
 )
 
-var (
-    grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
-)
-
 func run() error {
+	// Load environment variables
 	godotenv.Load()
-    sessionKey := os.Getenv("SESSION_SECRET")
-    store := sessions.NewCookieStore([]byte(sessionKey))
-    store.Options = &sessions.Options{
-        Path:     "/",
-        MaxAge:   3600 * 24, // 24 giờ
-        HttpOnly: true,
-        Secure:   false, // Đặt thành true khi sử dụng HTTPS
-        SameSite: http.SameSiteLaxMode,
-    }
-    session.Setup(store)
 
+	// Get gRPC server endpoint from environment or use default
+	grpcServerEndpoint := os.Getenv("GRPC_SERVER_ENDPOINT")
+	if grpcServerEndpoint == "" {
+		grpcServerEndpoint = "localhost:9090"
+	}
+	log.Printf("Connecting to gRPC server at: %s", grpcServerEndpoint)
 
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-
-	err := gw.RegisterAccountHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
-	}
-	err = gw.RegisterQRCodeHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
-	}
-	err = gw.RegisterUrlShortenerHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
-	}
-	err = gw.RegisterTrafficHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	if err != nil {
-		return err
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithBlock(), // Make the dial blocking
 	}
 
+	// Initialize all handlers with error checking
+	services := []struct {
+		name     string
+		register func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error
+	}{
+		{"Account", gw.RegisterAccountHandlerFromEndpoint},
+		{"QRCode", gw.RegisterQRCodeHandlerFromEndpoint},
+		{"UrlShortener", gw.RegisterUrlShortenerHandlerFromEndpoint},
+		{"Traffic", gw.RegisterTrafficHandlerFromEndpoint},
+	}
 
+	for _, service := range services {
+		if err := service.register(ctx, mux, grpcServerEndpoint, opts); err != nil {
+			log.Printf("Failed to register %s handler: %v", service.name, err)
+			return err
+		}
+		log.Printf("Successfully registered %s handler", service.name)
+	}
 
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/auth/github/login", auth.HandleGithubLogin())
 	httpMux.HandleFunc("/auth/github/login/callback", auth.HandleGithubCallback())
-
+	httpMux.HandleFunc("/auth/google/login", auth.HandleGoogleLogin())
+	httpMux.HandleFunc("/auth/google/login/callback", auth.HandleGoogleCallback())
 	httpMux.Handle("/", auth.AuthMiddleware(cors.SetupCORS(mux)))
 
+	log.Printf("Starting HTTP server on :8080")
 	return http.ListenAndServe(":8080", cors.SetupCORS(httpMux))
 }
 
