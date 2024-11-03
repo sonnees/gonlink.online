@@ -8,6 +8,8 @@ import (
 var unprotectedPaths = []string{
 	"/auth/github/login",
 	"/auth/github/login/callback",
+	"/auth/google/login",
+	"/auth/google/login/callback",
 	"/api/v1/shortens/gen",
 	"/api/v1/shortens/get",
 	"/api/v1/shortens/check-need-password",

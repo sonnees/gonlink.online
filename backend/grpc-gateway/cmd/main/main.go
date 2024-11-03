@@ -62,6 +62,10 @@ func run() error {
     httpMux := http.NewServeMux()
     httpMux.HandleFunc("/auth/github/login", auth.HandleGithubLogin())
     httpMux.HandleFunc("/auth/github/login/callback", auth.HandleGithubCallback())
+    httpMux.HandleFunc("/auth/google/login", auth.HandleGoogleLogin())
+    httpMux.HandleFunc("/auth/google/login/callback", auth.HandleGoogleCallback())
+    httpMux.HandleFunc("/auth/linkedin/login", auth.HandleLinkedInLogin())
+    httpMux.HandleFunc("/auth/linkedin/login/callback", auth.HandleLinkedInCallback())
     httpMux.Handle("/", auth.AuthMiddleware(cors.SetupCORS(mux)))
 
     log.Printf("Starting HTTP server on :8080")
