@@ -26,7 +26,7 @@ func run() error {
 	// Get gRPC server endpoint from environment or use default
 	grpcServerEndpoint := os.Getenv("GRPC_SERVER_ENDPOINT")
 	if grpcServerEndpoint == "" {
-		grpcServerEndpoint = "grpc-service:9090"
+		grpcServerEndpoint = "localhost:9090"
 	}
 	log.Printf("Connecting to gRPC server at: %s", grpcServerEndpoint)
 
