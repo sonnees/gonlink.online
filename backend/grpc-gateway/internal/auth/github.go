@@ -25,25 +25,25 @@ func HandleGithubLogin() http.HandlerFunc {
 	githubOauthConfig = &oauth2.Config{
 		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
 		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-		RedirectURL:  os.Getenv("REDIRECT_URL"),
+		RedirectURL:  os.Getenv("GITHUB_REDIRECT_URL"),
 		Scopes:       []string{"user:email", "read:user"},
 		Endpoint:     github.Endpoint,
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
-        sess, _ := session.Store.Get(r, sessionName)
-        sess.Values["original_url"] = r.Referer()
-        if err := sess.Save(r, w); err != nil {
-            http.Error(w, "Không thể lưu session", http.StatusInternalServerError)
-            return
-        }
-        url := githubOauthConfig.AuthCodeURL("state", oauth2.AccessTypeOnline)
-        http.Redirect(w, r, url, http.StatusTemporaryRedirect)
-    }
+		sess, _ := session.Store.Get(r, sessionName)
+		sess.Values["original_url"] = r.Referer()
+		if err := sess.Save(r, w); err != nil {
+			http.Error(w, "Không thể lưu session", http.StatusInternalServerError)
+			return
+		}
+		url := githubOauthConfig.AuthCodeURL("state", oauth2.AccessTypeOnline)
+		http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+	}
 }
 
 func HandleGithubCallback() http.HandlerFunc {
 	sessionName := os.Getenv("SESSION_NAME_AUTH")
-	
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		state := r.URL.Query().Get("state")
 		if state != "state" {
@@ -112,44 +112,44 @@ func HandleGithubCallback() http.HandlerFunc {
 		}
 
 		sess, _ := session.Store.Get(r, sessionName)
-		tokenJWT, e:=createToken(primaryEmail, userInfo["login"].(string), userInfo["avatar_url"].(string))
-		if e!=nil{
+		tokenJWT, e := createToken(primaryEmail, userInfo["login"].(string), userInfo["avatar_url"].(string))
+		if e != nil {
 			http.Error(w, "Failed to create token: "+e.Error(), http.StatusInternalServerError)
 			return
 		}
 
-        originalURL, ok := sess.Values["original_url"].(string)
-        if !ok || originalURL == "" {
-            originalURL = "http://localhost:5173/page/home" // Mặc định quay về trang chủ của frontend
-        }
+		originalURL, ok := sess.Values["original_url"].(string)
+		if !ok || originalURL == "" {
+			originalURL = "http://localhost:5173/page/home" // Mặc định quay về trang chủ của frontend
+		}
 
-        // Chuyển hướng về trang frontend với thông tin xác thực
-        redirectURL := fmt.Sprintf("%s?token=%s",
-            "http://localhost:5173/page/home",
+		// Chuyển hướng về trang frontend với thông tin xác thực
+		redirectURL := fmt.Sprintf("%s?token=%s",
+			"http://localhost:5173/page/home",
 			tokenJWT,
 		)
 		log.Println("tokenJWT:", tokenJWT)
-        http.Redirect(w, r, redirectURL, http.StatusFound)
+		http.Redirect(w, r, redirectURL, http.StatusFound)
 	}
 }
 
 func createToken(email, name, avatar string) (string, error) {
-    jwtSecret := os.Getenv("JWT_SECRET")
-    if jwtSecret == "" {
-        return "", errors.New("JWT_SECRET is not set")
-    }
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		return "", errors.New("JWT_SECRET is not set")
+	}
 	role := "user"
 
-    claims := jwt.MapClaims{
-        "email":  email,
-        "name":   name,
-        "avatar": avatar,
+	claims := jwt.MapClaims{
+		"email":  email,
+		"name":   name,
+		"avatar": avatar,
 		"role":   role,
-        "iat":    time.Now().Unix(),
-        "exp":    time.Now().Add(time.Hour * 24).Unix(),
-    }
+		"iat":    time.Now().Unix(),
+		"exp":    time.Now().Add(time.Hour * 24).Unix(),
+	}
 
-    token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-    return token.SignedString([]byte(jwtSecret))
+	return token.SignedString([]byte(jwtSecret))
 }
