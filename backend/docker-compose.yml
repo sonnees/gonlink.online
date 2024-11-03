@@ -30,9 +30,6 @@ services:
       - GG_CLIENT_ID=321176153256-m9eakfhp31ojm5e47c3v6r9hgkpnd4d2.apps.googleusercontent.com
       - GG_CLIENT_SECRET=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
       - GG_REDIRECT_URL=http://localhost:8080/auth/google/login/callback
-      - LINKEDIN_CLIENT_ID=86kkiwcxsffxgo
-      - LINKEDIN_CLIENT_SECRET=WPL_AP1.bsY8Pve9HJnRDLeI.itZAHA==
-      - LINKEDIN_REDIRECT_URL=http://localhost:8080/auth/linkedin/login/callback
       - JWT_SECRET=7b1f58b60b06295403c1887b7f258a955e2f594cec6c1fe12d80f6a247795fce
     depends_on:
       - gonlink
