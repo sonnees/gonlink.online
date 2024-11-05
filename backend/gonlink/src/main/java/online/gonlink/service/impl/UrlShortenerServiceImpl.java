@@ -1,6 +1,5 @@
 package online.gonlink.service.impl;
 
-import lombok.AllArgsConstructor;
 import online.gonlink.GenerateShortCodeAccountRequest;
 import online.gonlink.GenerateShortCodeRequest;
 import online.gonlink.GetOriginalUrlRequest;
@@ -13,6 +12,7 @@ import online.gonlink.ShortCodeCheckExistRequest;
 import online.gonlink.ShortCodeCheckExistResponse;
 import online.gonlink.ShortCodeUpdateRequest;
 import online.gonlink.ShortCodeUpdateResponse;
+import online.gonlink.constant.CommonConstant;
 import online.gonlink.dto.ShortUrlGenerateDto;
 import online.gonlink.dto.TrafficCreateDto;
 import online.gonlink.dto.ResponseGenerateShortCode;
@@ -26,17 +26,19 @@ import online.gonlink.util.CheckURL;
 import online.gonlink.util.ShortCodeGenerator;
 import online.gonlink.service.UrlShortenerService;
 import online.gonlink.util.ShortUrlUtil;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UrlShortenerServiceImpl implements UrlShortenerService {
     /** Config */
     private final PasswordEncoder passwordEncoder;
@@ -48,7 +50,18 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     private final TrafficService trafficService;
     private final ShortCodeGenerator shortCodeGenerator;
     private final CheckURL checkURL;
+    private final SimpleDateFormat simpleDateFormatWithTime;
 
+    public UrlShortenerServiceImpl(PasswordEncoder passwordEncoder, ShortUrlRep shortUrlRep, TrafficService trafficService,
+                                   ShortCodeGenerator shortCodeGenerator, CheckURL checkURL,
+                                   @Qualifier(CommonConstant.QUALIFIER_SIMPLE_DATE_FORMAT_YMD_HMS) SimpleDateFormat simpleDateFormatWithTime) {
+        this.passwordEncoder = passwordEncoder;
+        this.shortUrlRep = shortUrlRep;
+        this.trafficService = trafficService;
+        this.shortCodeGenerator = shortCodeGenerator;
+        this.checkURL = checkURL;
+        this.simpleDateFormatWithTime = simpleDateFormatWithTime;
+    }
 
     /** Constant */
     private final Boolean IS_OWNER = true;
@@ -77,12 +90,12 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 
     @Override
     public ResponseGenerateShortCode generateShortCode(GenerateShortCodeRequest request) {
-        return generateShortCode(!HAVE_ACCOUNT, null, ShortUrlUtil.mapFromGenerateShortCodeRequest(request, passwordEncoder));
+        return generateShortCode(!HAVE_ACCOUNT, null, ShortUrlUtil.mapFromGenerateShortCodeRequest(simpleDateFormatWithTime, request, passwordEncoder));
     }
 
     @Override
     public ResponseGenerateShortCode generateShortCode(String email, GenerateShortCodeAccountRequest request) {
-        return generateShortCode(HAVE_ACCOUNT, email, ShortUrlUtil.mapFromGenerateShortCodeAccountRequest(request, passwordEncoder));
+        return generateShortCode(HAVE_ACCOUNT, email, ShortUrlUtil.mapFromGenerateShortCodeAccountRequest(simpleDateFormatWithTime, request, passwordEncoder));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -109,6 +122,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
                 shortUrl.setShortCode(shortCode);
                 shortUrl.setOwner(email);
                 shortUrl.setActive(true);
+
                 shortUrlRep.insert(shortUrl);
                 trafficService.createsTraffic(new TrafficCreateDto(shortCode, haveAccount?email:"", shortUrlGenerateDto.originalUrl(), shortUrlGenerateDto.time()));
                 response = new ResponseGenerateShortCode(shortCode, IS_OWNER);
@@ -163,7 +177,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
         } else{
             if (!request.getTimeExpired().equals("")){
                 ZonedDateTime zonedDateTime = ZonedDateTime.parse(request.getTimeExpired()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
-                shortUrl.setTimeExpired(zonedDateTime.toString());
+                shortUrl.setTimeExpired(simpleDateFormatWithTime.format(Date.from(zonedDateTime.toInstant())));
             }
         }
         shortUrl.setMaxUsage(request.getMaxUsage()==0?shortUrl.getMaxUsage():request.getMaxUsage());
