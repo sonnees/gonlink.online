@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -209,7 +210,8 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
                 throw new ResourceException(ExceptionEnum.PASSWORD_NOT_CORRECT.name(), null);
         if(Objects.nonNull(shortUrl.getTimeExpired())){
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(request.getZoneId()));
-            ZonedDateTime timeExpired = ZonedDateTime.parse(shortUrl.getTimeExpired()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
+            LocalDateTime localDateTime = LocalDateTime.parse(shortUrl.getTimeExpired().replace(' ', 'T'));
+            ZonedDateTime timeExpired = localDateTime.atZone(ZoneId.of(request.getZoneId()));
             if(timeExpired.isBefore(now))
                 throw new ResourceException(ExceptionEnum.TIME_EXPIRED.name(), null);
         }
