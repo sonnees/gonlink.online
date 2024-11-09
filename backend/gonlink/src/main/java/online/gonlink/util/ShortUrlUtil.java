@@ -2,12 +2,10 @@ package online.gonlink.util;
 
 import online.gonlink.GenerateShortCodeAccountRequest;
 import online.gonlink.GenerateShortCodeRequest;
-import online.gonlink.constant.CommonConstant;
 import online.gonlink.dto.ShortUrlGenerateDto;
 import online.gonlink.entity.ShortUrl;
 import online.gonlink.exception.ResourceException;
 import online.gonlink.exception.enumdef.ExceptionEnum;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.text.SimpleDateFormat;
