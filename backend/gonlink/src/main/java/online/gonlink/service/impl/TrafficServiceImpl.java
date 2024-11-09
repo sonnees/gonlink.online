@@ -166,6 +166,7 @@ public class TrafficServiceImpl implements TrafficService {
             generalTrafficDto.setDesc(shortUrl.getDesc());
             generalTrafficDto.setTimeExpired(Objects.nonNull(shortUrl.getTimeExpired())?DateUtil.getStringZonedDateTime(shortUrl.getTimeExpired(), formatter, zoneId):"");
             generalTrafficDto.setUsingPassword(Objects.nonNull(shortUrl.getPassword()));
+            generalTrafficDto.setMaxUsage(shortUrl.getMaxUsage());
             return generalTrafficDto;
         });
     }
