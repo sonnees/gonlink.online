@@ -1,5 +1,7 @@
 package online.gonlink.service.impl;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Objects;
 
 import io.grpc.Context;
@@ -46,8 +48,10 @@ import online.gonlink.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +64,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,15 +147,35 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     @Override
-    public Page<GeneralTrafficDto> searchGeneralTraffics(GeneralTrafficsSearchRequest request){
+    public Page<GeneralTrafficDto> searchGeneralTraffics(GeneralTrafficsSearchRequest request) throws ParseException {
+        String fromDateReq = request.getFromDate()+"T00:00:00Z";
+        String toDateReq = request.getToDate()+"T23:59:00Z";
+        if ( request.getFromDate() == null ||  request.getFromDate().isEmpty()) {
+            fromDateReq = LocalDate.of(1980, 1, 1).format(DateTimeFormatter.ISO_DATE) + "T00:00:00Z";
+        }
+
+        if (request.getToDate() == null || request.getToDate().isEmpty()) {
+            toDateReq = LocalDate.now().format(DateTimeFormatter.ISO_DATE) + "T23:59:00Z";
+        }
+
         ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
         Page<GeneralTraffic> traffics;
         Context context = Context.current();
         Pageable pageable = PageRequest.of(
                 request.getPage()==0?globalValue.getPAGE():request.getPage(),
-                request.getSize()==0?globalValue.getSIZE():request.getSize()
+                request.getSize()==0?globalValue.getSIZE():request.getSize(),
+                Sort.by(Sort.Direction.valueOf(
+                                request.getSortDirection().toUpperCase()),
+                        "trafficDate"
+                )
         );
-        traffics = generalTrafficRep.findAllByOwner(AuthConstant.USER_EMAIL.get(context), pageable);
+        String fromDate = simpleDateFormatWithTime.format(Date.from(ZonedDateTime.parse(fromDateReq).withZoneSameInstant(zoneId).toInstant()));
+        String toDate = simpleDateFormatWithTime.format(Date.from(ZonedDateTime.parse(toDateReq).withZoneSameInstant(zoneId).toInstant()));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(CommonConstant.SIMPLE_DATE_FORMAT_YMD_HMS);
+        Date start = dateFormat.parse(fromDate);
+        Date end = dateFormat.parse(toDate);
+
+        traffics = findTrafficByOwnerAndDateRangeWithSort(AuthConstant.USER_EMAIL.get(context), start, end, pageable);
         /* Convert server time to client time */
         traffics.forEach(gt-> gt.setTrafficDate(DateUtil.getStringZonedDateTime(gt.getTrafficDate(), formatter, zoneId)));
 
@@ -163,13 +186,34 @@ public class TrafficServiceImpl implements TrafficService {
             generalTrafficDto.setActive(shortUrl.isActive());
             generalTrafficDto.setAlias(shortUrl.getAlias());
             generalTrafficDto.setDesc(shortUrl.getDesc());
-            generalTrafficDto.setDesc(shortUrl.getDesc());
             generalTrafficDto.setTimeExpired(Objects.nonNull(shortUrl.getTimeExpired())?DateUtil.getStringZonedDateTime(shortUrl.getTimeExpired(), formatter, zoneId):"");
             generalTrafficDto.setUsingPassword(Objects.nonNull(shortUrl.getPassword()));
             generalTrafficDto.setMaxUsage(shortUrl.getMaxUsage());
             return generalTrafficDto;
         });
     }
+
+    public Page<GeneralTraffic> findTrafficByOwnerAndDateRangeWithSort(
+            String owner, Date startDate, Date endDate, Pageable pageable) {
+        int skip = (int) pageable.getOffset();
+        int limit = pageable.getPageSize();
+        int sortDirection = pageable.getSort()
+                .getOrderFor("trafficDate")
+                .isAscending() ? 1 : -1;
+        List<GeneralTraffic> results = generalTrafficRep.findAllByOwnerAndTrafficDateBetweenWithPaginationAndSort(
+                owner, startDate, endDate, sortDirection, skip, limit);
+        long total = countTrafficByOwnerAndDateRange(owner, startDate, endDate);
+        return new PageImpl<>(results, pageable, total);
+    }
+
+    public long countTrafficByOwnerAndDateRange(String owner, Date startDate, Date endDate) {
+        List<GeneralTraffic> objects = generalTrafficRep.countByOwnerAndTrafficDateBetween(owner, startDate, endDate);
+        if (objects.isEmpty()) {
+            return 0;
+        }
+        return objects.size();
+    }
+
 
     @Override
     public GeneralTraffic searchGeneralTrafficByShortCode(String shortCode){

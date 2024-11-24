@@ -18,6 +18,8 @@ message GeneralTrafficsSearchRequest{
   optional int32 size = 2;
   optional string sortDirection = 3;
   string zoneId = 4;
+  optional string fromDate = 5;
+  optional string toDate = 6;
 }
 
 message PageInfo {

@@ -26,6 +26,7 @@ import online.gonlink.dto.TrafficDayDto;
 import online.gonlink.service.TrafficService;
 import org.springframework.data.domain.Page;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,12 @@ public class TrafficGrpcImpl extends TrafficImplBase implements CommonHandler {
     @Override
     public void searchGeneralTraffics(GeneralTrafficsSearchRequest request, StreamObserver<BaseGrpc> responseObserver) {
         long startTime = System.currentTimeMillis();
-        Page<GeneralTrafficDto> traffics = trafficService.searchGeneralTraffics(request);
+        Page<GeneralTrafficDto> traffics = null;
+        try {
+            traffics = trafficService.searchGeneralTraffics(request);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         GeneralTrafficsSearchResponse response = GeneralTrafficsSearchResponse
                 .newBuilder()
                 .addAllGeneralTraffic(
