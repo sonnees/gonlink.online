@@ -150,6 +150,14 @@ public class TrafficServiceImpl implements TrafficService {
     public Page<GeneralTrafficDto> searchGeneralTraffics(GeneralTrafficsSearchRequest request) throws ParseException {
         String fromDateReq = request.getFromDate()+"T00:00:00Z";
         String toDateReq = request.getToDate()+"T23:59:00Z";
+        if ( request.getFromDate() == null ||  request.getFromDate().isEmpty()) {
+            fromDateReq = LocalDate.of(1980, 1, 1).format(DateTimeFormatter.ISO_DATE) + "T00:00:00Z";
+        }
+
+        if (request.getToDate() == null || request.getToDate().isEmpty()) {
+            toDateReq = LocalDate.now().format(DateTimeFormatter.ISO_DATE) + "T23:59:00Z";
+        }
+
         ZoneId zoneId = ZoneId.of(request.getZoneId().equals("") ? globalValue.getTIME_ZONE_DEFAULT() : request.getZoneId());
         Page<GeneralTraffic> traffics;
         Context context = Context.current();
