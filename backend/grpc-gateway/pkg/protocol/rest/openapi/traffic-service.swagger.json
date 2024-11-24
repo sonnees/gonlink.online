@@ -313,6 +313,12 @@
         },
         "zoneId": {
           "type": "string"
+        },
+        "fromDate": {
+          "type": "string"
+        },
+        "toDate": {
+          "type": "string"
         }
       },
       "title": "=== GeneralTraffics ==="

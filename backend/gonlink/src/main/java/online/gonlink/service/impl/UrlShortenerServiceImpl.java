@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -177,11 +178,21 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
             shortUrl.setTimeExpired(null);
         } else{
             if (!request.getTimeExpired().equals("")){
-                ZonedDateTime zonedDateTime = ZonedDateTime.parse(request.getTimeExpired()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
+                String replace = request.getTimeExpired().replace(":00Z", "");
+                LocalDateTime localDateTime = LocalDateTime.parse(replace);
+                ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of(request.getZoneId()));
+                ZonedDateTime now = ZonedDateTime.parse(ZonedDateTime.now(ZoneId.of(request.getZoneId())).toString()).withZoneSameInstant(ZoneId.of(request.getZoneId()));
+                if(zonedDateTime.isBefore(now))
+                    throw new ResourceException(ExceptionEnum.TIME_EXPIRED.name(), null);
                 shortUrl.setTimeExpired(simpleDateFormatWithTime.format(Date.from(zonedDateTime.toInstant())));
             }
         }
-        shortUrl.setMaxUsage(request.getMaxUsage()==0?shortUrl.getMaxUsage():request.getMaxUsage());
+        if(request.getMaxUsage()!=0){
+            GeneralTraffic generalTraffic = trafficService.searchGeneralTrafficByShortCode(shortUrl.getShortCode());
+            if(generalTraffic.getTraffic()>request.getMaxUsage())
+                throw new ResourceException(ExceptionEnum.MAX_ACCESS.name(), null);
+            shortUrl.setMaxUsage(request.getMaxUsage());
+        }
         shortUrl.setActive(request.getActive());
 
         ShortUrl shortUrlUpdated = shortUrlRep.save(shortUrl);

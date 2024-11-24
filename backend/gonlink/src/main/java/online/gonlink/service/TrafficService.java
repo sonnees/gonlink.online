@@ -18,13 +18,14 @@ import online.gonlink.dto.TrafficDayDto;
 import online.gonlink.entity.GeneralTraffic;
 import org.springframework.data.domain.Page;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface TrafficService {
     boolean createsTraffic(TrafficCreateDto trafficCreateDto);
     boolean increasesTraffic(String owner, String originalUrl, GetOriginalUrlRequest request);
     RemoveUrlResponse deletesTraffic(RemoveUrlRequest request);
-    Page<GeneralTrafficDto> searchGeneralTraffics(GeneralTrafficsSearchRequest request);
+    Page<GeneralTrafficDto> searchGeneralTraffics(GeneralTrafficsSearchRequest request) throws ParseException;
     GeneralTraffic searchGeneralTrafficByShortCode(String shortCode);
     List<TrafficDataDto> getAllMonthTraffic(MonthTrafficsGetAllRequest request);
     TrafficDayDto getDayTrafficInRange(DayTrafficInRangeRequest request);
