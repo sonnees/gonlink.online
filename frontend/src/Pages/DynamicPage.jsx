@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Await, useParams } from 'react-router-dom';
+import { Await, useNavigate, useParams } from 'react-router-dom';
 import {
     isMobile,
     isTablet,
@@ -17,6 +17,8 @@ import { toast } from 'react-toastify';
 export default function DynamicPage() {
     const { '*': dynamicPath } = useParams();
     const [password, setPassword] = useState("");
+    const [isPassword, setIsPassword] = useState(false);
+    const navigate = useNavigate();
 
     const [browserInfo, setBrowserInfo] = useState({
         browser: '',
@@ -27,7 +29,7 @@ export default function DynamicPage() {
 
     useEffect(() => {
         // Lấy thông tin từ navigator
-        const userAgentData = navigator.userAgentData;
+        // const userAgentData = navigator.userAgentData;
         console.log(isMobile,
             isTablet,
             isDesktop,
@@ -37,9 +39,6 @@ export default function DynamicPage() {
             osVersion,
             engineName);
         
-
-
-
         setBrowserInfo({
             browser: browserName || 'Unknown Browser',
             browserVersion: browserVersion || 'Unknown Version',
@@ -77,8 +76,9 @@ export default function DynamicPage() {
                 const link = await response.json();
                 // window.location.href = link.data.originalUrl;
                 if (link.data.isNeedPassword) {
-                    const input = prompt('Please enter password:');
-                    fetchLinkWithPassword(input);
+                    // const input = prompt('Please enter password:');
+                    // fetchLinkWithPassword(input);
+                    setIsPassword(true);
 
                 } else {
                     fetchLink();
@@ -130,7 +130,6 @@ export default function DynamicPage() {
                     link = await response.json();
                 } catch (error) {
                     console.error("Failed to parse JSON from 403 response", error);
-                    return;
                 }
                 
                 // Kiểm tra cấu trúc phản hồi
@@ -161,6 +160,7 @@ export default function DynamicPage() {
                 } else {
                     console.error("Unexpected 403 response structure", link);
                 }
+                navigate("/page/notfound");
                 return;
             }
       
@@ -172,6 +172,7 @@ export default function DynamicPage() {
                 // alert('Liên kết không tồn tại.');
                 toast("Link không còn tồn tại!");
                 console.error("Failed API");
+                navigate("/page/notfound");
                 return;
             }
         } catch (error) {
@@ -209,6 +210,7 @@ export default function DynamicPage() {
       
             if (response.status == 401) {
               console.error("Failed login");
+              navigate("/page/notfound");
               return;
             }
 
@@ -218,7 +220,6 @@ export default function DynamicPage() {
                     link = await response.json();
                 } catch (error) {
                     console.error("Failed to parse JSON from 403 response", error);
-                    return;
                 }
                 
                 // Kiểm tra cấu trúc phản hồi
@@ -245,10 +246,10 @@ export default function DynamicPage() {
                             toast.error("Link không còn tồn tại!");
                             // console.log(`Error code: ${link.code}, Message: ${link.message}`);
                     }
-
                 } else {
                     console.error("Unexpected 403 response structure", link);
                 }
+                navigate("/page/notfound");
                 return;
             }
       
@@ -257,14 +258,9 @@ export default function DynamicPage() {
                 window.location.href = link.data.originalUrl;
 
             } else {
-                // Xử lý khi API trả về lỗi
-                // alert('Liên kết không tồn tại.');
-                toast.error("Liên kết không tồn tại.");
-                const link = await response.json();
-                console.log(link.data.message);
 
-                // alert("Link không còn tồn tại!")
-                // console.error("Failed API");
+                toast.error("Liên kết không tồn tại.");
+                navigate("/page/notfound");
                 return;
             }
         } catch (error) {
@@ -277,6 +273,39 @@ export default function DynamicPage() {
 
 
     return (
-        <div></div>
+        <div className='bg-gradient-to-b from-white to-blue-200'>
+            {isPassword && (
+                <div className="flex items-center justify-center min-h-screen">
+                    <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 max-w-md w-full">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+                            Nhập mật khẩu cho đường dẫn
+                        </h2>
+                        <form>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" >Mật khẩu:</label>
+                                <input
+                                    type="password"
+                                    className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+                                    placeholder="Nhập mật khẩu của bạn"
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        const normalizedValue = value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
+                                        setPassword(normalizedValue);
+                                    }}
+                                />
+                            </div>
+                            <div className="flex items-center justify-center">
+                                <div
+                                    className="bg-blue-500 hover:bg-blue-700 cursor-pointer text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    onClick={()=>fetchLinkWithPassword(password)}
+                                >
+                                    Xác nhận
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+        </div>
     )
 }
