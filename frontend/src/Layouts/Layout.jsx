@@ -8,7 +8,7 @@ import { UserProvider } from '../context/UserContext'
 
 export default function Layout() {
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col min-h-screen bg-gradient-to-b from-white to-blue-200'>
       <UserProvider>
         <Header/>
         
@@ -17,7 +17,7 @@ export default function Layout() {
           <Outlet/>
         </div>
 
-        <DotLine/>
+        {/* <DotLine/> */}
         <Contact/>
         <Footer/>
       </UserProvider>

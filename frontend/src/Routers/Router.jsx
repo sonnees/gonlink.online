@@ -29,7 +29,7 @@ export default function Router() {
                 { path: "about", element: <About /> },
                 { path: "detailLink", element: <DetailLink/> },
                 { path: "notfound", element: <PageNotFound/> },
-                // { path: "*", element: <Navigate to="/page/notfound" /> }
+                { path: "*", element: <Navigate to="/page/notfound" /> }
             ],
         },
         {
@@ -43,8 +43,8 @@ export default function Router() {
                 { path: "linkmanagement", element: <LinkManagement/> },
                 { path: "history", element: <History /> },
                 { path: "detailLink", element: <DetailLink/> },
-                { path: "notfound", element: <PageNotFound/> },
-
+                // { path: "notfound", element: <PageNotFound/> },
+                { path: "*", element: <Navigate to="/page/notfound" /> }
             ],
         },
         {
